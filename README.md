@@ -41,61 +41,62 @@ $ npm run test:cov
 ## Manter contato
 
 - Autores -
-<ul>
-      <li style="list-style: none; margin-bottom: 5px">
-        <a
-          style="display: flex; align-items: center; text-decoration: none"
-          href="https://github.com/MarioLucas0"
-        >
-          <img
-            style="width: 60px; border-radius: 50%; margin-right: 5px"
-            src="https://avatars.githubusercontent.com/u/100689099?v=4"
-            alt="avatar"
-          />
-          Mario Lucas
-        </a>
-      </li>
-          <li style="list-style: none; margin-bottom: 5px">
-        <a href="" style="display: flex; align-items: center; text-decoration: none">
-          <img
-            style="width: 60px; border-radius: 50%; margin-right: 5px"
-            src="https://avatars.githubusercontent.com/u/7707498?v=4"
-            alt="avatar"
-          />
-          Wilson Moura</a
-        >
-      </li>
-      <li style="list-style: none; margin-bottom: 5px">
-        <a href="" style="display: flex; align-items: center; text-decoration: none">
-          <img
-            style="width: 60px; border-radius: 50%; margin-right: 5px"
-            src="https://avatars.githubusercontent.com/u/105378159?v=4"
-            alt="avatar"
-          />
-          Jéssica Santana</a
-        >
-      </li>
-      <li style="list-style: none; margin-bottom: 5px">
-        <a href="" style="display: flex; align-items: center; text-decoration: none">
-          <img
-            style="width: 60px; border-radius: 50%; margin-right: 5px"
-            src="https://avatars.githubusercontent.com/u/11843888?v=4"
-            alt="avatar"
-          />
-          Fernando D'luccas</a
-        >
-      </li>  
-      <li style="list-style: none; margin-bottom: 5px">
-        <a href="" style="display: flex; align-items: center; text-decoration: none">
-          <img
-            style="width: 60px; border-radius: 50%; margin-right: 5px"
-            src="https://avatars.githubusercontent.com/u/42968718?v=4"
-            alt="avatar"
-          />
-          Emerson Moreira</a
-        >
-      </li>
-    </ul>
+<table>
+     <tr>
+       <td align="center">
+         <a href="https://github.com/MarioLucas0"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/100689099?v=4"
+             width="100px;"
+             alt="Avatar Mario"
+           /><br /><sub><b>Mario Lucas</b></sub></a
+         >
+       </td>
+       <td align="center">
+         <a href="https://github.com/WilsonRU"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/7707498?v=4"
+             width="100px;"
+             alt="Avatar Wilson"
+           /><br /><sub><b>Wilson Moura</b></sub></a
+         >
+       </td>
+       <td align="center">
+         <a href="https://www.github.com/DJehSantana" target="_blank"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/105378159?v=4"
+             width="100px;"
+             alt="Avatar Jessica"
+           /><br /><sub><b>Jéssica Santana</b></sub></a
+         >
+       </td>
+       <td align="center">
+         <a href="https://github.com/fernandodluccas"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/11843888?v=4"
+             width="100px;"
+             alt="Avatar Fernando"
+           /><br /><sub><b>Fernando D'luccas</b></sub></a
+         >
+       </td>
+     </tr>
+     <tr>
+       <td align="center">
+         <a href="https://github.com/eemr3"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/42968718?v=4"
+             width="100px;"
+             alt="Avatar Emerson"
+           /><br /><sub><b>Emerson Moreira</b></sub></a
+         >
+       </td>
+     </tr>
+   </table>
 
 ## License
 
