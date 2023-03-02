@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 
-@Controller('auth')
-export class AuthController {}
+@Controller('api')
+export class AuthController {
+  @Post('login')
+  login() {
+    return 'logado!!';
+  }
+}
