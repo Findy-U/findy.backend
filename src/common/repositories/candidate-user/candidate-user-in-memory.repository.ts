@@ -8,7 +8,7 @@ export class CandidateUserInMemoryRepository {
       name: 'John Doe',
       email: 'john-doe@test.com',
       password: '$2a$10$mpmbmG48E5LVEkVIhLBhsObvYxQyWTwrE6qZC44FurbjecCw0gA3G', //Ab123@7&
-      role: 'candidate',
+      role: 'project',
     },
   ];
   async findByEmail(email: string) {
