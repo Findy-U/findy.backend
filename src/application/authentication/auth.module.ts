@@ -7,6 +7,7 @@ import { LoginValidationMiddleware } from '../../common/middlewares/login-valida
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
 import { TesteController } from './teste.controller';
@@ -30,6 +31,7 @@ import { TesteController } from './teste.controller';
     CandidateUserInMemoryRepository,
     LocalStrategy,
     JwtStrategy,
+    GoogleStrategy,
   ],
 })
 export class AuthModule implements NestModule {

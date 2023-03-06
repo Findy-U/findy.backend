@@ -1,10 +1,14 @@
+import { CandidateUserInterface } from '../interfaces/candidate-user.interface';
+
 export class CandidateUserSerialize {
-  requestToDb(candidate: any) {
+  requestToDb(candidate: CandidateUserInterface) {
     return {
       name: candidate.name,
       email: candidate.email,
       password: candidate.password,
       role: candidate.role,
+      provider: candidate.provider,
+      providerId: candidate.providerId,
     };
   }
 

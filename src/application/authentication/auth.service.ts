@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
+import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
 import { CandidateUserSerialize } from '../../common/serializers/cadidate-user.serialize';
-import { CandidateUser } from '../../models/auth-request';
 import { UserPayload } from '../../models/candidate-user-payload';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user: CandidateUser) {
+  async login(user: CandidateUserInterface) {
     const payload: UserPayload = {
       sub: user.id,
       name: user.name,
