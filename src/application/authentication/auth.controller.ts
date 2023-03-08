@@ -29,23 +29,19 @@ export class AuthController {
   @Get('auth/google')
   @UseGuards(GoogleOAuthGuard)
   async signInWithGoogle() {
-    console.log('success');
+    return;
   }
 
   @Get('auth/google/redirect')
   @UseGuards(GoogleOAuthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    try {
-      const token = await this.authService.login(req.user);
+    const token = await this.authService.login(req.user);
 
-      res.cookie(SESSION_COOKIE_KEY, token.access_token, {
-        httpOnly: true,
-        sameSite: 'lax',
-      });
+    res.cookie(SESSION_COOKIE_KEY, token.access_token, {
+      httpOnly: true,
+      sameSite: 'lax',
+    });
 
-      return res.redirect('http://localhost:3000/google-auth-success');
-    } catch (error) {
-      return res.redirect('http://localhost:3000/google-auth-fail');
-    }
+    return res.redirect('http://localhost:3000/google-auth-success');
   }
 }

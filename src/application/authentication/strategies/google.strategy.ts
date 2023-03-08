@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { CandidateUserInMemoryRepository } from '../../../common/repositories/candidate-user/candidate-user-in-memory.repository';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     private configService: ConfigService,
-    private candidateRepoistory: CandidateUserInMemoryRepository,
+    private authService: AuthService,
   ) {
     super({
       clientID: configService.get<string>('auth.google.clientId'),
@@ -24,24 +24,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
-    const { id, emails } = profile;
+    const { id, emails, displayName } = profile;
 
-    // const user = {
-    //   idSocial: id,
-    //   fullName: profile.displayName,
-    //   email: emails[0].value,
-    // };
-
-    let user = await this.candidateRepoistory.findByEmail(emails);
-    if (!user) {
-      user = await this.candidateRepoistory.create({
-        name: profile.displayName,
-        email: profile.emails[0].value,
-        role: 'candidate',
-        providerId: id,
-        provider: 'google',
-      });
-    }
+    const user = await this.authService.validateGoogleAuth({
+      id,
+      email: emails[0].value,
+      displayName,
+    });
 
     return done(null, user);
   }
