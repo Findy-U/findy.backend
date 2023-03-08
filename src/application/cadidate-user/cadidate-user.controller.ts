@@ -1,20 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CadidateUserService } from './cadidate-user.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ConflictException,
+} from '@nestjs/common';
+import { CandidateUserService } from './cadidate-user.service';
 import { CreateCadidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCadidateUserDto } from './dto/update-cadidate-user.dto';
 
 @Controller('cadidate-user')
 export class CadidateUserController {
-  constructor(private readonly cadidateUserService: CadidateUserService) {}
+  constructor(private readonly cadidateUserService: CandidateUserService) {}
 
   @Post()
-  create(@Body() createCadidateUserDto: CreateCadidateUserDto) {
-    return this.cadidateUserService.create(createCadidateUserDto);
+  async create(@Body() createCadidateUserDto: CreateCadidateUserDto) {
+    try {
+      return await this.cadidateUserService.create(createCadidateUserDto);
+    } catch (error) {
+      throw new ConflictException(error.message);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.cadidateUserService.findAll();
+  async findAll() {
+    return await this.cadidateUserService.findAll();
   }
 
   @Get(':id')
@@ -23,7 +36,10 @@ export class CadidateUserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCadidateUserDto: UpdateCadidateUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCadidateUserDto: UpdateCadidateUserDto,
+  ) {
     return this.cadidateUserService.update(+id, updateCadidateUserDto);
   }
 
