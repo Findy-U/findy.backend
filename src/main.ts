@@ -11,11 +11,11 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  const configSevice = app.get(ConfigService);
+  const configService = app.get(ConfigService);
 
-  await app.listen(configSevice.get('port'));
+  await app.listen(configService.get('port'));
   console.log(
-    `Application is running on: http://localhost:${configSevice.get('port')}`,
+    `Application is running on: http://localhost:${configService.get('port')}`,
   );
 }
 bootstrap();
