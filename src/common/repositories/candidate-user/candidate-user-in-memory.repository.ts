@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateUserInterface } from '../../interfaces/candidate-user.interface';
+import { CreateCadidateUserDto } from '../../../application/cadidate-user/dto/create-cadidate-user.dto';
+import { UpdateCadidateUserDto } from '../../../application/cadidate-user/dto/update-cadidate-user.dto';
+import { CadidateUser } from '../../../application/cadidate-user/entities/cadidate-user.entity';
+import { CandidateUserRepository } from '../../../application/cadidate-user/repositories/candidate-user.repository';
 
 @Injectable()
-export class CandidateUserInMemoryRepository {
-  private candidate: CandidateUserInterface[] = [
+export class CandidateUserInMemoryRepository
+  implements CandidateUserRepository
+{
+  private candidate: CadidateUser[] = [
     {
       id: 1,
       name: 'John Doe',
       email: 'john-doe@test.com',
-      password: '$2a$10$mpmbmG48E5LVEkVIhLBhsObvYxQyWTwrE6qZC44FurbjecCw0gA3G', //Ab123@7&
+      password: '$2b$10$raAwBs3zgyoQNOkEy9fWvuuTNW/7XqQAw2OZZPzQFTHPaAbiU52WG', //e@N4525&%abX
       role: 'project',
       provider: null,
       providerId: null,
@@ -26,7 +31,9 @@ export class CandidateUserInMemoryRepository {
     },
   ];
 
-  async create(user: CandidateUserInterface) {
+  async create(user: CreateCadidateUserDto): Promise<CadidateUser> {
+    console.log('repositorio em memo', user);
+
     this.candidate.push({
       id: this.candidate.length + 1,
       name: user.name,
@@ -40,12 +47,23 @@ export class CandidateUserInMemoryRepository {
 
     return this.findByEmail(user.email);
   }
-
-  async findByEmail(email: string) {
-    return this.candidate.find((user) => user.email === email);
+  async findByEmail(email: string): Promise<CadidateUser> {
+    return new Promise((resolve) =>
+      resolve(this.candidate.find((user) => user.email === email)),
+    );
   }
 
-  async findById(id: string) {
-    return this.candidate.find((user) => user.providerId === id);
+  async findById(id: number): Promise<CadidateUser> {
+    return new Promise((resolve) =>
+      resolve(this.candidate.find((user) => user.id === id)),
+    );
+  }
+
+  async findAll(): Promise<CadidateUser[]> {
+    return new Promise((resolve) => resolve(this.candidate));
+  }
+
+  update(id: number, cadidate: UpdateCadidateUserDto): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }
