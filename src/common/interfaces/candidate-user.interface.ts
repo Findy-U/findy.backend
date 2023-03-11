@@ -6,4 +6,5 @@ export interface CandidateUserInterface {
   role?: string;
   provider?: string;
   providerId?: string;
+  active: boolean;
 }
