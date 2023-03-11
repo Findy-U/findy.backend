@@ -6,8 +6,7 @@ import { CandidateUserRepository } from '../../../application/cadidate-user/repo
 
 @Injectable()
 export class CandidateUserInMemoryRepository
-  implements CandidateUserRepository
-{
+  implements CandidateUserRepository {
   private candidate: CadidateUser[] = [
     {
       id: 1,
@@ -17,7 +16,6 @@ export class CandidateUserInMemoryRepository
       role: 'project',
       provider: null,
       providerId: null,
-      active: false
     },
     {
       id: 2,
@@ -27,7 +25,6 @@ export class CandidateUserInMemoryRepository
       role: 'candidate',
       provider: 'google',
       providerId: '109937089733594757055',
-      active: false
     },
   ];
 
@@ -42,7 +39,6 @@ export class CandidateUserInMemoryRepository
       role: user.role,
       provider: user.provider,
       providerId: user.providerId,
-      active: user.active
     });
 
     return this.findByEmail(user.email);

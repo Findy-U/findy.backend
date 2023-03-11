@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { EmailConfirmationService } from 'src/mails/email-confirmation/email-confirmation.service';
 import { CandidateUserService } from './candidate-user.service';
-import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 
 @Controller('candidate-user')
 export class CandidateUserController {
@@ -42,5 +40,4 @@ export class CandidateUserController {
   remove(@Param('id') id: string) {
     return this.candidateUserService.remove(+id);
   }
-
 }
