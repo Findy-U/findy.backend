@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      /* Estilos CSS */ body { font-family: Arial, sans-serif; background-color:
+      #f1f1f1; padding: 20px; } .container { max-width: 600px; margin: 0 auto;
+      background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow:
+      0px 2px 10px rgba(0, 0, 0, 0.3); } h1 { font-size: 24px; margin-bottom:
+      20px; } p { font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+      a.button { display: block; width: 200px; background-color: #008CBA; color:
+      #ffffff; text-align: center; text-decoration: none; padding: 10px;
+      border-radius: 5px; margin: 0 auto; } footer { margin-top: 50px;
+      text-align: center; } footer p { font-size: 14px; color: #777777; }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <h1>Bem-vindo à nossa plataforma!</h1>
+      <p>Olá {{name}},</p>
+      <p>Obrigado por se cadastrar na nossa plataforma! Para ativar sua conta e
+        começar a usar nossos recursos, por favor, clique no link abaixo:</p>
+      <a href='{{activationLink}}' class='button'>Ativar conta</a>
+      <p>Caso o link não funcione, copie e cole o seguinte endereço na barra de
+        endereços do seu navegador:</p>
+      <p>{{activationLink}}</p>
+      <footer>
+        <p>Atenciosamente, Equipe de suporte da plataforma</p>
+      </footer>
+    </div>
+  </body>
+</html>
