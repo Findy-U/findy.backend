@@ -1,4 +1,4 @@
-export class CadidateUser {
+export class CandidateUser {
   id?: number;
   name: string;
   email: string;

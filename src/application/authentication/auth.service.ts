@@ -3,12 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
-import { CandidateUserSerialize } from '../../common/serializers/cadidate-user.serialize';
+import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { AuthProviderType } from '../../models/auth-provider.enum';
 import { UserPayload } from '../../models/candidate-user-payload';
 import { GoogleUser } from '../../models/google-user';
-import { Role } from '../../models/role.enum';
-import { CandidateUserService } from '../cadidate-user/cadidate-user.service';
+import { Role } from '../../models/roles.enum';
+import { CandidateUserService } from '../candidate-user/candidate-user.service';
 
 @Injectable()
 export class AuthService {

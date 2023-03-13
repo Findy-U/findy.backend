@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { IsEqualTo } from '../../../common/decorators/password-confirm.decorator';
 
-export class CreateCadidateUserDto {
+export class CreateCandidateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
@@ -26,7 +26,7 @@ export class CreateCadidateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsEqualTo<CreateCadidateUserDto>('password')
+  @IsEqualTo<CreateCandidateUserDto>('password')
   confirmPassword?: string;
 
   role?: string;

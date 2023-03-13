@@ -3,7 +3,7 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../../models/role.enum';
+import { Role } from '../../models/roles.enum';
 import { AuthService } from './auth.service';
 
 @HasRoles(Role.Candidate)

@@ -5,9 +5,9 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
-import { CadidateUserModule } from '../cadidate-user/cadidate-user.module';
-import { CandidateUserService } from '../cadidate-user/cadidate-user.service';
-import { CandidateUserRepository } from '../cadidate-user/repositories/candidate-user.repository';
+import { CandidateUserModule } from '../candidate-user/candidate-user.module';
+import { CandidateUserService } from '../candidate-user/candidate-user.service';
+import { CandidateUserRepository } from '../candidate-user/repositories/candidate-user.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
@@ -27,7 +27,7 @@ import { TesteController } from './teste.controller';
       }),
       inject: [ConfigService],
     }),
-    CadidateUserModule,
+    CandidateUserModule,
   ],
   controllers: [AuthController, TesteController],
   providers: [
