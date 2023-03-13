@@ -1,6 +1,8 @@
 export interface AppConfig {
   port: number;
-
+  mailHost: string;
+  mailUser: string;
+  mailPassword: string;
   auth: {
     jwt: {
       secret: string;

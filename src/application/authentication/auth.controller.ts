@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Post,
   Req,
   Res,
@@ -43,5 +45,20 @@ export class AuthController {
     });
 
     return res.redirect('http://localhost:3000/google-auth-success');
+  }
+
+  @Post('send-recover-email')
+  async sendRecoverPasswordEmail(
+    @Body('email') email: string,
+  ): Promise<{ message: string }> {
+    try {
+      await this.authService.sendRecoverPasswordEmail(email);
+      return {
+        message:
+          'An email has been sent with instructions for resetting your password.',
+      };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }

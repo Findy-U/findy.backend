@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
+import { MailService } from '../../mails/mail.service';
 import { AuthProviderType } from '../../models/auth-provider.enum';
 import { UserPayload } from '../../models/candidate-user-payload';
 import { GoogleUser } from '../../models/google-user';
 import { Role } from '../../models/roles.enum';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
-
 @Injectable()
 export class AuthService {
   constructor(
     private readonly cadidateUserService: CandidateUserService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async login(user: CandidateUserInterface) {
@@ -65,5 +68,17 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  async sendRecoverPasswordEmail(email: string): Promise<void> {
+    const user = await this.cadidateUserService.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundError('There is no user registered with this email');
+    }
+
+    const token = randomBytes(32).toString('hex');
+
+    await this.mailService.sendUserConfirmation(user, token);
   }
 }

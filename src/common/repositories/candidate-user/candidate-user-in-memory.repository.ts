@@ -27,6 +27,15 @@ export class CandidateUserInMemoryRepository
       provider: 'google',
       providerId: '109937089733594757055',
     },
+    {
+      id: 3,
+      name: 'Emerson Moreira',
+      email: 'eemr3@yahoo.com.br',
+      password: null,
+      role: 'candidate',
+      provider: 'findy',
+      providerId: null,
+    },
   ];
 
   async create(user: CreateCandidateUserDto): Promise<CandidateUser> {
