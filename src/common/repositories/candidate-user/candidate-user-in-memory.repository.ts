@@ -6,8 +6,7 @@ import { CandidateUserRepository } from '../../../application/cadidate-user/repo
 
 @Injectable()
 export class CandidateUserInMemoryRepository
-  implements CandidateUserRepository
-{
+  implements CandidateUserRepository {
   private candidate: CadidateUser[] = [
     {
       id: 1,
