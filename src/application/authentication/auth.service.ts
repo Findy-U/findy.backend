@@ -79,6 +79,6 @@ export class AuthService {
 
     const token = randomBytes(32).toString('hex');
 
-    await this.mailService.sendUserConfirmation(user, token);
+    await this.mailService.sendPasswordRecover(user, token);
   }
 }

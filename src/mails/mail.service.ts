@@ -6,7 +6,7 @@ import { CandidateUser } from '../application/candidate-user/entities/cadidate-u
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendUserConfirmation(user: CandidateUser, token: string) {
+  async sendPasswordRecover(user: CandidateUser, token: string) {
     const url = `http://localhost:3000/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
