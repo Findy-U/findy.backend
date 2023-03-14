@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CandidateUserController } from './candidate-user.controller';
 import { CandidateUserService } from './candidate-user.service';
 
-describe('CadidateUserController', () => {
+
+describe('CandidateUserController', () => {
   let controller: CandidateUserController;
 
   beforeEach(async () => {
