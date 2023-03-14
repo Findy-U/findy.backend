@@ -10,6 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { SESSION_COOKIE_KEY } from '../../common/constants/constants';
 import { GoogleOAuthGuard } from '../../common/guards/google-oauth.guard';
@@ -19,7 +20,10 @@ import { AuthService } from './auth.service';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -44,10 +48,12 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return res.redirect('http://localhost:3000/google-auth-success');
+    return res.redirect(
+      this.configService.get<string>('urlRedirectAuthGoogle'),
+    );
   }
 
-  @Post('send-recover-email')
+  @Post('send-recover-password')
   async sendRecoverPasswordEmail(
     @Body('email') email: string,
   ): Promise<{ message: string }> {

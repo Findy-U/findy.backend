@@ -1,21 +1,27 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { CandidateUser } from '../application/candidate-user/entities/cadidate-user.entity';
+import { ConfigService } from '@nestjs/config';
+import { CandidateUser } from '../application/candidate-user/entities/candidate-user.entity';
 
 @Injectable()
 export class MailService {
-  constructor(private mailerService: MailerService) {}
+  constructor(
+    private mailerService: MailerService,
+    private readonly configService: ConfigService,
+  ) {}
 
-  async sendPasswordRecover(user: CandidateUser, token: string) {
-    const url = `http://localhost:3000/reset-password?token=${token}`;
+  async sendPasswordRecover(candidate: CandidateUser, token: string) {
+    const url = `${this.configService.get<string>('urlRecoverPassword')}?id=${
+      candidate.id
+    }&token=${token}`;
 
     await this.mailerService.sendMail({
-      to: user.email,
+      to: candidate.email,
       from: '"Support Findy Team" noreply@application.com',
       subject: 'Recuperação de senha',
       template: './recoverPassword',
       context: {
-        name: user.name,
+        name: candidate.name,
         url,
       },
     });

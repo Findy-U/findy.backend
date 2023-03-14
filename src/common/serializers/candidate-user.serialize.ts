@@ -6,9 +6,18 @@ export class CandidateUserSerialize {
       name: candidate.name,
       email: candidate.email,
       password: candidate.password,
-      role: candidate.role,
+      roles: candidate.roles,
       provider: candidate.provider,
       providerId: candidate.providerId,
+    };
+  }
+
+  dbToResponseCreate(candidate: any) {
+    return {
+      id: candidate.id,
+      name: candidate.name,
+      email: candidate.email,
+      roles: candidate.roles,
     };
   }
 
@@ -17,7 +26,11 @@ export class CandidateUserSerialize {
       id: candidate.id,
       name: candidate.name,
       email: candidate.email,
-      role: candidate.role,
+      roles: candidate.roles,
+      provider: candidate.provider,
+      providerId: candidate.providerId,
+      createdAt: candidate.createdAt,
+      updatedAt: candidate.updatedAt,
     };
   }
 }

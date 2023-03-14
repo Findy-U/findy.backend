@@ -14,7 +14,6 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
-import { TesteController } from './teste.controller';
 
 @Module({
   imports: [
@@ -30,7 +29,7 @@ import { TesteController } from './teste.controller';
     }),
     CandidateUserModule,
   ],
-  controllers: [AuthController, TesteController],
+  controllers: [AuthController],
   providers: [
     AuthService,
     CandidateUserService,

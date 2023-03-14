@@ -16,6 +16,7 @@ import { CandidateUserService } from '../candidate-user/candidate-user.service';
 export class AuthService {
   constructor(
     private readonly cadidateUserService: CandidateUserService,
+    private readonly candidateUserSerialize: CandidateUserSerialize,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
   ) {}
@@ -25,7 +26,7 @@ export class AuthService {
       sub: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      roles: user.roles,
     };
 
     return {
@@ -41,7 +42,7 @@ export class AuthService {
         candidate.password,
       );
       if (isPasswordValid) {
-        return new CandidateUserSerialize().requestToDb(candidate);
+        return this.candidateUserSerialize.requestToDb(candidate);
       }
     }
 
@@ -51,34 +52,36 @@ export class AuthService {
   }
 
   async validateGoogleAuth(googleUser: GoogleUser) {
-    const user = await this.cadidateUserService.findByEmail(googleUser.email);
-    if (!user) {
-      const newUser = await this.cadidateUserService.create({
+    const candidate = await this.cadidateUserService.findByEmail(
+      googleUser.email,
+    );
+    if (!candidate) {
+      const newCandidate = await this.cadidateUserService.create({
         name: googleUser.displayName,
         email: googleUser.email,
-        role: Role.Candidate,
+        roles: Role.Candidate,
         provider: AuthProviderType.google,
         providerId: googleUser.id,
       });
-      return newUser;
+      return newCandidate;
     }
 
-    if (user) {
-      return user;
+    if (candidate) {
+      return candidate;
     }
 
     return null;
   }
 
   async sendRecoverPasswordEmail(email: string): Promise<void> {
-    const user = await this.cadidateUserService.findByEmail(email);
+    const candidate = await this.cadidateUserService.findByEmail(email);
 
-    if (!user) {
+    if (!candidate) {
       throw new NotFoundError('There is no user registered with this email');
     }
 
     const token = randomBytes(32).toString('hex');
 
-    await this.mailService.sendPasswordRecover(user, token);
+    await this.mailService.sendPasswordRecover(candidate, token);
   }
 }

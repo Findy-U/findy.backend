@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
-import { CandidateUser } from '../../../application/candidate-user/entities/cadidate-user.entity';
+import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CandidateUserInMemoryRepository
       name: 'John Doe',
       email: 'john-doe@test.com',
       password: '$2b$10$raAwBs3zgyoQNOkEy9fWvuuTNW/7XqQAw2OZZPzQFTHPaAbiU52WG', //e@N4525&%abX
-      role: 'project',
+      roles: 'project',
       provider: null,
       providerId: null,
     },
@@ -23,7 +23,7 @@ export class CandidateUserInMemoryRepository
       name: 'Emerson Moreira',
       email: 'eemr033@gmail.com',
       password: null,
-      role: 'candidate',
+      roles: 'candidate',
       provider: 'google',
       providerId: '109937089733594757055',
     },
@@ -32,7 +32,7 @@ export class CandidateUserInMemoryRepository
       name: 'Emerson Moreira',
       email: 'eemr3@yahoo.com.br',
       password: null,
-      role: 'candidate',
+      roles: 'candidate',
       provider: 'findy',
       providerId: null,
     },
@@ -46,7 +46,7 @@ export class CandidateUserInMemoryRepository
       name: user.name,
       email: user.email,
       password: user.password,
-      role: user.role,
+      roles: user.roles,
       provider: user.provider,
       providerId: user.providerId,
     });
@@ -69,7 +69,7 @@ export class CandidateUserInMemoryRepository
     return new Promise((resolve) => resolve(this.candidate));
   }
 
-  update(id: number, cadidate: UpdateCandidateUserDto): Promise<void> {
+  update(id: number, cadidate: UpdateCandidateUserDto): Promise<CandidateUser> {
     throw new Error('Method not implemented.');
   }
 }

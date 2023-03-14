@@ -1,18 +1,17 @@
 import {
+  Body,
+  ConflictException,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
-  ConflictException,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 
-@Controller('cadidate-user')
+@Controller('candidate-user')
 export class CandidateUserController {
   constructor(private readonly candidateUserService: CandidateUserService) {}
 
@@ -41,10 +40,5 @@ export class CandidateUserController {
     @Body() updateCandidateUserDto: UpdateCandidateUserDto,
   ) {
     return this.candidateUserService.update(+id, updateCandidateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.candidateUserService.remove(+id);
   }
 }

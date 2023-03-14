@@ -29,7 +29,7 @@ export class CreateCandidateUserDto {
   @IsEqualTo<CreateCandidateUserDto>('password')
   confirmPassword?: string;
 
-  role?: string;
+  roles?: string;
 
   provider?: string;
 

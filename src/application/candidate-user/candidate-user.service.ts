@@ -7,48 +7,63 @@ import { Role } from '../../models/roles.enum';
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 
 @Injectable()
 export class CandidateUserService {
-  constructor(private readonly candidateRepository: CandidateUserRepository) {}
+  constructor(
+    private readonly candidateRepository: CandidateUserRepository,
+    private readonly candidateUserSerialize: CandidateUserSerialize,
+  ) {}
 
-  async create(createUser: CreateCandidateUserDto) {
-    const cadidateExists = await this.findByEmail(createUser.email);
+  async create(createCandidate: CreateCandidateUserDto) {
+    const cadidateExists = await this.findByEmail(createCandidate.email);
 
-    if (cadidateExists && !createUser.provider)
+    if (cadidateExists && !createCandidate.provider)
       throw new Error('Candidate user already exists');
 
     let pwdHashed = '';
-    if (createUser.password) {
-      pwdHashed = await bcrypt.hash(createUser.password, SALT_BCRYPT);
+    if (createCandidate.password) {
+      pwdHashed = await bcrypt.hash(createCandidate.password, SALT_BCRYPT);
     }
-    const data = new CandidateUserSerialize().requestToDb({
-      ...createUser,
-      role: Role.Candidate,
-      provider: createUser.provider
-        ? createUser.provider
-        : AuthProviderType.findy,
-      providerId: createUser.providerId ? createUser.providerId : null,
+    const data = this.candidateUserSerialize.requestToDb({
+      ...createCandidate,
       password: pwdHashed,
+      roles: Role.Candidate,
+      provider: createCandidate.provider
+        ? createCandidate.provider
+        : AuthProviderType.findy,
+      providerId: createCandidate.providerId
+        ? createCandidate.providerId
+        : null,
     });
-
-    return await this.candidateRepository.create(data);
+    const newCandidate = await this.candidateRepository.create(data);
+    return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
 
   async findAll() {
-    return await this.candidateRepository.findAll();
+    const candidates = await this.candidateRepository.findAll();
+    return candidates.map((candidate) =>
+      this.candidateUserSerialize.dbToResponse(candidate),
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cadidateUser`;
+  async findOne(id: number) {
+    const candidate = await this.candidateRepository.findById(id);
+    if (!candidate) {
+      throw new NotFoundError('Candidate not found');
+    }
+    return this.candidateUserSerialize.dbToResponse(candidate);
   }
 
   async findByEmail(email: string) {
     return await this.candidateRepository.findByEmail(email);
   }
 
-  update(id: number, updateCandidateUserDto: UpdateCandidateUserDto) {
-    return `This action updates a #${id} cadidateUser`;
+  async update(id: number, updateCandidateUserDto: UpdateCandidateUserDto) {
+    await this.findOne(id);
+
+    await this.candidateRepository.update(id, updateCandidateUserDto);
   }
 
   remove(id: number) {

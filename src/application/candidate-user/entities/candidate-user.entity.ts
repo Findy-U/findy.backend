@@ -3,7 +3,7 @@ export class CandidateUser {
   name: string;
   email: string;
   password: string;
-  role?: string;
+  roles?: string;
   provider?: string;
   providerId?: string;
 }

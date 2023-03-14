@@ -5,6 +5,8 @@ export default (): AppConfig => ({
   mailHost: process.env.MAIL_HOST,
   mailUser: process.env.MAIL_USER,
   mailPassword: process.env.MAIL_PASSWORD,
+  urlRedirectAuthGoogle: process.env.URL_REDIRECT_AUTHGOOGLE,
+  urlRecoverPassword: process.env.URL_RECOVER_PASSWORD,
   auth: {
     jwt: {
       secret: process.env.JWT_SECRET,
