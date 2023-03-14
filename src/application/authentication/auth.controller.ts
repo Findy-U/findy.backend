@@ -5,6 +5,8 @@ import {
   HttpCode,
   HttpStatus,
   NotFoundException,
+  Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -16,6 +18,7 @@ import { SESSION_COOKIE_KEY } from '../../common/constants/constants';
 import { GoogleOAuthGuard } from '../../common/guards/google-oauth.guard';
 import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { AuthRequest } from '../../models/auth-request';
+import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { AuthService } from './auth.service';
 
 @Controller()
@@ -62,6 +65,21 @@ export class AuthController {
       return {
         message:
           'An email has been sent with instructions for resetting your password.',
+      };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Patch('reset-password/:id')
+  async resetPassword(
+    @Param('id') id: number,
+    @Body() recoverPaswor: RecoverPasswordDto,
+  ) {
+    try {
+      await this.authService.resetPassword(+id, recoverPaswor);
+      return {
+        message: 'Successfully reset password',
       };
     } catch (error) {
       throw new NotFoundException(error.message);

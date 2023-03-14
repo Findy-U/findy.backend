@@ -6,4 +6,5 @@ export class CandidateUser {
   roles?: string;
   provider?: string;
   providerId?: string;
+  recoverToken?: string;
 }

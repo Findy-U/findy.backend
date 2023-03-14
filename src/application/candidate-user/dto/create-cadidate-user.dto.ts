@@ -34,4 +34,8 @@ export class CreateCandidateUserDto {
   provider?: string;
 
   providerId?: string;
+  recoverToken?: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }

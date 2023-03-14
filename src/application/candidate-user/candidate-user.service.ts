@@ -66,7 +66,17 @@ export class CandidateUserService {
     await this.candidateRepository.update(id, updateCandidateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cadidateUser`;
+  async findByIdAndToken(id: number, token: string) {
+    const candidate = await this.candidateRepository.findById(id);
+
+    if (!candidate) {
+      throw new Error('Candidate not found');
+    }
+
+    if (token !== candidate.recoverToken) {
+      throw new Error('Candidate not found');
+    }
+
+    return candidate;
   }
 }

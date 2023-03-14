@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
+import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
@@ -12,10 +13,11 @@ import { UserPayload } from '../../models/candidate-user-payload';
 import { GoogleUser } from '../../models/google-user';
 import { Role } from '../../models/roles.enum';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
+import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly cadidateUserService: CandidateUserService,
+    private readonly candidateUserService: CandidateUserService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
@@ -35,7 +37,7 @@ export class AuthService {
   }
 
   async validateLocalAuth(email: string, password: string) {
-    const candidate = await this.cadidateUserService.findByEmail(email);
+    const candidate = await this.candidateUserService.findByEmail(email);
     if (candidate) {
       const isPasswordValid = await bcrypt.compare(
         password,
@@ -52,11 +54,11 @@ export class AuthService {
   }
 
   async validateGoogleAuth(googleUser: GoogleUser) {
-    const candidate = await this.cadidateUserService.findByEmail(
+    const candidate = await this.candidateUserService.findByEmail(
       googleUser.email,
     );
     if (!candidate) {
-      const newCandidate = await this.cadidateUserService.create({
+      const newCandidate = await this.candidateUserService.create({
         name: googleUser.displayName,
         email: googleUser.email,
         roles: Role.Candidate,
@@ -74,7 +76,7 @@ export class AuthService {
   }
 
   async sendRecoverPasswordEmail(email: string): Promise<void> {
-    const candidate = await this.cadidateUserService.findByEmail(email);
+    const candidate = await this.candidateUserService.findByEmail(email);
 
     if (!candidate) {
       throw new NotFoundError('There is no user registered with this email');
@@ -83,5 +85,20 @@ export class AuthService {
     const token = randomBytes(32).toString('hex');
 
     await this.mailService.sendPasswordRecover(candidate, token);
+  }
+
+  async resetPassword(id: number, recoverPassword: RecoverPasswordDto) {
+    await this.candidateUserService.findByIdAndToken(
+      id,
+      recoverPassword.recoverToken,
+    );
+
+    const pwdHashed = await bcrypt.hash(recoverPassword.password, SALT_BCRYPT);
+
+    await this.candidateUserService.update(id, {
+      password: pwdHashed,
+      recoverToken: null,
+      updatedAt: new Date(),
+    });
   }
 }

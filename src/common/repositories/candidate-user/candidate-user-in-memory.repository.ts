@@ -17,6 +17,7 @@ export class CandidateUserInMemoryRepository
       roles: 'project',
       provider: null,
       providerId: null,
+      recoverToken: null,
     },
     {
       id: 2,
@@ -26,6 +27,7 @@ export class CandidateUserInMemoryRepository
       roles: 'candidate',
       provider: 'google',
       providerId: '109937089733594757055',
+      recoverToken: null,
     },
     {
       id: 3,
@@ -35,6 +37,7 @@ export class CandidateUserInMemoryRepository
       roles: 'candidate',
       provider: 'findy',
       providerId: null,
+      recoverToken: null,
     },
   ];
 
