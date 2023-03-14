@@ -3,6 +3,7 @@ import {
   ConflictException,
   Controller,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -30,15 +31,19 @@ export class CandidateUserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.candidateUserService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.candidateUserService.findOne(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCandidateUserDto: UpdateCandidateUserDto,
   ) {
-    return this.candidateUserService.update(+id, updateCandidateUserDto);
+    return await this.candidateUserService.update(+id, updateCandidateUserDto);
   }
 }

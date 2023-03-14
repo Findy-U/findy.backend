@@ -5,6 +5,8 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
+import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
+import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { MailService } from '../../mails/mail.service';
 import { CandidateUserModule } from '../candidate-user/candidate-user.module';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
@@ -33,13 +35,14 @@ import { LocalStrategy } from './strategies/local.strategy.ts';
   providers: [
     AuthService,
     CandidateUserService,
+    CandidateUserSerialize,
     LocalStrategy,
     JwtStrategy,
     GoogleStrategy,
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserInMemoryRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })

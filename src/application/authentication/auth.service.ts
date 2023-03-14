@@ -84,6 +84,10 @@ export class AuthService {
 
     const token = randomBytes(32).toString('hex');
 
+    await this.candidateUserService.update(candidate.id, {
+      recoverToken: token,
+    });
+
     await this.mailService.sendPasswordRecover(candidate, token);
   }
 
