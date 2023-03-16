@@ -34,7 +34,7 @@ import {
   UpdateResponse,
 } from './swagger/success.response';
 
-@Controller('candidate-user')
+@Controller('candidate-users')
 @ApiTags('candidate_users')
 export class CandidateUserController {
   constructor(private readonly candidateUserService: CandidateUserService) {}
