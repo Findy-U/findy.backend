@@ -1,20 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
+import { SALT_BCRYPT } from '../../common/constants/constants';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
-import { CandidateUserSerialize } from '../../common/serializers/cadidate-user.serialize';
+import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
+import { MailService } from '../../mails/mail.service';
 import { AuthProviderType } from '../../models/auth-provider.enum';
 import { UserPayload } from '../../models/candidate-user-payload';
 import { GoogleUser } from '../../models/google-user';
-import { Role } from '../../models/role.enum';
-import { CandidateUserService } from '../cadidate-user/cadidate-user.service';
-
+import { Role } from '../../models/roles.enum';
+import { CandidateUserService } from '../candidate-user/candidate-user.service';
+import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly cadidateUserService: CandidateUserService,
+    private readonly candidateUserService: CandidateUserService,
+    private readonly candidateUserSerialize: CandidateUserSerialize,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async login(user: CandidateUserInterface) {
@@ -22,7 +28,7 @@ export class AuthService {
       sub: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      roles: user.roles,
     };
 
     return {
@@ -31,14 +37,14 @@ export class AuthService {
   }
 
   async validateLocalAuth(email: string, password: string) {
-    const candidate = await this.cadidateUserService.findByEmail(email);
+    const candidate = await this.candidateUserService.findByEmail(email);
     if (candidate) {
       const isPasswordValid = await bcrypt.compare(
         password,
         candidate.password,
       );
       if (isPasswordValid) {
-        return new CandidateUserSerialize().requestToDb(candidate);
+        return this.candidateUserSerialize.requestToDb(candidate);
       }
     }
 
@@ -48,22 +54,55 @@ export class AuthService {
   }
 
   async validateGoogleAuth(googleUser: GoogleUser) {
-    const user = await this.cadidateUserService.findByEmail(googleUser.email);
-    if (!user) {
-      const newUser = await this.cadidateUserService.create({
+    const candidate = await this.candidateUserService.findByEmail(
+      googleUser.email,
+    );
+    if (!candidate) {
+      const newCandidate = await this.candidateUserService.create({
         name: googleUser.displayName,
         email: googleUser.email,
-        role: Role.Candidate,
+        roles: Role.Candidate,
         provider: AuthProviderType.google,
         providerId: googleUser.id,
       });
-      return newUser;
+      return newCandidate;
     }
 
-    if (user) {
-      return user;
+    if (candidate) {
+      return candidate;
     }
 
     return null;
+  }
+
+  async sendRecoverPasswordEmail(email: string): Promise<void> {
+    const candidate = await this.candidateUserService.findByEmail(email);
+
+    if (!candidate) {
+      throw new NotFoundError('There is no user registered with this email');
+    }
+
+    const token = randomBytes(32).toString('hex');
+
+    await this.candidateUserService.update(candidate.id, {
+      recoverToken: token,
+    });
+
+    await this.mailService.sendPasswordRecover(candidate, token);
+  }
+
+  async resetPassword(id: number, recoverPassword: RecoverPasswordDto) {
+    await this.candidateUserService.findByIdAndToken(
+      id,
+      recoverPassword.recoverToken,
+    );
+
+    const pwdHashed = await bcrypt.hash(recoverPassword.password, SALT_BCRYPT);
+
+    await this.candidateUserService.update(id, {
+      password: pwdHashed,
+      recoverToken: null,
+      updatedAt: new Date(),
+    });
   }
 }

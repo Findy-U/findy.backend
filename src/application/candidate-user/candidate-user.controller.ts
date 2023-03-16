@@ -1,43 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { EmailConfirmationService } from 'src/mails/email-confirmation/email-confirmation.service';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CandidateUserService } from './candidate-user.service';
+import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 
 @Controller('candidate-user')
 export class CandidateUserController {
-  constructor(private readonly candidateUserService: CandidateUserService, private emailConfirmationService: EmailConfirmationService) { }
+  constructor(private readonly candidateUserService: CandidateUserService) {}
 
   @Post()
-  create() {
-    return this.candidateUserService.create();
-  }
-
-  @Get()
-  findAll() {
-    return this.candidateUserService.findAll();
-  }
-
-  @Get('confirm')
-  confirmRegistration(@Query('token') token: string) {
+  async create(@Body() createCandidateUserDto: CreateCandidateUserDto) {
     try {
-      return this.emailConfirmationService.confirmRegistration(token);
+      return await this.candidateUserService.create(createCandidateUserDto);
     } catch (error) {
-      console.log(error);
+      throw new ConflictException(error.message);
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.candidateUserService.findOne(+id);
+  @Get()
+  async findAll() {
+    return await this.candidateUserService.findAll();
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.candidateUserService.findOne(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
 
   @Patch(':id')
-  update(@Param('id') id: string) {
-    return this.candidateUserService.update(+id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.candidateUserService.remove(+id);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCandidateUserDto: UpdateCandidateUserDto,
+  ) {
+    return await this.candidateUserService.update(+id, updateCandidateUserDto);
   }
 }

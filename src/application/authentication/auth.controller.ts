@@ -1,23 +1,32 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
+  Param,
+  Patch,
   Post,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { SESSION_COOKIE_KEY } from '../../common/constants/constants';
 import { GoogleOAuthGuard } from '../../common/guards/google-oauth.guard';
 import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { AuthRequest } from '../../models/auth-request';
+import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { AuthService } from './auth.service';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -42,6 +51,38 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return res.redirect('http://localhost:3000/google-auth-success');
+    return res.redirect(
+      this.configService.get<string>('urlRedirectAuthGoogle'),
+    );
+  }
+
+  @Post('send-recover-password')
+  async sendRecoverPasswordEmail(
+    @Body('email') email: string,
+  ): Promise<{ message: string }> {
+    try {
+      await this.authService.sendRecoverPasswordEmail(email);
+      return {
+        message:
+          'An email has been sent with instructions for resetting your password.',
+      };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Patch('reset-password/:id')
+  async resetPassword(
+    @Param('id') id: number,
+    @Body() recoverPaswor: RecoverPasswordDto,
+  ) {
+    try {
+      await this.authService.resetPassword(+id, recoverPaswor);
+      return {
+        message: 'Successfully reset password',
+      };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }

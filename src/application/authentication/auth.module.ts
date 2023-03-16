@@ -5,16 +5,17 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
-import { CadidateUserModule } from '../cadidate-user/cadidate-user.module';
-import { CandidateUserService } from '../cadidate-user/cadidate-user.service';
-import { CandidateUserRepository } from '../cadidate-user/repositories/candidate-user.repository';
+import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
+import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
+import { MailService } from '../../mails/mail.service';
+import { CandidateUserModule } from '../candidate-user/candidate-user.module';
+import { CandidateUserService } from '../candidate-user/candidate-user.service';
+import { CandidateUserRepository } from '../candidate-user/repositories/candidate-user.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
-//import { TesteController } from './teste.controller';
-
 @Module({
   imports: [
     PassportModule,
@@ -27,18 +28,20 @@ import { LocalStrategy } from './strategies/local.strategy.ts';
       }),
       inject: [ConfigService],
     }),
-    CadidateUserModule,
+    CandidateUserModule,
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
     CandidateUserService,
+    CandidateUserSerialize,
     LocalStrategy,
     JwtStrategy,
     GoogleStrategy,
+    MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserInMemoryRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })

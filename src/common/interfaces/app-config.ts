@@ -1,6 +1,10 @@
 export interface AppConfig {
   port: number;
-
+  mailHost: string;
+  mailUser: string;
+  mailPassword: string;
+  urlRedirectAuthGoogle: string;
+  urlRecoverPassword: string;
   auth: {
     jwt: {
       secret: string;

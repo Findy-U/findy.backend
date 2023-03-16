@@ -3,7 +3,7 @@ export interface CandidateUserInterface {
   name: string;
   email: string;
   password?: string;
-  role?: string;
+  roles?: string;
   provider?: string;
   providerId?: string;
 }
