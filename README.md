@@ -25,6 +25,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Documentação da API (Swagger)
+
+```bash
+# development: Para visualizar a documentação da API em desenvolvimento utilize:
+
+$ http://localhost:3001/api
+```
+
 ## Test
 
 ```bash
