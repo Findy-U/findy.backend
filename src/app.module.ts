@@ -12,9 +12,9 @@ import { MailModule } from './mails/mail.module';
     CandidateUserModule,
     MailModule,
     PrismaModule,
-    CandidateUserModule
+    CandidateUserModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}
