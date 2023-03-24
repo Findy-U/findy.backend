@@ -2,6 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { EmailConfirmationInMemory } from 'src/common/repositories/candidate-user/email-confirmation-in-memory.repository';
 import { MailService } from './mail.service';
 
 @Module({
@@ -30,7 +31,7 @@ import { MailService } from './mail.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [MailService],
+  providers: [MailService, EmailConfirmationInMemory],
   exports: [MailService],
 })
-export class MailModule {}
+export class MailModule { }
