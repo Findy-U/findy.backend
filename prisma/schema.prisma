@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,16 +8,66 @@ datasource db {
 }
 
 model CandidateUser {
-  id           Int       @id @default(autoincrement())
-  name         String
-  email        String    @unique
-  password     String?
-  roles        String?
-  provider     String?
-  providerId   String?   @map("provider_id")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime? @map("updated_at")
-  recoverToken String?   @map("recover_token")
+  id               Int                @id @default(autoincrement())
+  name             String
+  email            String             @unique
+  password         String?
+  roles            String?
+  provider         String?
+  providerId       String?            @map("provider_id")
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime?          @map("updated_at")
+  recoverToken     String?            @map("recover_token")
+  CandidateProject CandidateProject[]
 
   @@map("candidate_users")
+}
+
+model CandidateProject {
+  id              Int            @id @default(autoincrement())
+  name            String         @unique
+  projectScope    String         @map("project_scope")
+  phone           String
+  candidateUserId Int?           @map("candidate_user_id")
+  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
+  professional    ProjectRoles[]
+  language        ProjectStack[]
+
+  @@map("candidate_projects")
+}
+
+model ProjectStack {
+  id               Int               @id @default(autoincrement())
+  projectId        Int?              @map("project_id")
+  stackId          Int?
+  Stack            Stack?            @relation(fields: [stackId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+
+  @@map("project_stack")
+}
+
+model ProjectRoles {
+  id               Int               @id @default(autoincrement())
+  projectId        Int?              @map("project_id")
+  rolesId          Int?
+  Roles            Roles?            @relation(fields: [rolesId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+
+  @@map("project_roles")
+}
+
+model Stack {
+  id    Int            @id @default(autoincrement())
+  title String
+  tools ProjectStack[]
+
+  @@map("stacks")
+}
+
+model Roles {
+  id     Int            @id @default(autoincrement())
+  title  String
+  pRoles ProjectRoles[]
+
+  @@map("roles")
 }
