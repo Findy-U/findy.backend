@@ -16,7 +16,7 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
   async findAll(): Promise<CandidateUser[]> {
     return await this.prisma.candidateUser.findMany();
   }
-  async findById(id: number): Promise<CandidateUser> {
+  async findById(id: number) {
     return await this.prisma.candidateUser.findUnique({ where: { id } });
   }
 
