@@ -12,42 +12,49 @@ export class CandidateProjectSqliteRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(project: CreateCandidateProjectDto): Promise<CandidateProject> {
+  async create(
+    project: CreateCandidateProjectDto,
+    user,
+  ): Promise<CandidateProject> {
+    console.log(project);
+
     try {
       const newProject = await this.prisma.candidateProject.create({
         data: {
           name: project.name,
           phone: project.phone,
           projectScope: project.projectScope,
-          candidateUserId: project.responsible,
+          candidateUserId: user.id,
         },
       });
 
-      await Promise.all(
-        project.language.map(async (item: any) => {
-          await this.prisma.projectStack.create({
-            data: {
-              projectId: newProject.id,
-              stackId: item,
-            },
-          });
-        }),
-      );
+      await this.prisma.projectStack.create({
+        data: {
+          stackId: 1,
+          projectId: 1,
+        },
+      });
+      // await Promise.all(
+      //   project.language.map(async (item: any) => {
+      //     await this.prisma.projectStack.create({
+      //       data: {
+      //         stackId: item,
+      //         projectId: newProject.id,
+      //       },
+      //     });
+      //   }),
+      // );
 
       await Promise.all(
         project.professional.map(async (item: any) => {
-          await this.prisma.projectRoles.create({
-            data: {
-              projectId: newProject.id,
-              rolesId: item,
-            },
-          });
+          console.log('g');
         }),
       );
 
       return newProject;
     } catch (error) {
-      throw new Error('Problema no servidor!');
+      console.error(error);
+      throw new Error('Internal server error');
     }
   }
 

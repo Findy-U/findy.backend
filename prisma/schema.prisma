@@ -29,7 +29,8 @@ model CandidateProject {
   projectScope    String         @map("project_scope")
   phone           String
   candidateUserId Int?           @map("candidate_user_id")
-  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
+  isActive        Boolean?       @default(false) @map("is_active")
+  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   professional    ProjectRoles[]
   language        ProjectStack[]
 
@@ -40,8 +41,8 @@ model ProjectStack {
   id               Int               @id @default(autoincrement())
   projectId        Int?              @map("project_id")
   stackId          Int?
-  Stack            Stack?            @relation(fields: [stackId], references: [id])
-  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Stack            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("project_stack")
 }
@@ -50,8 +51,8 @@ model ProjectRoles {
   id               Int               @id @default(autoincrement())
   projectId        Int?              @map("project_id")
   rolesId          Int?
-  Roles            Roles?            @relation(fields: [rolesId], references: [id])
-  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Roles            Roles?            @relation(fields: [rolesId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("project_roles")
 }

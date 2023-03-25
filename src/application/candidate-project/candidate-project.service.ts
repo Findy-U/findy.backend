@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BadRequestError } from '../../common/exceptions/bad-request.error';
 import { ConflictError } from '../../common/exceptions/conflict-error';
 import { CreateCandidateProjectDto } from './dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
@@ -10,7 +11,7 @@ export class CandidateProjectService {
     private readonly candidateProjectRepository: CandidateProjectRepository,
   ) {}
 
-  async create(createProject: CreateCandidateProjectDto) {
+  async create(createProject: CreateCandidateProjectDto, user) {
     const projectExists = await this.candidateProjectRepository.findByName(
       createProject.name,
     );
@@ -18,7 +19,7 @@ export class CandidateProjectService {
     if (projectExists) {
       throw new ConflictError('Project name alread exists');
     }
-    return await this.candidateProjectRepository.create(createProject);
+    return await this.candidateProjectRepository.create(createProject, user);
   }
 
   findAll() {
@@ -26,6 +27,9 @@ export class CandidateProjectService {
   }
 
   findOne(id: number) {
+    if (!id) {
+      throw new BadRequestError('The ID was not informed, please inform!');
+    }
     return this.candidateProjectRepository.findById(id);
   }
 
