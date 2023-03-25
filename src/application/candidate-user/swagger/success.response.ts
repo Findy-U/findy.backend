@@ -71,3 +71,40 @@ export class UnauthorizedExceptionError {
   @ApiProperty({ example: 'Unauthorized' })
   error: string;
 }
+
+// Informações que vão nos decorators do Swagger no controller
+export const ApiCreatedResponseCreate = {
+  description: 'Endpoint responsável por criar novo usuário candidato.',
+  type: CreatesuccessResponse,
+};
+
+export const ApiConflictResponseCreate = {
+  description: 'Username already exists',
+  type: ConflictExceptionError,
+};
+
+export const ApiResponseFindAll = {
+  status: 200,
+  description:
+    'Endpoint que retorna todos os usuários candidatos. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseFindById = {
+  status: 200,
+  description:
+    'Endpoint que retorna um usuário candidato conforme id informado. Precisa estar autenticado com o token JWT',
+};
+
+export const ApirParamFindById = {
+  name: 'id',
+  required: true,
+  description: 'Um número inteiro para o id do usuário candidato',
+  schema: { oneOf: [{ type: 'integer' }] },
+  example: 'candidate-users/1',
+};
+
+export const ApiResponseUpdate = {
+  status: 200,
+  description:
+    'Endpoint usando para editar o perfil do usuário candidato. Precisa estar autenticado com o token JWT',
+};
