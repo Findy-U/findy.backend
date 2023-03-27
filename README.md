@@ -15,7 +15,7 @@ $ npm install
 ```
 
 ```bash
-$ npx prisma seed
+$ npx prisma db seed
 ```
 
 ## Running the app
