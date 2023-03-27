@@ -37,24 +37,16 @@ export class CandidateProjectService {
     id: number,
     updateProjectDto: UpdateCandidateProjectDto,
   ) {
-    return 'wait this.prisma.candidateProject.update';
-  }
-
-  async updateLanguageAndTools(
-    id: number,
-    updateProjectDto: UpdateCandidateProjectDto,
-  ) {
-    return 'olá';
-  }
-
-  async updateProfessional(
-    id: number,
-    updateProjectDto: UpdateCandidateProjectDto,
-  ) {
-    return 'olá';
+    if (!id) {
+      throw new BadRequestError('The ID was not informed, please inform!');
+    }
+    await this.candidateProjectRepository.update(id, updateProjectDto);
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} cadidateProject`;
+    if (!id) {
+      throw new BadRequestError('The ID was not informed, please inform!');
+    }
+    return this.candidateProjectRepository.delete(id);
   }
 }

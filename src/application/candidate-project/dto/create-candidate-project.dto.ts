@@ -38,4 +38,8 @@ export class CreateCandidateProjectDto {
   professional?: number[];
 
   isActive?: boolean;
+
+  // update
+  projectStacks?: any;
+  projectRoles?: any;
 }

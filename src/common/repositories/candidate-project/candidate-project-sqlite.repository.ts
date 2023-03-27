@@ -5,6 +5,7 @@ import { UpdateCandidateProjectDto } from '../../../application/candidate-projec
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
 import { CandidateProjectInterface } from '../../../models/candidate-project';
+import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()
 export class CandidateProjectSqliteRepository
@@ -14,7 +15,7 @@ export class CandidateProjectSqliteRepository
 
   async create(
     project: CreateCandidateProjectDto,
-    user,
+    user: any,
   ): Promise<CandidateProject> {
     try {
       const newProject = await this.prisma.candidateProject.create({
@@ -87,11 +88,54 @@ export class CandidateProjectSqliteRepository
     return await this.prisma.candidateProject.findUnique({ where: { name } });
   }
 
-  update(id: number, project: UpdateCandidateProjectDto) {
-    throw new Error('Method not implemented.');
+  async update(id: number, project: UpdateCandidateProjectDto): Promise<void> {
+    const projectExists = await this.findById(id);
+    if (!projectExists) {
+      throw new NotFoundError('Project not found');
+    }
+    try {
+      // await project.projectStacks?.map(async (item: any) => {
+      //   await this.prisma.projectStack.updateMany({
+      //     where: { id: item.id },
+      //     data: {
+      //       stackId: item.stackId,
+      //     },
+      //   });
+      // });
+
+      // await project.projectRoles?.map(async (item: any) => {
+      //   await this.prisma.projectRoles.updateMany({
+      //     where: { id: item.id },
+      //     data: {
+      //       rolesId: item.roleId,
+      //     },
+      //   });
+      // });
+
+      await this.prisma.candidateProject.update({
+        where: { id },
+        data: {
+          name: project.name,
+          phone: project.phone,
+          projectScope: project.projectScope,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      // throw new Error('Internal server error');
+    }
   }
 
-  delete(id: number): Promise<string> {
-    throw new Error('Method not implemented.');
+  async delete(id: number): Promise<{ message: string }> {
+    const projectExists = await this.findById(id);
+    if (!projectExists) {
+      throw new NotFoundError('Project not found');
+    }
+    try {
+      await this.prisma.candidateProject.delete({ where: { id } });
+      return { message: 'Successfully removed!' };
+    } catch (error) {
+      throw new Error('Não foi possível excluir');
+    }
   }
 }

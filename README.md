@@ -14,6 +14,10 @@ API responsável por prover os dados que serão consumidos pela aplicação forn
 $ npm install
 ```
 
+```bash
+$ npx prisma seed
+```
+
 ## Running the app
 
 ````bash

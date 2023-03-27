@@ -10,6 +10,9 @@ export abstract class CandidateProjectRepository {
   abstract findAll();
   abstract findById(id: number): Promise<CandidateProject>;
   abstract findByName(name: string): Promise<CandidateProject>;
-  abstract update(id: number, project: UpdateCandidateProjectDto);
-  abstract delete(id: number): Promise<string>;
+  abstract update(
+    id: number,
+    project: UpdateCandidateProjectDto,
+  ): Promise<void>;
+  abstract delete(id: number): Promise<{ message: string }>;
 }

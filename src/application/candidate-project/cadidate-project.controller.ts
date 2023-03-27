@@ -15,9 +15,11 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiExcludeEndpoint,
+  ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
   ApiTags,
@@ -34,10 +36,16 @@ import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
 import {
   ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
+  ApiResponseDelete,
   ApiResponseFindById,
+  ApiResponseUpdate,
   ApirParamFindById,
+  NotFoundExceptionError,
+  ProjectResponseDelete,
   ProjectResponseFind,
   UnauthorizedExceptionError,
+  UpdateDTOSwagger,
+  UpdateResponse,
 } from './swagger/success.response';
 @Controller('candidate-projects')
 @ApiTags('candidate_projects')
@@ -92,6 +100,10 @@ export class CandidateProjectController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
+  @ApiNotFoundResponse({
+    description: 'Erro quando não encontra o projeto no BD',
+    type: NotFoundExceptionError,
+  })
   @ApiParam(ApirParamFindById)
   findOne(@Param('id') id: string) {
     try {
@@ -101,39 +113,58 @@ export class CandidateProjectController {
     }
   }
 
-  @ApiExcludeEndpoint()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @HasRoles(Role.Admin, Role.Project)
+  @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Admin, Role.Project)
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCandidateProjectDto: UpdateCandidateProjectDto,
-  ) {
-    return this.candidateProjectService.updateProjectData(
-      +id,
-      updateCandidateProjectDto,
-    );
-  }
-
-  @ApiExcludeEndpoint()
-  @Patch('professional/:id')
-  async updateProfessional(
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  @ApiNotFoundResponse({
+    description: 'Erro quando não encontra o projeto no BD',
+    type: NotFoundExceptionError,
+  })
+  @ApiBody({
+    type: UpdateDTOSwagger,
+    description:
+      'O body do update pode receber todos os atributos ou parte dos atributos.',
+  })
+  @ApiParam(ApirParamFindById)
+  @ApiResponse({ ...ApiResponseUpdate, type: UpdateResponse })
+  async update(
     @Param('id') id: string,
     @Body() updateCandidateProjectDto: UpdateCandidateProjectDto,
   ) {
     try {
-      return this.candidateProjectService.updateProfessional(
+      await this.candidateProjectService.updateProjectData(
         +id,
         updateCandidateProjectDto,
       );
+      return { message: 'Update successfully' };
     } catch (error) {
       throw new NotFoundException(error.message);
     }
   }
 
-  @ApiExcludeEndpoint()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.candidateProjectService.remove(+id);
+  @ApiBearerAuth()
+  @ApiParam(ApirParamFindById)
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  @ApiNotFoundResponse({
+    description: 'Erro quando não encontra o projeto no BD',
+    type: NotFoundExceptionError,
+  })
+  @ApiResponse({ ...ApiResponseDelete, type: ProjectResponseDelete })
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.candidateProjectService.remove(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }
