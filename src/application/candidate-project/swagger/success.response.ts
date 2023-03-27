@@ -94,8 +94,12 @@ export class ProjectResponseFind {
   professional: number[];
 }
 
+export class ProjectResponseDelete {
+  @ApiProperty({ example: 'Successfully removed!' })
+  message: string;
+}
 export class UpdateDTOSwagger {
-  @ApiProperty({ example: 'Naruto Uzumaki' })
+  @ApiProperty({ example: 'Nome novo do Projeto' })
   name: string;
 }
 
@@ -115,7 +119,7 @@ export class ConflictExceptionError {
 export class NotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;
-  @ApiProperty({ example: 'Candidate user not found' })
+  @ApiProperty({ example: 'Project not found' })
   message: string;
   @ApiProperty({ example: 'Not Found' })
   error: string;
@@ -182,5 +186,11 @@ export const ApirParamFindById = {
 export const ApiResponseUpdate = {
   status: 200,
   description:
-    'Endpoint usando para editar o perfil do usuário candidato. Precisa estar autenticado com o token JWT',
+    'Endpoint usando para editar o perfil do projeto. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseDelete = {
+  status: 200,
+  description:
+    'Endpoint que remove um conforme id informado. Precisa estar autenticado com o token JWT',
 };

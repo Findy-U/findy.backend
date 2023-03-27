@@ -24,15 +24,18 @@ model CandidateUser {
 }
 
 model CandidateProject {
-  id              Int            @id @default(autoincrement())
-  name            String         @unique
-  projectScope    String         @map("project_scope")
+  id              Int       @id @default(autoincrement())
+  name            String    @unique
+  projectScope    String    @map("project_scope")
   phone           String
-  candidateUserId Int?           @map("candidate_user_id")
-  isActive        Boolean?       @default(false) @map("is_active")
-  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  professional    ProjectRoles[]
-  language        ProjectStack[]
+  candidateUserId Int?      @map("candidate_user_id")
+  isActive        Boolean?  @default(false) @map("is_active")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
+
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  professional  ProjectRoles[]
+  language      ProjectStack[]
 
   @@map("candidate_projects")
 }
