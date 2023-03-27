@@ -14,22 +14,31 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Role } from '../../models/roles.enum';
+import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import {
-  CreatesuccessResponse,
-  ConflictExceptionError,
+  ApiConflictResponseCreate,
+  ApiCreatedResponseCreate,
+  ApiResponseFindAll,
+  ApiResponseFindById,
+  ApiResponseUpdate,
+  ApirParamFindById,
+  NotFoundExceptionError,
   ResponseFind,
   UnauthorizedExceptionError,
-  NotFoundExceptionError,
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
@@ -40,14 +49,8 @@ export class CandidateUserController {
   constructor(private readonly candidateUserService: CandidateUserService) {}
 
   @Post()
-  @ApiCreatedResponse({
-    description: 'Endpoint responsável por criar novo usuário candidato.',
-    type: CreatesuccessResponse,
-  })
-  @ApiConflictResponse({
-    description: 'Username already exists',
-    type: ConflictExceptionError,
-  })
+  @ApiCreatedResponse(ApiCreatedResponseCreate)
+  @ApiConflictResponse(ApiConflictResponseCreate)
   async create(@Body() createCandidateUserDto: CreateCandidateUserDto) {
     try {
       return await this.candidateUserService.create(createCandidateUserDto);
@@ -57,18 +60,18 @@ export class CandidateUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Project, Role.Admin)
   @Get()
   @ApiBearerAuth()
-  @ApiResponse({
-    status: 200,
-    description:
-      'Endpoint que retorna todos os usuários candidatos. Precisa estar autenticado com o token JWT',
-    type: [ResponseFind],
-  })
+  @ApiResponse({ ...ApiResponseFindAll, type: [ResponseFind] })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
+  // @ApiForbiddenResponse({
+  //   description: 'Forbidden resource',
+  //   type: ForbidenExceptiomError,
+  // })
   async findAll() {
     return await this.candidateUserService.findAll();
   }
@@ -76,12 +79,7 @@ export class CandidateUserController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiBearerAuth()
-  @ApiResponse({
-    status: 200,
-    description:
-      'Endpoint que retorna um usuário candidato conforme id informado. Precisa estar autenticado com o token JWT',
-    type: ResponseFind,
-  })
+  @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o usuário no BD',
     type: NotFoundExceptionError,
@@ -90,13 +88,7 @@ export class CandidateUserController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
-  @ApiParam({
-    name: 'id',
-    required: true,
-    description: 'Um número inteiro para o id do usuário candidato',
-    schema: { oneOf: [{ type: 'integer' }] },
-    example: 'candidate-users/1',
-  })
+  @ApiParam(ApirParamFindById)
   async findOne(@Param('id') id: string) {
     try {
       return await this.candidateUserService.findOne(+id);
@@ -108,12 +100,7 @@ export class CandidateUserController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @ApiBearerAuth()
-  @ApiResponse({
-    status: 200,
-    description:
-      'Endpoint usando para editar o perfil do usuário candidato. Precisa estar autenticado com o token JWT',
-    type: UpdateResponse,
-  })
+  @ApiResponse({ ...ApiResponseUpdate, type: UpdateResponse })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o usuário no BD',
     type: NotFoundExceptionError,
@@ -122,13 +109,7 @@ export class CandidateUserController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
-  @ApiParam({
-    name: 'id',
-    required: true,
-    description: 'Um número inteiro para o id do usuário candidato',
-    schema: { oneOf: [{ type: 'integer' }] },
-    example: 'candidate-users/1',
-  })
+  @ApiParam(ApirParamFindById)
   @ApiBody({
     type: UpdateDTOSwagger,
     description:

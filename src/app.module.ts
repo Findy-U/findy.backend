@@ -5,6 +5,7 @@ import { CandidateUserModule } from './application/candidate-user/candidate-user
 import appConfig from './config/app/app.config';
 import { PrismaModule } from './config/database/prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
+import { CandidateProjectModule } from './application/candidate-project/candidate-project.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [appConfig] }),
@@ -12,9 +13,10 @@ import { MailModule } from './mails/mail.module';
     CandidateUserModule,
     MailModule,
     PrismaModule,
-    CandidateUserModule
+    CandidateUserModule,
+    CandidateProjectModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

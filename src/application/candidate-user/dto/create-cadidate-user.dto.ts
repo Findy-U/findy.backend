@@ -17,6 +17,9 @@ export class CreateCandidateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @Matches(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
+    message: 'The name must contain only letters',
+  })
   name: string;
 
   @ApiProperty({
@@ -36,9 +39,9 @@ export class CreateCandidateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password too weak',
-  })
+  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  //   message: 'password too weak',
+  // })
   password?: string;
 
   @ApiProperty({

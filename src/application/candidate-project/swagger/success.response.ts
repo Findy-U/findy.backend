@@ -3,12 +3,24 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreatesuccessResponse {
   @ApiProperty({ example: 1 })
   id: number;
-  @ApiProperty({ example: 'John Does' })
+
+  @ApiProperty({ example: 'Proffy' })
   name: string;
-  @ApiProperty({ example: 'johndoe@email.com' })
-  email: string;
-  @ApiProperty({ example: 'candidate' })
-  roles: string;
+
+  @ApiProperty({
+    example:
+      'Projeto destinado ao cadastro de professores particulares que oferecem o serviço de aulas de reforço',
+  })
+  projectScope: string;
+
+  @ApiProperty({ example: '119985643582' })
+  phone: string;
+
+  @ApiProperty({ example: 2 })
+  candidateUserId: number;
+
+  @ApiProperty({ example: false })
+  isActive: boolean;
 }
 
 export class ResponseFind {
@@ -37,6 +49,51 @@ export class ResponseFind {
   updatedAt: Date;
 }
 
+export class ProjectResponseFind {
+  @ApiProperty({ example: 1 })
+  id: number;
+
+  @ApiProperty({ example: 'Proffy' })
+  name: string;
+
+  @ApiProperty({
+    example:
+      'Projeto destinado ao cadastro de professores particulares que oferecem o serviço de aulas de reforço',
+  })
+  projectScope: string;
+
+  @ApiProperty({ example: '119985643582' })
+  phone: string;
+
+  @ApiProperty({ example: 2 })
+  candidateUserId: number;
+
+  @ApiProperty({ example: false })
+  isActive: boolean;
+
+  @ApiProperty({
+    example: [
+      {
+        id: 1,
+        projectId: 1,
+        stackId: 1,
+      },
+    ],
+  })
+  language: number[];
+
+  @ApiProperty({
+    example: [
+      {
+        id: 9,
+        projectId: 3,
+        rolesId: 1,
+      },
+    ],
+  })
+  professional: number[];
+}
+
 export class UpdateDTOSwagger {
   @ApiProperty({ example: 'Naruto Uzumaki' })
   name: string;
@@ -63,6 +120,15 @@ export class NotFoundExceptionError {
   @ApiProperty({ example: 'Not Found' })
   error: string;
 }
+
+export class BadRequestExceptionError {
+  @ApiProperty({ example: 400 })
+  statusCode: number;
+  @ApiProperty({ example: 'he ID was not informed, please inform!' })
+  message: string;
+  @ApiProperty({ example: 'Bad Request' })
+  error: string;
+}
 export class UnauthorizedExceptionError {
   @ApiProperty({ example: 401 })
   statusCode: number;
@@ -72,14 +138,24 @@ export class UnauthorizedExceptionError {
   error: string;
 }
 
+export class ForbidenExceptiomError {
+  @ApiProperty({ example: 403 })
+  statusCode: number;
+  @ApiProperty({ example: 'Forbidden resource' })
+  message: string;
+  @ApiProperty({ example: 'Forbidden' })
+  error: string;
+}
+
 // Informações que vão nos decorators do Swagger no controller
 export const ApiCreatedResponseCreate = {
-  description: 'Endpoint responsável por criar novo usuário candidato.',
+  description:
+    'Endpoint responsável por criar novo projeto pelo candidato. O ID do usuário candidato é passado automaticamente pelo token',
   type: CreatesuccessResponse,
 };
 
 export const ApiConflictResponseCreate = {
-  description: 'Username already exists',
+  description: 'Project name already exists',
   type: ConflictExceptionError,
 };
 
@@ -92,7 +168,7 @@ export const ApiResponseFindAll = {
 export const ApiResponseFindById = {
   status: 200,
   description:
-    'Endpoint que retorna um usuário candidato conforme id informado. Precisa estar autenticado com o token JWT',
+    'Endpoint que retorna um projeto conforme id informado. Precisa estar autenticado com o token JWT',
 };
 
 export const ApirParamFindById = {
