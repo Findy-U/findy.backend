@@ -16,8 +16,6 @@ export class CandidateProjectSqliteRepository
     project: CreateCandidateProjectDto,
     user,
   ): Promise<CandidateProject> {
-    console.log(project);
-
     try {
       const newProject = await this.prisma.candidateProject.create({
         data: {
@@ -28,26 +26,25 @@ export class CandidateProjectSqliteRepository
         },
       });
 
-      await this.prisma.projectStack.create({
-        data: {
-          stackId: 1,
-          projectId: 1,
-        },
-      });
-      // await Promise.all(
-      //   project.language.map(async (item: any) => {
-      //     await this.prisma.projectStack.create({
-      //       data: {
-      //         stackId: item,
-      //         projectId: newProject.id,
-      //       },
-      //     });
-      //   }),
-      // );
+      await Promise.all(
+        project.language.map(async (item: any) => {
+          await this.prisma.projectStack.create({
+            data: {
+              projectId: newProject.id,
+              stackId: item,
+            },
+          });
+        }),
+      );
 
       await Promise.all(
         project.professional.map(async (item: any) => {
-          console.log('g');
+          await this.prisma.projectRoles.create({
+            data: {
+              projectId: newProject.id,
+              rolesId: item,
+            },
+          });
         }),
       );
 

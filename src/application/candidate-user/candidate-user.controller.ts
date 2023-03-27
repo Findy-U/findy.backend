@@ -14,13 +14,18 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Role } from '../../models/roles.enum';
+import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
@@ -55,6 +60,7 @@ export class CandidateUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Project, Role.Admin)
   @Get()
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindAll, type: [ResponseFind] })
@@ -62,6 +68,10 @@ export class CandidateUserController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
+  // @ApiForbiddenResponse({
+  //   description: 'Forbidden resource',
+  //   type: ForbidenExceptiomError,
+  // })
   async findAll() {
     return await this.candidateUserService.findAll();
   }

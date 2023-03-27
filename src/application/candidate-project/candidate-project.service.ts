@@ -17,7 +17,7 @@ export class CandidateProjectService {
     );
 
     if (projectExists) {
-      throw new ConflictError('Project name alread exists');
+      throw new ConflictError('Project name already exists');
     }
     return await this.candidateProjectRepository.create(createProject, user);
   }
