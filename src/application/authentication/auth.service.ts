@@ -44,7 +44,7 @@ export class AuthService {
         candidate.password,
       );
       if (isPasswordValid) {
-        return this.candidateUserSerialize.requestToDb(candidate);
+        return candidate;
       }
     }
 

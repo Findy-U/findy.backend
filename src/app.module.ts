@@ -6,6 +6,8 @@ import appConfig from './config/app/app.config';
 import { PrismaModule } from './config/database/prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
 import { CandidateProfileModule } from './application/candidate-profile/candidate-profile.module';
+import { CandidateProjectModule } from './application/candidate-project/candidate-project.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [appConfig] }),
@@ -14,7 +16,8 @@ import { CandidateProfileModule } from './application/candidate-profile/candidat
     MailModule,
     PrismaModule,
     CandidateUserModule,
-    CandidateProfileModule
+    CandidateProfileModule,
+    CandidateProjectModule,
   ],
   controllers: [],
   providers: [],

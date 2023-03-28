@@ -8,22 +8,24 @@ API responsável por prover os dados que serão consumidos pela aplicação forn
 
 ## Instalação
 
+- Clone o repositŕoio, entre na pasta do projeto `findy.backend`
+
 ```bash
 $ npm install
 ```
 
+```bash
+$ npx prisma db seed
+```
+
 ## Running the app
 
-```bash
+````bash
 # development
 $ npm run start
 
-# watch mode
+# watch mode - development
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
 
 ## Documentação da API (Swagger)
 
@@ -31,7 +33,7 @@ $ npm run start:prod
 # development: Para visualizar a documentação da API em desenvolvimento utilize:
 
 $ http://localhost:3001/api
-```
+````
 
 ## Test
 

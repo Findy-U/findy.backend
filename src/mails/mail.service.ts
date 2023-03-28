@@ -1,8 +1,8 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EmailConfirmationInMemory } from 'src/common/repositories/candidate-user/email-confirmation-in-memory.repository';
 import { CandidateUser } from '../application/candidate-user/entities/candidate-user.entity';
+import { EmailConfirmationInMemory } from '../common/repositories/candidate-user/email-confirmation-in-memory.repository';
 
 @Injectable()
 export class MailService {
@@ -11,6 +11,10 @@ export class MailService {
     private readonly configService: ConfigService,
     private emailConfirmationRepository: EmailConfirmationInMemory
   ) { }
+
+  confirmRegistration(token: string) {
+    return this.emailConfirmationRepository.confirmRegistration(token);
+  }
 
   async sendPasswordRecover(candidate: CandidateUser, token: string) {
     const url = `${this.configService.get<string>('urlRecoverPassword')}?id=${candidate.id
@@ -28,7 +32,4 @@ export class MailService {
     });
   }
 
-  confirmRegistration(token: string) {
-    return this.emailConfirmationRepository.confirmRegistration(token);
-  }
 }

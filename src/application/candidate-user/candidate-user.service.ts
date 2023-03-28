@@ -1,13 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { SALT_BCRYPT } from '../../common/constants/constants';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
-import { AuthProviderType } from '../../models/auth-provider.enum';
-import { Role } from '../../models/roles.enum';
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
-import { NotFoundError } from '../../common/exceptions/not-found.error';
 
 @Injectable()
 export class CandidateUserService {
@@ -19,25 +15,11 @@ export class CandidateUserService {
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
 
-    if (cadidateExists && !createCandidate.provider)
+    if (cadidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
-
-    let pwdHashed = '';
-    if (createCandidate.password) {
-      pwdHashed = await bcrypt.hash(createCandidate.password, SALT_BCRYPT);
     }
-    const data = this.candidateUserSerialize.requestToDb({
-      ...createCandidate,
-      password: pwdHashed,
-      roles: Role.Candidate,
-      provider: createCandidate.provider
-        ? createCandidate.provider
-        : AuthProviderType.findy,
-      providerId: createCandidate.providerId
-        ? createCandidate.providerId
-        : null,
-    });
-    const newCandidate = await this.candidateRepository.create(data);
+
+    const newCandidate = await this.candidateRepository.create(createCandidate);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
 
