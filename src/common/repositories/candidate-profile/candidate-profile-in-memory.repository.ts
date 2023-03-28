@@ -17,17 +17,13 @@ export class CandidateProfileInMemoryRepository extends CandidateProfileReposito
              idCandidateUser: 1, 
          } */
     ];
-    private Lista = [];
 
     async create(profile: CreateCandidateProfileDto): Promise<any> {
         await this.candidateProfile.push(profile);
-        return this.candidateProfile;
+        return this.candidateProfile[this.candidateProfile.length - 1];
     }
-    async findAll(): Promise<string> {
-        for (let profile of this.candidateProfile) {
-            this.Lista.push(profile);
-        }
-        return await this.Lista.join(',').toString();
+    async findAll(): Promise<any> {
+        return this.candidateProfile;
     }
 
     async findById(id: number): Promise<CandidateProfile> {
