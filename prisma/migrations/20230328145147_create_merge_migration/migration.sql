@@ -13,6 +13,19 @@ CREATE TABLE "candidate_users" (
 );
 
 -- CreateTable
+CREATE TABLE "candidate-profile" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "description" TEXT NOT NULL,
+    "skills" TEXT NOT NULL,
+    "professional_experience" TEXT NOT NULL,
+    "url_github" TEXT NOT NULL,
+    "url_linkedin" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "candidateUserId" INTEGER,
+    CONSTRAINT "candidate-profile_candidateUserId_fkey" FOREIGN KEY ("candidateUserId") REFERENCES "candidate_users" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "candidate_projects" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
@@ -20,6 +33,8 @@ CREATE TABLE "candidate_projects" (
     "phone" TEXT NOT NULL,
     "candidate_user_id" INTEGER,
     "is_active" BOOLEAN DEFAULT false,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME,
     CONSTRAINT "candidate_projects_candidate_user_id_fkey" FOREIGN KEY ("candidate_user_id") REFERENCES "candidate_users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -55,6 +70,9 @@ CREATE TABLE "roles" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "candidate_users_email_key" ON "candidate_users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "candidate-profile_candidateUserId_key" ON "candidate-profile"("candidateUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "candidate_projects_name_key" ON "candidate_projects"("name");

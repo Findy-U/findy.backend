@@ -20,4 +20,4 @@ import { PrismaService } from '../../config/database/prisma/prisma.service';
     },
   ],
 })
-export class CandidateUserModule {}
+export class CandidateUserModule { }

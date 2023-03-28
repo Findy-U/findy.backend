@@ -37,6 +37,7 @@ import { LocalStrategy } from './strategies/local.strategy.ts';
     CandidateUserService,
     CandidateUserSerialize,
     LocalStrategy,
+    EmailConfirmationInMemory,
     JwtStrategy,
     GoogleStrategy,
     MailService,

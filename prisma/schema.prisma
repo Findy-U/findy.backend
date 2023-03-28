@@ -18,9 +18,24 @@ model CandidateUser {
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime?          @map("updated_at")
   recoverToken     String?            @map("recover_token")
+  CandidateProfile CandidateProfile?
   CandidateProject CandidateProject[]
 
   @@map("candidate_users")
+}
+
+model CandidateProfile {
+  id                     Int            @id @default(autoincrement())
+  description            String
+  skills                 String
+  professionalExperience String         @map("professional_experience")
+  urlGithub              String         @map("url_github")
+  urlLinkedin            String         @map("url_linkedin")
+  phone                  String
+  candidateUserId        Int?           @unique
+  CandidateUser          CandidateUser? @relation(fields: [candidateUserId], references: [id])
+
+  @@map("candidate-profile")
 }
 
 model CandidateProject {
