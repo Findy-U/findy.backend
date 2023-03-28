@@ -7,5 +7,5 @@ export class CandidateProfile {
     urlGithub?: string;
     urlLinkedin?: string;
     phone?: string;
-    idUserCandidate?: number;
+    candidateUserId?: number;
 }

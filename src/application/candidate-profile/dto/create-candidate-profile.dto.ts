@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { CandidateUser } from "src/application/candidate-user/entities/candidate-user.entity";
 
 export class CreateCandidateProfileDto {
 
@@ -25,8 +24,5 @@ export class CreateCandidateProfileDto {
     phone: string;
 
     @IsNumber()
-    idUserCandidate?: number;
-
-    candidateUser: CandidateUser;
-
+    candidateUserId?: number;
 }
