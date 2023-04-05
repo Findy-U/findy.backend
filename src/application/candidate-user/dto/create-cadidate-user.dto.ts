@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsString,
   Matches,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 import { IsEqualTo } from '../../../common/decorators/password-confirm.decorator';
@@ -17,6 +18,7 @@ export class CreateCandidateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @MaxLength(30)
   @Matches(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
     message: 'The name must contain only letters',
   })
@@ -39,7 +41,9 @@ export class CreateCandidateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  @MinLength(8)
+  @MaxLength(20)
+  // @Matches(/(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
   //   message: 'password too weak',
   // })
   password?: string;

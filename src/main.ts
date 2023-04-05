@@ -21,8 +21,10 @@ async function bootstrap() {
       'API gerenciamento de candidatos voluntários e projetos voluntários.',
     )
     .setVersion('0.0.1')
-    .addTag('candidate_users')
     .addTag('authentication')
+    .addTag('candidate_users')
+    .addTag('candidate_profile')
+    .addTag('candidate_projects')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

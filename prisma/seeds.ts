@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 const SKILLS = [
   'JavaScript',
   'TypeScript',
+  '.Net Core',
   'C#',
   'Java',
   'PHP',
@@ -16,6 +17,7 @@ const SKILLS = [
   'NextJs',
   'NestJs',
   'Spring',
+  'Laravel',
   'MySQL',
   'Postgres',
   'MongoDB',
@@ -23,24 +25,23 @@ const SKILLS = [
 ];
 
 const ROLES = [
-  'Stakeholder',
-  'Product Manager',
-  'Product Owner',
-  'Tech Lead',
-  'Agilista',
-  'Frontend',
-  'Backend',
-  'Quality Assurance',
-  'UX/UI',
+  'Front-End',
+  'Back-End',
+  'QA',
   'DevOps',
+  'Product Manager',
+  'Scrum Master',
+  'UX',
+  'UI',
+  'Mentor',
 ];
 
 function seedSkills() {
   Promise.all(
     SKILLS.map((skill) => prisma.stack.create({ data: { title: skill } })),
   )
-    .then(() => console.info('[SEED] Succussfully create staks records'))
-    .catch((e) => console.error('[SEED] Failed to create staks records', e));
+    .then(() => console.info('[SEED] Succussfully create stacks records'))
+    .catch((e) => console.error('[SEED] Failed to create stacks records', e));
 }
 
 seedSkills();
@@ -50,7 +51,31 @@ function seedRoles() {
     ROLES.map((role) => prisma.roles.create({ data: { title: role } })),
   )
     .then(() => console.info('[SEED] Succussfully create roles records'))
-    .catch((e) => console.info('[SEED] Succussfully create reles records', e));
+    .catch((e) => console.info('[SEED] Succussfully create roles records', e));
 }
 
 seedRoles();
+
+function seedUserAdmin() {
+  prisma.candidateUser
+    .create({
+      data: {
+        name: 'Administrador do APP',
+        email: 'findy.adm@gmail.com',
+        password:
+          '$2a$10$O7PLuwjrj5moVvOkyVyIeuf3Fw5RICwuL/IPKL0js.sIDfeV7KDZK', // senha: VJ8I@l7zK%
+        roles: 'admin',
+        provider: 'findy',
+        providerId: null,
+        recoverToken: null,
+        createdAt: new Date(),
+        updatedAt: null,
+      },
+    })
+    .then(() => console.info('[SEED] Succussfully create user admin record'))
+    .catch((e) =>
+      console.info('[SEED] Succussfully create user admin record', e),
+    );
+}
+
+seedUserAdmin();

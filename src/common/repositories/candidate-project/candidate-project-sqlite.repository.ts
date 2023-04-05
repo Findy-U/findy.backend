@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CandidateProject } from '@prisma/client';
+import { log } from 'console';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { CandidateProjectInterface } from '../../../models/candidate-project';
 import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()
@@ -17,13 +17,20 @@ export class CandidateProjectSqliteRepository
     project: CreateCandidateProjectDto,
     user: any,
   ): Promise<CandidateProject> {
+    const rolesArray = project.others
+      ? [...project.professional, ...project.others]
+      : [...project.professional];
+    console.log(rolesArray);
+
     try {
       const newProject = await this.prisma.candidateProject.create({
         data: {
           name: project.name,
-          phone: project.phone,
+          responsible: user.name,
+          urlTeamSelection: project.urlTeamSelection,
           projectScope: project.projectScope,
           candidateUserId: user.id,
+          findyHelp: project.findyHelp,
         },
       });
 
@@ -39,11 +46,22 @@ export class CandidateProjectSqliteRepository
       );
 
       await Promise.all(
-        project.professional.map(async (item: any) => {
+        rolesArray.map(async (item: any) => {
           await this.prisma.projectRoles.create({
             data: {
               projectId: newProject.id,
-              rolesId: item,
+              title: item,
+            },
+          });
+        }),
+      );
+
+      await Promise.all(
+        project.leaders.map(async (item: any) => {
+          await this.prisma.leader.create({
+            data: {
+              projectId: newProject.id,
+              userId: item,
             },
           });
         }),
@@ -56,20 +74,16 @@ export class CandidateProjectSqliteRepository
     }
   }
 
-  async findAll(): Promise<CandidateProjectInterface[]> {
+  async findAll(): Promise<any[]> {
     return await this.prisma.candidateProject.findMany({
       select: {
         id: true,
         name: true,
-        phone: true,
         projectScope: true,
-        CandidateUser: {
-          select: {
-            name: true,
-            email: true,
-            roles: true,
-          },
-        },
+        responsible: true,
+        urlTeamSelection: true,
+        professional: true,
+        language: true,
       },
     });
   }
@@ -80,6 +94,7 @@ export class CandidateProjectSqliteRepository
       include: {
         language: true,
         professional: true,
+        users: true,
       },
     });
   }
@@ -94,29 +109,13 @@ export class CandidateProjectSqliteRepository
       throw new NotFoundError('Project not found');
     }
     try {
-      // await project.projectStacks?.map(async (item: any) => {
-      //   await this.prisma.projectStack.updateMany({
-      //     where: { id: item.id },
-      //     data: {
-      //       stackId: item.stackId,
-      //     },
-      //   });
-      // });
-
-      // await project.projectRoles?.map(async (item: any) => {
-      //   await this.prisma.projectRoles.updateMany({
-      //     where: { id: item.id },
-      //     data: {
-      //       rolesId: item.roleId,
-      //     },
-      //   });
-      // });
-
       await this.prisma.candidateProject.update({
         where: { id },
         data: {
           name: project.name,
-          phone: project.phone,
+          responsible: project.responsible,
+          urlTeamSelection: project.urlTeamSelection,
+          findyHelp: project.findyHelp,
           projectScope: project.projectScope,
         },
       });
@@ -124,6 +123,10 @@ export class CandidateProjectSqliteRepository
       console.error(error);
       // throw new Error('Internal server error');
     }
+  }
+
+  async findRolesProject(id: number) {
+    return await this.prisma.roles.findUnique({ where: { id } });
   }
 
   async delete(id: number): Promise<{ message: string }> {

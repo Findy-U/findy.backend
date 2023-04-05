@@ -8,20 +8,23 @@ datasource db {
 }
 
 model CandidateUser {
-  id               Int                @id @default(autoincrement())
-  name             String
-  email            String             @unique
-  password         String?
-  roles            String?
-  provider         String?
-  providerId       String?            @map("provider_id")
-  createdAt        DateTime           @default(now()) @map("created_at")
-  updatedAt        DateTime?          @map("updated_at")
-  recoverToken     String?            @map("recover_token")
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  password     String?
+  roles        String?
+  provider     String?
+  providerId   String?   @map("provider_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  recoverToken String?   @map("recover_token")
+
   CandidateProfile CandidateProfile?
   CandidateProject CandidateProject[]
 
-  @@map("candidate_users")
+  users Leader[]
+
+  @@map("tb_candidate_users")
 }
 
 model CandidateProfile {
@@ -35,24 +38,27 @@ model CandidateProfile {
   candidateUserId        Int?           @unique
   CandidateUser          CandidateUser? @relation(fields: [candidateUserId], references: [id])
 
-  @@map("candidate-profile")
+  @@map("tb_candidate-profile")
 }
 
 model CandidateProject {
-  id              Int       @id @default(autoincrement())
-  name            String    @unique
-  projectScope    String    @map("project_scope")
-  phone           String
-  candidateUserId Int?      @map("candidate_user_id")
-  isActive        Boolean?  @default(false) @map("is_active")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime? @map("updated_at")
+  id               Int       @id @default(autoincrement())
+  name             String    @unique
+  projectScope     String    @map("project_scope")
+  urlTeamSelection String    @map("url_team_selection")
+  responsible      String?
+  candidateUserId  Int?      @map("candidate_user_id")
+  findyHelp        String?   @map("findy_help") //Como o SouJunior pode apoiar o seu projeto?
+  isActive         Boolean?  @default(false) @map("is_active")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime? @map("updated_at")
 
   CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   professional  ProjectRoles[]
   language      ProjectStack[]
+  users         Leader[]
 
-  @@map("candidate_projects")
+  @@map("tb_candidate_projects")
 }
 
 model ProjectStack {
@@ -62,17 +68,16 @@ model ProjectStack {
   CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Stack            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map("project_stack")
+  @@map("tb_project_stack")
 }
 
 model ProjectRoles {
   id               Int               @id @default(autoincrement())
   projectId        Int?              @map("project_id")
-  rolesId          Int?
+  title            String?
   CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Roles            Roles?            @relation(fields: [rolesId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map("project_roles")
+  @@map("tb_project_roles")
 }
 
 model Stack {
@@ -80,13 +85,23 @@ model Stack {
   title String
   tools ProjectStack[]
 
-  @@map("stacks")
+  @@map("tb_stacks")
 }
 
 model Roles {
-  id     Int            @id @default(autoincrement())
-  title  String
-  pRoles ProjectRoles[]
+  id    Int    @id @default(autoincrement())
+  title String
 
-  @@map("roles")
+  @@map("tb_roles")
+}
+
+model Leader {
+  id Int @id @default(autoincrement())
+
+  userId           Int?
+  projectId        Int?
+  CandidateUser    CandidateUser?    @relation(fields: [userId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+
+  @@map("tb_leaders")
 }
