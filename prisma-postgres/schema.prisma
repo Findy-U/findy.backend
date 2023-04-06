@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@internal/prisma-postgres/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CandidateUser {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  password     String?
+  roles        String?
+  provider     String?
+  providerId   String?   @map("provider_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  recoverToken String?   @map("recover_token")
+
+  CandidateProfile CandidateProfile?
+  CandidateProject CandidateProject[]
+
+  users Leader[]
+
+  @@map("tb_candidate_users")
+}
+
+model CandidateProfile {
+  id                     Int            @id @default(autoincrement())
+  description            String
+  skills                 String
+  professionalExperience String         @map("professional_experience")
+  urlGithub              String         @map("url_github")
+  urlLinkedin            String         @map("url_linkedin")
+  phone                  String
+  candidateUserId        Int?           @unique
+  CandidateUser          CandidateUser? @relation(fields: [candidateUserId], references: [id])
+
+  @@map("tb_candidate-profile")
+}
+
+model CandidateProject {
+  id               Int       @id @default(autoincrement())
+  name             String    @unique
+  projectScope     String    @map("project_scope")
+  urlTeamSelection String    @map("url_team_selection")
+  responsible      String?
+  candidateUserId  Int?      @map("candidate_user_id")
+  findyHelp        String?   @map("findy_help") //Como o SouJunior pode apoiar o seu projeto?
+  isActive         Boolean?  @default(false) @map("is_active")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime? @map("updated_at")
+
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  professional  ProjectRoles[]
+  language      ProjectStack[]
+  users         Leader[]
+
+  @@map("tb_candidate_projects")
+}
+
+model ProjectStack {
+  id               Int               @id @default(autoincrement())
+  projectId        Int?              @map("project_id")
+  stackId          Int?
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Stack            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tb_project_stack")
+}
+
+model ProjectRoles {
+  id               Int               @id @default(autoincrement())
+  projectId        Int?              @map("project_id")
+  title            String?
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("tb_project_roles")
+}
+
+model Stack {
+  id    Int            @id @default(autoincrement())
+  title String
+  tools ProjectStack[]
+
+  @@map("tb_stacks")
+}
+
+model Roles {
+  id    Int    @id @default(autoincrement())
+  title String
+
+  @@map("tb_roles")
+}
+
+model Leader {
+  id Int @id @default(autoincrement())
+
+  userId           Int?
+  projectId        Int?
+  CandidateUser    CandidateUser?    @relation(fields: [userId], references: [id])
+  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id])
+
+  @@map("tb_leaders")
+}

@@ -62,6 +62,7 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @ApiExcludeEndpoint()
   @Get('auth/google')
   @UseGuards(GoogleOAuthGuard)
   @ApiOkResponse({

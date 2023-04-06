@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prod:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate dev --schema=./prisma-postgres/schema.prisma",
+    "prod:seed": "ts-node ./prisma-postgres/seeds.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",

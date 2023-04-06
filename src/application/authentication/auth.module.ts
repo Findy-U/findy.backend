@@ -17,6 +17,7 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
+import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
 @Module({
   imports: [
     PassportModule,
@@ -44,7 +45,7 @@ import { LocalStrategy } from './strategies/local.strategy.ts';
     EmailConfirmationInMemory,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserPostgresRepository,
     },
   ],
 })
