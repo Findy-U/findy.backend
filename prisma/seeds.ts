@@ -22,6 +22,13 @@ const SKILLS = [
   'Postgres',
   'MongoDB',
   'Redis',
+  'Git',
+  'Github',
+  'Jira',
+  'Trello',
+  'Figma',
+  'Miro',
+  'Notion',
 ];
 
 const ROLES = [

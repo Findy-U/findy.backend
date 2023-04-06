@@ -37,16 +37,29 @@ import {
   ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
   ApiResponseDelete,
+  ApiResponseFindAll,
   ApiResponseFindById,
+  ApiResponseRoleById,
+  ApiResponseRoles,
+  ApiResponseStackById,
+  ApiResponseStacks,
   ApiResponseUpdate,
   ApirParamFindById,
+  ApirParamRoleFindById,
+  ApirParamStackFindById,
   NotFoundExceptionError,
+  NotFoundExceptionErrorRoles,
+  NotFoundExceptionErrorStacks,
   ProjectResponseDelete,
   ProjectResponseFind,
+  RolesResponse,
+  StackResponse,
   UnauthorizedExceptionError,
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
+import { BadRequestError } from '../../common/exceptions/bad-request.error';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 @Controller('candidate-projects')
 @ApiTags('candidate_projects')
 export class CandidateProjectController {
@@ -86,9 +99,36 @@ export class CandidateProjectController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
+  @ApiResponse({ ...ApiResponseFindAll, type: [ProjectResponseFind] })
   @ApiBearerAuth()
-  findAll() {
-    return this.candidateProjectService.findAll();
+  async findAll() {
+    return await this.candidateProjectService.findAll();
+  }
+
+  // @HasRoles(Role.Admin, Role.Project)
+  @UseGuards(JwtAuthGuard)
+  @Get('roles')
+  @ApiBearerAuth()
+  @ApiResponse({ ...ApiResponseRoles, type: [RolesResponse] })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  async findAllRolesProject() {
+    return await this.candidateProjectService.findAllRolesProject();
+  }
+
+  // @HasRoles(Role.Admin, Role.Project)
+  @UseGuards(JwtAuthGuard)
+  @Get('skills')
+  @ApiBearerAuth()
+  @ApiResponse({ ...ApiResponseStacks, type: [StackResponse] })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  async findAllSkillsProject() {
+    return await this.candidateProjectService.findAllSkillsProject();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -105,36 +145,68 @@ export class CandidateProjectController {
     type: NotFoundExceptionError,
   })
   @ApiParam(ApirParamFindById)
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.candidateProjectService.findOne(+id);
+      return await this.candidateProjectService.findOne(+id);
     } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
       throw new BadRequestException(error.message);
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   // @HasRoles(Role.Admin, Role.Project)
+  @UseGuards(JwtAuthGuard)
   @Get('roles/:id')
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseFindById, type: ProjectResponseFind })
+  @ApiResponse({ ...ApiResponseRoleById, type: RolesResponse })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o projeto no BD',
-    type: NotFoundExceptionError,
+    type: NotFoundExceptionErrorRoles,
   })
-  @ApiParam(ApirParamFindById)
+  @ApiParam(ApirParamRoleFindById)
   async findRolesProject(@Param('id') id: string) {
     try {
-      return this.candidateProjectService.findRolesProject(+id);
+      return await this.candidateProjectService.findByIdRoleProject(+id);
     } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
       throw new BadRequestException(error.message);
     }
   }
 
+  // @HasRoles(Role.Admin, Role.Project)
+  @UseGuards(JwtAuthGuard)
+  @Get('skills/:id')
+  @ApiBearerAuth()
+  @ApiResponse({ ...ApiResponseStackById, type: StackResponse })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  @ApiNotFoundResponse({
+    description: 'Erro quando não encontra o projeto no BD',
+    type: NotFoundExceptionErrorStacks,
+  })
+  @ApiParam(ApirParamStackFindById)
+  async findByIdSkillProject(@Param('id') id: string) {
+    try {
+      return await this.candidateProjectService.findByIdSkillProject(+id);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @ApiExcludeEndpoint()
   @UseGuards(JwtAuthGuard)
   // @HasRoles(Role.Admin, Role.Project)
   @Patch(':id')
@@ -169,6 +241,7 @@ export class CandidateProjectController {
     }
   }
 
+  @ApiExcludeEndpoint()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiBearerAuth()

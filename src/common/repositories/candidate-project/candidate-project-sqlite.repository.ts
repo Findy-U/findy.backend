@@ -26,11 +26,14 @@ export class CandidateProjectSqliteRepository
       const newProject = await this.prisma.candidateProject.create({
         data: {
           name: project.name,
-          responsible: user.name,
+          responsible: project.responsible,
+          contactResponsible: project.contactResponsible,
+          urlLinkediResponsible: project.urlLinkediResponsible,
           urlTeamSelection: project.urlTeamSelection,
           projectScope: project.projectScope,
           candidateUserId: user.id,
           findyHelp: project.findyHelp,
+          contactLeaders: project.contactLeaders,
         },
       });
 
@@ -56,16 +59,16 @@ export class CandidateProjectSqliteRepository
         }),
       );
 
-      await Promise.all(
-        project.leaders.map(async (item: any) => {
-          await this.prisma.leader.create({
-            data: {
-              projectId: newProject.id,
-              userId: item,
-            },
-          });
-        }),
-      );
+      // await Promise.all(
+      //   project.leaders.map(async (item: any) => {
+      //     await this.prisma.leader.create({
+      //       data: {
+      //         projectId: newProject.id,
+      //         userId: item,
+      //       },
+      //     });
+      //   }),
+      // );
 
       return newProject;
     } catch (error) {
@@ -81,6 +84,7 @@ export class CandidateProjectSqliteRepository
         name: true,
         projectScope: true,
         responsible: true,
+        urlLinkediResponsible: true,
         urlTeamSelection: true,
         professional: true,
         language: true,
@@ -89,14 +93,17 @@ export class CandidateProjectSqliteRepository
   }
 
   async findById(id: number): Promise<CandidateProject> {
-    return await this.prisma.candidateProject.findUnique({
+    const project = await this.prisma.candidateProject.findUnique({
       where: { id },
       include: {
         language: true,
         professional: true,
-        users: true,
       },
     });
+    if (!project) {
+      throw new NotFoundError('Project not found');
+    }
+    return project;
   }
 
   async findByName(name: string): Promise<CandidateProject> {
@@ -125,8 +132,28 @@ export class CandidateProjectSqliteRepository
     }
   }
 
-  async findRolesProject(id: number) {
-    return await this.prisma.roles.findUnique({ where: { id } });
+  async findAllRolesProject(): Promise<any> {
+    return await this.prisma.roles.findMany();
+  }
+
+  async findByIdRoleProject(id: number) {
+    const role = await this.prisma.roles.findUnique({ where: { id } });
+    if (!role) {
+      throw new NotFoundError('Not found Role');
+    }
+    return role;
+  }
+
+  async findAllSkillsProject() {
+    return await this.prisma.stack.findMany();
+  }
+
+  async findByIdSkillProject(id: number) {
+    const skill = await this.prisma.stack.findUnique({ where: { id } });
+    if (!skill) {
+      throw new NotFoundError('Not found Skill');
+    }
+    return skill;
   }
 
   async delete(id: number): Promise<{ message: string }> {
