@@ -4,6 +4,7 @@ import { ConflictError } from '../../common/exceptions/conflict-error';
 import { CreateCandidateProjectDto } from './dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from './repositories/candidate-project.repository';
+import { CandidateUser } from '../../models/candidate-project';
 
 @Injectable()
 export class CandidateProjectService {
@@ -11,14 +12,14 @@ export class CandidateProjectService {
     private readonly candidateProjectRepository: CandidateProjectRepository,
   ) {}
 
-  async create(createProject: CreateCandidateProjectDto, user) {
+  async create(createProject: CreateCandidateProjectDto, user: CandidateUser) {
     const projectExists = await this.candidateProjectRepository.findByName(
       createProject.name,
     );
 
-    // if (projectExists) {
-    //   throw new ConflictError('Project name already exists');
-    // }
+    if (projectExists) {
+      throw new ConflictError('Project name already exists');
+    }
     return await this.candidateProjectRepository.create(createProject, user);
   }
 

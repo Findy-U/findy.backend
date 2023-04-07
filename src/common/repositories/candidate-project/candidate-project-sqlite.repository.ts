@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateProject } from '@prisma/client';
-import { log } from 'console';
+import { CandidateProject, Roles, Stack } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
 import { NotFoundError } from '../../exceptions/not-found.error';
+import {
+  CandidateProjectResponse,
+  CandidateUser,
+} from '../../../models/candidate-project';
 
 @Injectable()
 export class CandidateProjectSqliteRepository
@@ -15,12 +18,11 @@ export class CandidateProjectSqliteRepository
 
   async create(
     project: CreateCandidateProjectDto,
-    user: any,
+    user: CandidateUser,
   ): Promise<CandidateProject> {
     const rolesArray = project.others
       ? [...project.professional, ...project.others]
       : [...project.professional];
-    console.log(rolesArray);
 
     try {
       const newProject = await this.prisma.candidateProject.create({
@@ -77,22 +79,29 @@ export class CandidateProjectSqliteRepository
     }
   }
 
-  async findAll(): Promise<any[]> {
+  async findAll(): Promise<CandidateProjectResponse[]> {
     return await this.prisma.candidateProject.findMany({
       select: {
         id: true,
         name: true,
         projectScope: true,
-        responsible: true,
-        urlLinkediResponsible: true,
         urlTeamSelection: true,
+        responsible: true,
+        contactResponsible: true,
+        urlLinkediResponsible: true,
+        findyHelp: true,
+        candidateUserId: true,
+        contactLeaders: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
         professional: true,
         language: true,
       },
     });
   }
 
-  async findById(id: number): Promise<CandidateProject> {
+  async findById(id: number): Promise<CandidateProjectResponse> {
     const project = await this.prisma.candidateProject.findUnique({
       where: { id },
       include: {
@@ -108,6 +117,30 @@ export class CandidateProjectSqliteRepository
 
   async findByName(name: string): Promise<CandidateProject> {
     return await this.prisma.candidateProject.findUnique({ where: { name } });
+  }
+
+  async findAllRolesProject(): Promise<Roles[]> {
+    return await this.prisma.roles.findMany();
+  }
+
+  async findByIdRoleProject(id: number): Promise<Roles> {
+    const role = await this.prisma.roles.findUnique({ where: { id } });
+    if (!role) {
+      throw new NotFoundError('Not found Role');
+    }
+    return role;
+  }
+
+  async findAllSkillsProject(): Promise<Stack[]> {
+    return await this.prisma.stack.findMany();
+  }
+
+  async findByIdSkillProject(id: number): Promise<Stack> {
+    const skill = await this.prisma.stack.findUnique({ where: { id } });
+    if (!skill) {
+      throw new NotFoundError('Not found Skill');
+    }
+    return skill;
   }
 
   async update(id: number, project: UpdateCandidateProjectDto): Promise<void> {
@@ -130,30 +163,6 @@ export class CandidateProjectSqliteRepository
       console.error(error);
       // throw new Error('Internal server error');
     }
-  }
-
-  async findAllRolesProject(): Promise<any> {
-    return await this.prisma.roles.findMany();
-  }
-
-  async findByIdRoleProject(id: number) {
-    const role = await this.prisma.roles.findUnique({ where: { id } });
-    if (!role) {
-      throw new NotFoundError('Not found Role');
-    }
-    return role;
-  }
-
-  async findAllSkillsProject() {
-    return await this.prisma.stack.findMany();
-  }
-
-  async findByIdSkillProject(id: number) {
-    const skill = await this.prisma.stack.findUnique({ where: { id } });
-    if (!skill) {
-      throw new NotFoundError('Not found Skill');
-    }
-    return skill;
   }
 
   async delete(id: number): Promise<{ message: string }> {
