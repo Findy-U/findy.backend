@@ -4,8 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
-import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
-import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
+import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
 import { EmailConfirmationInMemory } from '../../common/repositories/candidate-user/email-confirmation-in-memory.repository';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { MailService } from '../../mails/mail.service';
@@ -17,7 +16,6 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
-import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
 @Module({
   imports: [
     PassportModule,
@@ -45,7 +43,7 @@ import { CandidateUserPostgresRepository } from '../../common/repositories/candi
     EmailConfirmationInMemory,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserPostgresRepository,
     },
   ],
 })

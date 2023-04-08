@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CandidateProjectService } from './candidate-project.service';
-import { CandidateProjectController } from './cadidate-project.controller';
-import { CandidateProjectRepository } from './repositories/candidate-project.repository';
 import { CandidateProjectSqliteRepository } from '../../common/repositories/candidate-project/candidate-project-sqlite.repository';
 import { PrismaService } from '../../config/database/prisma/prisma.service';
+import { CandidateProjectController } from './cadidate-project.controller';
+import { CandidateProjectService } from './candidate-project.service';
+import { CandidateProjectRepository } from './repositories/candidate-project.repository';
 
 @Module({
   controllers: [CandidateProjectController],
