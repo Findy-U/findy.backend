@@ -15,4 +15,5 @@ export abstract class CandidateProjectRepository {
     project: UpdateCandidateProjectDto,
   ): Promise<void>;
   abstract delete(id: number): Promise<{ message: string }>;
+  abstract findRolesProject(id: number): Promise<any>;
 }

@@ -115,6 +115,28 @@ export class CandidateProjectController {
 
   @UseGuards(JwtAuthGuard)
   // @HasRoles(Role.Admin, Role.Project)
+  @Get('roles/:id')
+  @ApiBearerAuth()
+  @ApiResponse({ ...ApiResponseFindById, type: ProjectResponseFind })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  @ApiNotFoundResponse({
+    description: 'Erro quando não encontra o projeto no BD',
+    type: NotFoundExceptionError,
+  })
+  @ApiParam(ApirParamFindById)
+  async findRolesProject(@Param('id') id: string) {
+    try {
+      return this.candidateProjectService.findRolesProject(+id);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Admin, Role.Project)
   @Patch(':id')
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({

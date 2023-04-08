@@ -6,6 +6,7 @@ import { CandidateUserService } from './candidate-user.service';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
 import { CandidateUserInMemoryRepository } from '../../common/repositories/candidate-user/candidate-user-in-memory.repository';
 import { PrismaService } from '../../config/database/prisma/prisma.service';
+import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
 
 @Module({
   imports: [],
@@ -16,8 +17,8 @@ import { PrismaService } from '../../config/database/prisma/prisma.service';
     PrismaService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserPostgresRepository,
     },
   ],
 })
-export class CandidateUserModule { }
+export class CandidateUserModule {}

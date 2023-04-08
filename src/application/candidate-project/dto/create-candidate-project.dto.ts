@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ArrayNotEmpty, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateCandidateProjectDto {
   @ApiProperty({ example: 'Proffy' })
@@ -15,10 +22,24 @@ export class CreateCandidateProjectDto {
   @IsString()
   projectScope: string;
 
-  @ApiProperty({ example: '119545644852' })
+  @ApiProperty({
+    example:
+      'https://docs.google.com/forms/d/e/1FAIpQLSdn7MH9zB9a-50tjh7l__1SDOjVDHN_pkLwEnzGIZY3LR5b8g/viewform',
+  })
   @IsNotEmpty()
   @IsString()
-  phone: string;
+  urlTeamSelection: string;
+
+  responsible?: string;
+
+  @ApiProperty({
+    description:
+      'Este campo recebe um array com IDs dos usuários que serão lideres no projeto',
+    example: [1, 4, 10],
+  })
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  leaders: number[];
 
   @ApiProperty({
     description:
@@ -30,12 +51,27 @@ export class CreateCandidateProjectDto {
   language?: number[];
 
   @ApiProperty({
-    description: 'Este campo recebe um array com IDs dos cargos/proficionais',
-    example: [4, 6, 7, 8],
+    description: 'Este campo recebe um array com nomes dos cargos/proficionais',
+    example: ['QUALITY ASSURANCE', 'FRONT-END', 'BACK-END'],
   })
   @ArrayNotEmpty()
-  @IsNumber({}, { each: true })
-  professional?: number[];
+  @IsString({ each: true })
+  professional?: string[];
+
+  @ApiProperty({
+    description:
+      'Este campo recebe um array com nomes de outros cargos/proficionais',
+    example: ['TECH LEAD', 'IA', 'DATA SCIENCE'],
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  others?: string[];
+
+  @ApiProperty({
+    example: 'Descreva como a Sou Junior pode apoiar seu projeto',
+  })
+  findyHelp?: string;
 
   isActive?: boolean;
 

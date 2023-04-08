@@ -1,28 +1,27 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateCandidateProfileDto {
+  @IsNotEmpty()
+  @IsString()
+  description: string;
 
-    @IsNotEmpty()
-    @IsString()
-    description: string;
+  @IsNotEmpty()
+  @IsString()
+  skills: string;
 
-    @IsNotEmpty()
-    @IsString()
-    skills: string;
+  @IsNotEmpty()
+  @IsString()
+  professionalExperience: string;
 
-    @IsNotEmpty()
-    @IsString()
-    professionalExperience: string;
+  @IsString()
+  urlGithub: string;
 
-    @IsString()
-    urlGithub: string;
+  @IsString()
+  urlLinkedin: string;
 
-    @IsString()
-    urlLinkedin: string;
+  @IsString()
+  phone: string;
 
-    @IsString()
-    phone: string;
-
-    @IsNumber()
-    candidateUserId?: number;
+  @IsNumber()
+  candidateUserId?: number;
 }

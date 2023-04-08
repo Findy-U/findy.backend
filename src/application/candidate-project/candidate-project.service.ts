@@ -16,9 +16,9 @@ export class CandidateProjectService {
       createProject.name,
     );
 
-    if (projectExists) {
-      throw new ConflictError('Project name already exists');
-    }
+    // if (projectExists) {
+    //   throw new ConflictError('Project name already exists');
+    // }
     return await this.candidateProjectRepository.create(createProject, user);
   }
 
@@ -31,6 +31,10 @@ export class CandidateProjectService {
       throw new BadRequestError('The ID was not informed, please inform!');
     }
     return this.candidateProjectRepository.findById(id);
+  }
+
+  async findRolesProject(id: number) {
+    return this.candidateProjectRepository.findRolesProject(id);
   }
 
   async updateProjectData(

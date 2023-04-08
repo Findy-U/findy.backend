@@ -10,12 +10,11 @@ import { CandidateProfile } from './entities/candidate-profile.entity';
 
 @Injectable()
 export class CandidateProfileService {
-
   constructor(
     //private readonly candidateUserRepository: CandidateUserRepository,
     private readonly candidateProfileRepository: CandidateProfileSQLiteRepository,
-    private candidate: CandidateProfile
-  ) { }
+    private candidate: CandidateProfile,
+  ) {}
 
   create(createCandidateProfileDto: CreateCandidateProfileDto) {
     return this.candidateProfileRepository.create(createCandidateProfileDto);
