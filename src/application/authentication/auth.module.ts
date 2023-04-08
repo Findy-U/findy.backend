@@ -45,7 +45,7 @@ import { CandidateUserPostgresRepository } from '../../common/repositories/candi
     EmailConfirmationInMemory,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserPostgresRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })

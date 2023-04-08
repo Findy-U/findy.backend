@@ -43,9 +43,9 @@ export class CreateCandidateUserDto {
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)
-  // @Matches(/(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-  //   message: 'password too weak',
-  // })
+  @Matches(/(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
   password?: string;
 
   @ApiProperty({

@@ -13,14 +13,51 @@ export class CreatesuccessResponse {
   })
   projectScope: string;
 
+  @ApiProperty({
+    example:
+      'https://docs.google.com/forms/d/e/1FAIpQLSdn7MH9zB9a-50tjh7l__1SDOjVDHN_pkLwEnzGIZY3LR5b8g/viewform;',
+  })
+  urlTeamSelection: string;
+
+  @ApiProperty({
+    example: 'John Doe',
+  })
+  responsible: string;
+
   @ApiProperty({ example: '119985643582' })
-  phone: string;
+  contactResponsible: string;
+
+  @ApiProperty({
+    example: 'https://www.linkedin.com/in/johndoe',
+  })
+  urlLinkediResponsible: string;
+
+  @ApiProperty({
+    example: 'Com orientações de como montar um boa equipe',
+  })
+  findyHelp: string;
+
+  @ApiProperty({
+    example:
+      'João Paulo, joaop@email.com, (99)9999-9999, linkedin / Maria Laura, mairaL@email.com, (99)9999-9999, linkedin',
+  })
+  contactLeaders: string;
 
   @ApiProperty({ example: 2 })
   candidateUserId: number;
 
   @ApiProperty({ example: false })
   isActive: boolean;
+
+  @ApiProperty({
+    example: '2023-04-06T20:22:34.791Z',
+  })
+  createdAt: Date;
+
+  @ApiProperty({
+    example: null,
+  })
+  updatedAt: Date;
 }
 
 export class ResponseFind {
@@ -62,14 +99,41 @@ export class ProjectResponseFind {
   })
   projectScope: string;
 
+  @ApiProperty({
+    example:
+      'https://docs.google.com/forms/d/e/1FAIpQLSdn7MH9zB9a-50tjh7l__1SDOjVDHN_pkLwEnzGIZY3LR5b8g/viewform;',
+  })
+  urlTeamSelection: string;
+
+  @ApiProperty({ example: 'John Doe' })
+  responsible: string;
+
   @ApiProperty({ example: '119985643582' })
-  phone: string;
+  contactResponsible: string;
+
+  @ApiProperty({ example: 'https://www.linkedin.com/in/johndoe' })
+  urlLinkediResponsible: string;
 
   @ApiProperty({ example: 2 })
   candidateUserId: number;
 
+  @ApiProperty({ example: 'Com orientações de como montar um boa equipe' })
+  findyHelp: string;
+
   @ApiProperty({ example: false })
   isActive: boolean;
+
+  @ApiProperty({
+    example:
+      'João Paulo, joaop@email.com, (99)9999-9999, linkedin / Maria Laura, mairaL@email.com, (99)9999-9999, linkedin',
+  })
+  contactLeaders: string;
+
+  @ApiProperty({ example: '2023-04 - 06T20: 22: 34.791Z' })
+  createdAt: Date;
+
+  @ApiProperty({ example: null })
+  updatedAt: Date;
 
   @ApiProperty({
     example: [
@@ -151,6 +215,39 @@ export class ForbidenExceptiomError {
   error: string;
 }
 
+export class RolesResponse {
+  @ApiProperty({ example: 1 })
+  id: number;
+
+  @ApiProperty({ example: 'Front-End' })
+  title: string;
+}
+
+export class StackResponse {
+  @ApiProperty({ example: 1 })
+  id: number;
+
+  @ApiProperty({ example: 'JavaScript' })
+  title: string;
+}
+
+export class NotFoundExceptionErrorRoles {
+  @ApiProperty({ example: 404 })
+  statusCode: number;
+  @ApiProperty({ example: 'Roles not found' })
+  message: string;
+  @ApiProperty({ example: 'Not Found' })
+  error: string;
+}
+export class NotFoundExceptionErrorStacks {
+  @ApiProperty({ example: 404 })
+  statusCode: number;
+  @ApiProperty({ example: 'Skills not found' })
+  message: string;
+  @ApiProperty({ example: 'Not Found' })
+  error: string;
+}
+
 // Informações que vão nos decorators do Swagger no controller
 export const ApiCreatedResponseCreate = {
   description:
@@ -178,9 +275,9 @@ export const ApiResponseFindById = {
 export const ApirParamFindById = {
   name: 'id',
   required: true,
-  description: 'Um número inteiro para o id do usuário candidato',
+  description: 'Um número inteiro para o id do projeto',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-users/1',
+  example: 'candidate-projects/1',
 };
 
 export const ApiResponseUpdate = {
@@ -193,4 +290,44 @@ export const ApiResponseDelete = {
   status: 200,
   description:
     'Endpoint que remove um conforme id informado. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseRoles = {
+  status: 200,
+  description:
+    'Endpoint que retorna todas profissões/cargos. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseRoleById = {
+  status: 200,
+  description:
+    'Endpoint que retorna uma profissão/cargo conforme id informado. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseStacks = {
+  status: 200,
+  description:
+    'Endpoint que retorna todas linguagens/ferramentas. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseStackById = {
+  status: 200,
+  description:
+    'Endpoint que retorna uma linguagem/ferramenta conforme id informado. Precisa estar autenticado com o token JWT',
+};
+
+export const ApirParamRoleFindById = {
+  name: 'id',
+  required: true,
+  description: 'Um número inteiro para o id da profissão/cargo',
+  schema: { oneOf: [{ type: 'integer' }] },
+  example: 'candidate-projects/roles/1',
+};
+
+export const ApirParamStackFindById = {
+  name: 'id',
+  required: true,
+  description: 'Um número inteiro para o id da linguagem/ferramenta',
+  schema: { oneOf: [{ type: 'integer' }] },
+  example: 'candidate-projects/skills/1',
 };

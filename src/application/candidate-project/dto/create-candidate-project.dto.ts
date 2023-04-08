@@ -30,16 +30,50 @@ export class CreateCandidateProjectDto {
   @IsString()
   urlTeamSelection: string;
 
+  @ApiProperty({
+    description:
+      'Campo destinado ao prenchimento com o nome do responsável pelo projeto (dono/usuário que criou)',
+    example: 'John Doe',
+  })
+  @IsOptional()
+  @IsString()
   responsible?: string;
 
   @ApiProperty({
     description:
-      'Este campo recebe um array com IDs dos usuários que serão lideres no projeto',
-    example: [1, 4, 10],
+      'Campo destinado ao prenchimento com o contado do responsável pelo projeto (dono/usuário que criou)',
+    example: '99999999999',
   })
-  @ArrayNotEmpty()
-  @IsNumber({}, { each: true })
-  leaders: number[];
+  @IsOptional()
+  @IsString()
+  contactResponsible?: string;
+
+  @ApiProperty({
+    description:
+      'Campo destinado ao prenchimento com link do linkedin do responsável pelo projeto (dono/usuário que criou)',
+    example: 'https://www.linkedin.com/in/johndoe',
+  })
+  @IsOptional()
+  @IsString()
+  urlLinkediResponsible?: string;
+
+  @ApiProperty({
+    description:
+      'Este campo recebe uma string com os nomes do(s) lider(es) e seu(s) contato(s)',
+    example:
+      'João Paulo, joaop@email.com, (99)9999-9999, linkedin / Maria Laura, mairaL@email.com, (99)9999-9999, linkedin',
+  })
+  @IsOptional()
+  @IsString()
+  contactLeaders?: string;
+  // @ApiProperty({
+  //   description:
+  //     'Este campo recebe um array com IDs dos usuários que serão lideres no projeto',
+  //   example: [1, 4, 10],
+  // })
+  // @ArrayNotEmpty()
+  // @IsNumber({}, { each: true })
+  // leaders: number[];
 
   @ApiProperty({
     description:
@@ -52,7 +86,7 @@ export class CreateCandidateProjectDto {
 
   @ApiProperty({
     description: 'Este campo recebe um array com nomes dos cargos/proficionais',
-    example: ['QUALITY ASSURANCE', 'FRONT-END', 'BACK-END'],
+    example: ['Front-End', 'Back-End', 'QA', 'Product Manager', 'UX', 'UI'],
   })
   @ArrayNotEmpty()
   @IsString({ each: true })
@@ -61,7 +95,7 @@ export class CreateCandidateProjectDto {
   @ApiProperty({
     description:
       'Este campo recebe um array com nomes de outros cargos/proficionais',
-    example: ['TECH LEAD', 'IA', 'DATA SCIENCE'],
+    example: ['Tech Lead', 'Product Owner'],
   })
   @IsOptional()
   @IsArray()

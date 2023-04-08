@@ -32,11 +32,14 @@ CREATE TABLE "tb_candidate_projects" (
     "project_scope" TEXT NOT NULL,
     "url_team_selection" TEXT NOT NULL,
     "responsible" TEXT,
+    "contact_responsible" TEXT,
+    "utl_linkedin_responsible" TEXT,
     "candidate_user_id" INTEGER,
     "findy_help" TEXT,
     "is_active" BOOLEAN DEFAULT false,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME,
+    "contact_leaders" TEXT,
     CONSTRAINT "tb_candidate_projects_candidate_user_id_fkey" FOREIGN KEY ("candidate_user_id") REFERENCES "tb_candidate_users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -45,8 +48,8 @@ CREATE TABLE "tb_project_stack" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "project_id" INTEGER,
     "stackId" INTEGER,
-    CONSTRAINT "tb_project_stack_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "tb_candidate_projects" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "tb_project_stack_stackId_fkey" FOREIGN KEY ("stackId") REFERENCES "tb_stacks" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "tb_project_stack_stackId_fkey" FOREIGN KEY ("stackId") REFERENCES "tb_stacks" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "tb_project_stack_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "tb_candidate_projects" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -71,11 +74,7 @@ CREATE TABLE "tb_roles" (
 
 -- CreateTable
 CREATE TABLE "tb_leaders" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "userId" INTEGER,
-    "projectId" INTEGER,
-    CONSTRAINT "tb_leaders_userId_fkey" FOREIGN KEY ("userId") REFERENCES "tb_candidate_users" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "tb_leaders_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "tb_candidate_projects" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
 
 -- CreateIndex
