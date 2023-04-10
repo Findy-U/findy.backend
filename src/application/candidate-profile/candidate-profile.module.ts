@@ -8,6 +8,13 @@ import { CandidateProfileSQLiteRepository } from 'src/common/repositories/candid
 
 @Module({
   controllers: [CandidateProfileController],
-  providers: [CandidateProfileService, CandidateProfileSQLiteRepository, CandidateProfile]
+  providers: [
+    CandidateProfileService,
+    {
+      provide: CandidateProfileRepository,
+      useClass: CandidateProfileSQLiteRepository,
+    },
+    CandidateProfile,
+  ],
 })
-export class CandidateProfileModule { }
+export class CandidateProfileModule {}
