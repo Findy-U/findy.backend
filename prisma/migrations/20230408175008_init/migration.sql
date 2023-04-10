@@ -16,13 +16,31 @@ CREATE TABLE "tb_candidate_users" (
 CREATE TABLE "tb_candidate-profile" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "description" TEXT NOT NULL,
-    "skills" TEXT NOT NULL,
-    "professional_experience" TEXT NOT NULL,
     "url_github" TEXT NOT NULL,
     "url_linkedin" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
+    "available_time" TEXT NOT NULL,
+    "area_of_interest" TEXT NOT NULL,
     "candidateUserId" INTEGER,
     CONSTRAINT "tb_candidate-profile_candidateUserId_fkey" FOREIGN KEY ("candidateUserId") REFERENCES "tb_candidate_users" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "OccupationArea" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT,
+    "user_id" INTEGER,
+    "profileId" INTEGER,
+    CONSTRAINT "OccupationArea_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "tb_candidate-profile" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "profile_skills" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "profile_id" INTEGER,
+    "stack_id" INTEGER,
+    CONSTRAINT "profile_skills_stack_id_fkey" FOREIGN KEY ("stack_id") REFERENCES "tb_stacks" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "profile_skills_profile_id_fkey" FOREIGN KEY ("profile_id") REFERENCES "tb_candidate-profile" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -47,8 +65,8 @@ CREATE TABLE "tb_candidate_projects" (
 CREATE TABLE "tb_project_stack" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "project_id" INTEGER,
-    "stackId" INTEGER,
-    CONSTRAINT "tb_project_stack_stackId_fkey" FOREIGN KEY ("stackId") REFERENCES "tb_stacks" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    "stack_id" INTEGER,
+    CONSTRAINT "tb_project_stack_stack_id_fkey" FOREIGN KEY ("stack_id") REFERENCES "tb_stacks" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "tb_project_stack_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "tb_candidate_projects" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 

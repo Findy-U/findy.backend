@@ -25,17 +25,38 @@ model CandidateUser {
 }
 
 model CandidateProfile {
-  id                     Int            @id @default(autoincrement())
-  description            String
-  skills                 String
-  professionalExperience String         @map("professional_experience")
-  urlGithub              String         @map("url_github")
-  urlLinkedin            String         @map("url_linkedin")
-  phone                  String
-  candidateUserId        Int?           @unique
-  CandidateUser          CandidateUser? @relation(fields: [candidateUserId], references: [id])
+  id              Int              @id @default(autoincrement())
+  description     String
+  urlGithub       String           @map("url_github")
+  urlLinkedin     String           @map("url_linkedin")
+  phone           String
+  availableTime   String           @map("available_time")
+  areaOfInterest  String           @map("area_of_interest")
+  candidateUserId Int?             @unique
+  candidateUser   CandidateUser?   @relation(fields: [candidateUserId], references: [id])
+  occupationArea  OccupationArea[]
+  profileSkills   ProfileSkills[]
+  // professionalExperience String           @map("professional_experience")
 
   @@map("tb_candidate-profile")
+}
+
+model OccupationArea {
+  id               Int               @id @default(autoincrement())
+  title            String?
+  userId           Int?              @map("user_id")
+  profileId        Int?
+  CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id])
+}
+
+model ProfileSkills {
+  id               Int               @id @default(autoincrement())
+  profileId        Int?              @map("profile_id")
+  stackId          Int?              @map("stack_id")
+  Skill            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade)
+  CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("profile_skills")
 }
 
 model CandidateProject {
@@ -62,7 +83,7 @@ model CandidateProject {
 model ProjectStack {
   id               Int               @id @default(autoincrement())
   projectId        Int?              @map("project_id")
-  stackId          Int?
+  stackId          Int?              @map("stack_id")
   Stack            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade)
   CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
@@ -79,9 +100,10 @@ model ProjectRoles {
 }
 
 model Stack {
-  id    Int            @id @default(autoincrement())
-  title String
-  tools ProjectStack[]
+  id            Int             @id @default(autoincrement())
+  title         String
+  tools         ProjectStack[]
+  ProfileSkills ProfileSkills[]
 
   @@map("tb_stacks")
 }

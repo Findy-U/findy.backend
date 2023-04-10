@@ -3,18 +3,18 @@ import { CandidateProject, Roles, Stack } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
-import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { NotFoundError } from '../../exceptions/not-found.error';
+import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
 import {
   CandidateProjectResponse,
   CandidateUser,
 } from '../../../models/candidate-project';
+import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()
-export class CandidateProjectSqliteRepository
+export class CandidateProjectPostgresRepository
   implements CandidateProjectRepository
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaPostgresService) {}
 
   async create(
     project: CreateCandidateProjectDto,

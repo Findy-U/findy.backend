@@ -55,4 +55,8 @@ export class CandidateUserPostgresRepository
       data: cadidate,
     });
   }
+
+  remove(id: number): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 }

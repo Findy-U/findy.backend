@@ -4,19 +4,38 @@ import { CreateCandidateProfileDto } from 'src/application/candidate-profile/dto
 import { UpdateCandidateProfileDto } from 'src/application/candidate-profile/dto/update-candidate-profile.dto';
 import { CandidateProfile } from 'src/application/candidate-profile/entities/candidate-profile.entity';
 import { CandidateProfileRepository } from 'src/application/candidate-profile/repository/candidate-profile.repository';
-import { PrismaService } from 'src/config/database/prisma/prisma.service';
+import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
 import { NotFoundError } from '../../exceptions/not-found.error';
+import { ConflictError } from '../../exceptions/conflict-error';
 
 @Injectable()
-export class CandidateProfileSQLiteRepository
+export class CandidateProfilePostgresRepository
   implements CandidateProfileRepository
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaPostgresService) {}
 
   async create(profile: CreateCandidateProfileDto) {
     const areaArray = profile.others
       ? [...profile.occupationArea, ...profile.others]
       : [...profile.occupationArea];
+
+    const userExists = await this.prisma.candidateUser.findUnique({
+      where: { id: profile.candidateUserId },
+    });
+
+    if (!userExists) {
+      throw new NotFoundError('Candidate user not found');
+    }
+
+    const profileExists = await this.prisma.candidateProfile.findFirst({
+      where: { candidateUserId: profile.candidateUserId },
+    });
+    console.info(profileExists);
+    if (profileExists) {
+      throw new ConflictError(
+        'There is already a profile registered for this user',
+      );
+    }
 
     try {
       const newProfile = await this.prisma.candidateProfile.create({
@@ -84,7 +103,7 @@ export class CandidateProfileSQLiteRepository
   }
 
   async findById(id: number): Promise<CandidateProfile> {
-    return await this.prisma.candidateProfile.findUnique({
+    const profile = await this.prisma.candidateProfile.findUnique({
       where: { id },
       include: {
         candidateUser: {
@@ -105,6 +124,8 @@ export class CandidateProfileSQLiteRepository
         profileSkills: true,
       },
     });
+
+    return profile;
   }
 
   async update(id: number, profile: UpdateCandidateProfileDto): Promise<void> {

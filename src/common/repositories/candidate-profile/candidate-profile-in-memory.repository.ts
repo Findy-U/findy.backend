@@ -29,10 +29,10 @@ export class CandidateProfileInMemoryRepository extends CandidateProfileReposito
   async findById(id: number): Promise<CandidateProfile> {
     return await this.candidateProfile.find((p) => p.idUserCandidate === id);
   }
-  update(id: number, profile: UpdateCandidateProfileDto) {
-    return 'Esse método faz a atualização do perfil do usuário';
+  async update(id: number, profile: UpdateCandidateProfileDto): Promise<void> {
+    'Esse método faz a atualização do perfil do usuário';
   }
-  delete(id: number): void {
+  async remove(id: number): Promise<void> {
     const index = this.candidateProfile.findIndex((p, i) => {
       p.idCandidateUser === id;
     });

@@ -11,4 +11,5 @@ export abstract class CandidateUserRepository {
     id: number,
     cadidate: UpdateCandidateUserDto,
   ): Promise<CandidateUser>;
+  abstract remove(id: number): Promise<void>;
 }

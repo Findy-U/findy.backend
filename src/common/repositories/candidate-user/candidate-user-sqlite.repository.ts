@@ -53,4 +53,8 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
       data: cadidate,
     });
   }
+
+  remove(id: number): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 }
