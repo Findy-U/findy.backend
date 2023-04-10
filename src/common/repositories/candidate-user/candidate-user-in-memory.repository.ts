@@ -75,4 +75,8 @@ export class CandidateUserInMemoryRepository
   update(id: number, cadidate: UpdateCandidateUserDto): Promise<CandidateUser> {
     throw new Error('Method not implemented.');
   }
+
+  remove(id: number): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 }

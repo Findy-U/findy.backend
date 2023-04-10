@@ -61,6 +61,6 @@ export class CandidateProjectService {
     if (!id) {
       throw new BadRequestError('The ID was not informed, please inform!');
     }
-    return this.candidateProjectRepository.delete(id);
+    return this.candidateProjectRepository.remove(id);
   }
 }

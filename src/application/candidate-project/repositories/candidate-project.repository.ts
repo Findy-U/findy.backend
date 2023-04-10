@@ -18,7 +18,7 @@ export abstract class CandidateProjectRepository {
     id: number,
     project: UpdateCandidateProjectDto,
   ): Promise<void>;
-  abstract delete(id: number): Promise<{ message: string }>;
+  abstract remove(id: number): Promise<{ message: string }>;
   abstract findAllRolesProject(): Promise<Roles[]>;
   abstract findByIdRoleProject(id: number): Promise<Roles>;
   abstract findAllSkillsProject(): Promise<Stack[]>;

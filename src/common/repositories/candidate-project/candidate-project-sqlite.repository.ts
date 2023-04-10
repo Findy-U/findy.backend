@@ -165,7 +165,7 @@ export class CandidateProjectSqliteRepository
     }
   }
 
-  async delete(id: number): Promise<{ message: string }> {
+  async remove(id: number): Promise<{ message: string }> {
     const projectExists = await this.findById(id);
     if (!projectExists) {
       throw new NotFoundError('Project not found');
