@@ -19,10 +19,12 @@ export class CreateCandidateProfileDto {
   phone: string;
 
   @ApiProperty({ example: 'https://www.github.com/eemr3' })
+  @IsNotEmpty()
   @IsString()
   urlGithub: string;
 
   @ApiProperty({ example: 'https://www.linkedin.com/in/emerson-moreira' })
+  @IsNotEmpty()
   @IsString()
   urlLinkedin: string;
 
@@ -32,6 +34,7 @@ export class CreateCandidateProfileDto {
   profileSkills?: number[];
 
   @ApiProperty({ example: ['Front-End', 'UX', 'UI'] })
+  @ArrayNotEmpty()
   @IsArray()
   @IsString({ each: true })
   occupationArea?: string[];
