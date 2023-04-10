@@ -8,10 +8,12 @@ import {
   Delete,
   NotFoundException,
   UseGuards,
+  ConflictException,
 } from '@nestjs/common';
 import { InternalServerErrorException } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiExcludeEndpoint,
   ApiNotFoundResponse,
@@ -28,10 +30,14 @@ import {
   ApiProfileCreatedResponseCreate,
   ApiProfileParamFindById,
   ApiProfileResponseFindAll,
-  NotFoundExceptionError,
+  CandidateUserNotFoundExceptionError,
+  ProfileConflictExceptionError,
+  ProfileNotFoundExceptionError,
   UnauthorizedExceptionError,
 } from './swagger/success.response';
 import { ProfileResponseFind } from './swagger/success.response';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
+import { ConflictError } from '../../common/exceptions/conflict-error';
 
 @Controller('candidate-profile')
 @ApiTags('candidate_profile')
@@ -48,12 +54,24 @@ export class CandidateProfileController {
     type: UnauthorizedExceptionError,
   })
   @ApiBearerAuth()
+  @ApiConflictResponse({
+    type: ProfileConflictExceptionError,
+  })
+  @ApiNotFoundResponse({
+    type: CandidateUserNotFoundExceptionError,
+  })
   async create(@Body() createCandidateProfileDto: CreateCandidateProfileDto) {
     try {
       return await this.candidateProfileService.create(
         createCandidateProfileDto,
       );
     } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+      if (error instanceof ConflictError) {
+        throw new ConflictException(error.message);
+      }
       throw new InternalServerErrorException('Server error please try again');
     }
   }
@@ -80,7 +98,7 @@ export class CandidateProfileController {
   })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o projeto no BD',
-    type: NotFoundExceptionError,
+    type: ProfileNotFoundExceptionError,
   })
   @ApiParam(ApiProfileParamFindById)
   async findOne(@Param('id') id: string) {

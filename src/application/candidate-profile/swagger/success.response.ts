@@ -117,19 +117,30 @@ export class ProfileUpdateResponse {
   message: string;
 }
 
-// export class ConflictExceptionError {
-//   @ApiProperty({ example: 409 })
-//   statusCode: number;
-//   @ApiProperty({ example: 'Candidate user already exists' })
-//   message: string;
-//   @ApiProperty({ example: 'Conflict' })
-//   error: string;
-// }
+export class ProfileConflictExceptionError {
+  @ApiProperty({ example: 409 })
+  statusCode: number;
+  @ApiProperty({
+    example:
+      'There is already a profile registered for this user user already exists',
+  })
+  message: string;
+  @ApiProperty({ example: 'Conflict' })
+  error: string;
+}
 
-export class NotFoundExceptionError {
+export class CandidateUserNotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;
-  @ApiProperty({ example: 'Project not found' })
+  @ApiProperty({ example: 'Candidate user not found' })
+  message: string;
+  @ApiProperty({ example: 'Not Found' })
+  error: string;
+}
+export class ProfileNotFoundExceptionError {
+  @ApiProperty({ example: 404 })
+  statusCode: number;
+  @ApiProperty({ example: 'Profile not found' })
   message: string;
   @ApiProperty({ example: 'Not Found' })
   error: string;

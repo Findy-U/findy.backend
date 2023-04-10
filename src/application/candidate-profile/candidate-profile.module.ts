@@ -5,6 +5,7 @@ import { CandidateProfileRepository } from './repository/candidate-profile.repos
 import { CandidateProfileInMemoryRepository } from 'src/common/repositories/candidate-profile/candidate-profile-in-memory.repository';
 import { CandidateProfile } from './entities/candidate-profile.entity';
 import { CandidateProfileSQLiteRepository } from 'src/common/repositories/candidate-profile/candidate-profile-sqlite-repository';
+import { CandidateProfilePostgresRepository } from '../../common/repositories/candidate-profile/candidate-profile-postgres-repository';
 
 @Module({
   controllers: [CandidateProfileController],
@@ -12,7 +13,7 @@ import { CandidateProfileSQLiteRepository } from 'src/common/repositories/candid
     CandidateProfileService,
     {
       provide: CandidateProfileRepository,
-      useClass: CandidateProfileSQLiteRepository,
+      useClass: CandidateProfilePostgresRepository,
     },
     CandidateProfile,
   ],
