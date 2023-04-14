@@ -33,11 +33,18 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
     return await this.prisma.candidateUser.create({ data });
   }
 
-  async findAll(): Promise<CandidateUser[]> {
-    return await this.prisma.candidateUser.findMany();
+  async findAll(): Promise<any[]> {
+    return await this.prisma.candidateUser.findMany({
+      include: { CandidateProfile: true },
+    });
   }
   async findById(id: number) {
-    return await this.prisma.candidateUser.findUnique({ where: { id } });
+    return await this.prisma.candidateUser.findUnique({
+      where: { id },
+      include: {
+        CandidateProfile: true,
+      },
+    });
   }
 
   async findByEmail(email: string): Promise<CandidateUser> {

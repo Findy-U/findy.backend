@@ -25,6 +25,8 @@ export class CandidateUserService {
 
   async findAll() {
     const candidates = await this.candidateRepository.findAll();
+    console.log(candidates);
+
     return candidates.map((candidate) =>
       this.candidateUserSerialize.dbToResponse(candidate),
     );
@@ -35,6 +37,7 @@ export class CandidateUserService {
     if (!candidate) {
       throw new NotFoundError('Candidate not found');
     }
+
     return this.candidateUserSerialize.dbToResponse(candidate);
   }
 

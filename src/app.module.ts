@@ -22,4 +22,4 @@ import { CandidateProjectModule } from './application/candidate-project/candidat
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}
