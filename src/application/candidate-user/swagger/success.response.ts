@@ -35,6 +35,20 @@ export class ResponseFind {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({
+    example: {
+      id: 1,
+      description: 'Texto da descrição do perfil do usuário',
+      urlGithub: 'https://www.github.com/eemr3',
+      urlLinkedin: 'https://www.linkedin.com/in/emerson-moreira',
+      phone: '61998673265',
+      availableTime: 'Tenho 2 horas por dia, nose dias segunda, terça e sexta',
+      areaOfInterest:
+        'Qeuro atuar como desenvolvedor Front-end e Tech lead no projeto',
+    },
+  })
+  profile: string;
 }
 
 export class UpdateDTOSwagger {
