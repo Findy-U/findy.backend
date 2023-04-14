@@ -36,10 +36,18 @@ export class CandidateUserPostgresRepository
   }
 
   async findAll(): Promise<CandidateUser[]> {
-    return await this.prisma.candidateUser.findMany();
+    return await this.prisma.candidateUser.findMany({
+      include: {
+        CandidateProfile: true,
+      },
+    });
   }
+
   async findById(id: number) {
-    return await this.prisma.candidateUser.findUnique({ where: { id } });
+    return await this.prisma.candidateUser.findUnique({
+      where: { id },
+      include: { CandidateProfile: true },
+    });
   }
 
   async findByEmail(email: string): Promise<CandidateUser> {
