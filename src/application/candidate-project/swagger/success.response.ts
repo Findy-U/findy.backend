@@ -263,7 +263,7 @@ export const ApiConflictResponseCreate = {
 export const ApiResponseFindAll = {
   status: 200,
   description:
-    'Endpoint que retorna todos os usuários candidatos. Precisa estar autenticado com o token JWT',
+    'Endpoint que retorna todos os projetos. Precisa estar autenticado com o token JWT',
 };
 
 export const ApiResponseFindById = {
