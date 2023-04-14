@@ -100,7 +100,6 @@ export const ApirParamFindById = {
   required: true,
   description: 'Um número inteiro para o id do usuário candidato',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-users/1',
 };
 
 export const ApiResponseUpdate = {

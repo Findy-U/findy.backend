@@ -125,7 +125,6 @@ export class AuthController {
     required: true,
     description: 'Um número inteiro para o id do usuário candidato',
     schema: { oneOf: [{ type: 'integer' }] },
-    example: 'reset-password/1',
   })
   @ApiBody({
     type: RecoverPasswordDto,
