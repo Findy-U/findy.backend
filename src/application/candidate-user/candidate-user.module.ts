@@ -5,6 +5,7 @@ import { PrismaService } from '../../config/database/prisma/prisma.service';
 import { CandidateUserController } from './candidate-user.controller';
 import { CandidateUserService } from './candidate-user.service';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
+import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
 
 @Module({
   imports: [],

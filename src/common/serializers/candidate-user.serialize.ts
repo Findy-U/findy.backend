@@ -31,6 +31,15 @@ export class CandidateUserSerialize {
       providerId: candidate.providerId,
       createdAt: candidate.createdAt,
       updatedAt: candidate.updatedAt,
+      profile: {
+        id: candidate?.CandidateProfile?.id,
+        description: candidate?.CandidateProfile?.description,
+        urlGithub: candidate?.CandidateProfile?.urlGithub,
+        urlLinkedin: candidate?.CandidateProfile?.urlLinkedin,
+        phone: candidate?.CandidateProfile?.phone,
+        availableTime: candidate?.CandidateProfile?.availableTime,
+        areaOfInterest: candidate?.CandidateProfile?.areaOfInterest,
+      },
     };
   }
 }
