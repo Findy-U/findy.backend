@@ -6,4 +6,7 @@ export interface CandidateUserInterface {
   roles?: string;
   provider?: string;
   providerId?: string;
+  confirmationToken?: string;
+  expiredCoonfirmationToken?: Date;
+  activated?: boolean;
 }

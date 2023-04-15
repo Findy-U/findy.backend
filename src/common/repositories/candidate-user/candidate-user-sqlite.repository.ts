@@ -14,7 +14,7 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
   constructor(
     private readonly prisma: PrismaService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
-  ) {}
+  ) { }
 
   async create(candidate: CreateCandidateUserDto): Promise<CandidateUser> {
     let pwdHashed = '';
@@ -29,6 +29,7 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
         ? candidate.provider
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
+      activated: false
     });
     return await this.prisma.candidateUser.create({ data });
   }

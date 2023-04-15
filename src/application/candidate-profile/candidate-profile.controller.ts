@@ -44,7 +44,7 @@ import { ConflictError } from '../../common/exceptions/conflict-error';
 export class CandidateProfileController {
   constructor(
     private readonly candidateProfileService: CandidateProfileService,
-  ) {}
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()

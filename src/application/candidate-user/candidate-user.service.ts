@@ -4,13 +4,16 @@ import { CandidateUserSerialize } from '../../common/serializers/candidate-user.
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
+import { randomBytes } from 'crypto';
+import { MailService } from 'src/mails/mail.service';
 
 @Injectable()
 export class CandidateUserService {
   constructor(
     private readonly candidateRepository: CandidateUserRepository,
     private readonly candidateUserSerialize: CandidateUserSerialize,
-  ) {}
+    private readonly mailService: MailService
+  ) { }
 
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
@@ -20,6 +23,7 @@ export class CandidateUserService {
     }
 
     const newCandidate = await this.candidateRepository.create(createCandidate);
+    await this.generateConfirmationToken(newCandidate);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
 
@@ -62,6 +66,33 @@ export class CandidateUserService {
       throw new Error('Candidate not found');
     }
 
+    return candidate;
+  }
+
+  async generateConfirmationToken(candidate) {
+    const token = randomBytes(32).toString('hex');
+    const expiredAt = new Date();
+    expiredAt.setHours(expiredAt.getHours() + 2);
+
+    candidate.confirmationToken = token;
+    candidate.expiredConfirmationToken = expiredAt;
+
+    candidate = await this.candidateRepository.update(candidate.id, candidate);
+    console.log(candidate);
+    await this.mailService.sendActivationEmail(candidate, token);
+  }
+
+  async confirmationEmail(email, token) {
+    const candidate = await this.candidateRepository.findByEmail(email);
+    const now = new Date();
+    if (candidate.confirmationToken === token && candidate.expiredConfirmationToken) {
+      if (candidate.expiredConfirmationToken < now) {
+        throw new Error('Invalid token! Please request a new token');
+      }
+      candidate.activated = true;
+      candidate.confirmationToken = null;
+    }
+    await this.candidateRepository.update(candidate.id, candidate);
     return candidate;
   }
 }

@@ -5,6 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Query,
   Patch,
   Post,
   UseGuards,
@@ -46,7 +47,7 @@ import {
 @Controller('candidate-users')
 @ApiTags('candidate_users')
 export class CandidateUserController {
-  constructor(private readonly candidateUserService: CandidateUserService) {}
+  constructor(private readonly candidateUserService: CandidateUserService) { }
 
   @Post()
   @ApiCreatedResponse(ApiCreatedResponseCreate)
@@ -120,6 +121,12 @@ export class CandidateUserController {
     @Body() updateCandidateUserDto: UpdateCandidateUserDto,
   ) {
     await this.candidateUserService.update(+id, updateCandidateUserDto);
-    return { message: 'Uupdate successfully' };
+    return { message: 'Update successfully' };
+  }
+
+  @Post('email-confirmation')
+  async emailConfirmation(@Query('token') token: string, @Body('email') email: string) {
+    await this.candidateUserService.confirmationEmail(email, token);
+    return { message: 'Email confirmed successfully!' }
   }
 }
