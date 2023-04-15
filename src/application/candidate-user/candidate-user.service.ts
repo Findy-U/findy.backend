@@ -59,7 +59,7 @@ export class CandidateUserService {
     }
 
     if (token !== candidate.recoverToken) {
-      throw new Error('Candidate not found');
+      throw new Error('Token not found');
     }
 
     return candidate;
