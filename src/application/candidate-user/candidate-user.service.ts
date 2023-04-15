@@ -6,6 +6,7 @@ import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
 import { randomBytes } from 'crypto';
 import { MailService } from 'src/mails/mail.service';
+import { generateConfirmationToken } from 'src/common/helpers/generate-token';
 
 @Injectable()
 export class CandidateUserService {
@@ -17,13 +18,17 @@ export class CandidateUserService {
 
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
+    const { token, expiredAt } = generateConfirmationToken();
+    console.log(token, expiredAt);
 
     if (cadidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
     }
-
+    createCandidate.confirmationToken = token;
+    createCandidate.expiredConfirmationToken = expiredAt;
     const newCandidate = await this.candidateRepository.create(createCandidate);
-    await this.generateConfirmationToken(newCandidate);
+
+    await this.mailService.sendActivationEmail(newCandidate, token);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
 
@@ -67,19 +72,6 @@ export class CandidateUserService {
     }
 
     return candidate;
-  }
-
-  async generateConfirmationToken(candidate) {
-    const token = randomBytes(32).toString('hex');
-    const expiredAt = new Date();
-    expiredAt.setHours(expiredAt.getHours() + 2);
-
-    candidate.confirmationToken = token;
-    candidate.expiredConfirmationToken = expiredAt;
-
-    candidate = await this.candidateRepository.update(candidate.id, candidate);
-    console.log(candidate);
-    await this.mailService.sendActivationEmail(candidate, token);
   }
 
   async confirmationEmail(email, token) {

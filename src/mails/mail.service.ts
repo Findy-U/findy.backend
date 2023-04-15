@@ -18,6 +18,7 @@ export class MailService {
     console.log(candidate.email);
     await this.mailerService.sendMail({
       to: candidate.email,
+      from: '"Support Findy Team" noreply@application.com',
       subject: 'Email de ativação',
       template: './activationEmail',
       context: {
