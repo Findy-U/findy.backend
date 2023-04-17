@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   NotFoundException,
+  BadRequestException,
   Param,
   Query,
   Patch,
@@ -56,6 +57,7 @@ export class CandidateUserController {
     try {
       return await this.candidateUserService.create(createCandidateUserDto);
     } catch (error) {
+      console.log(error);
       throw new ConflictException(error.message);
     }
   }
@@ -126,7 +128,11 @@ export class CandidateUserController {
 
   @Post('email-confirmation')
   async emailConfirmation(@Query('token') token: string, @Body('email') email: string) {
-    await this.candidateUserService.confirmationEmail(email, token);
-    return { message: 'Email confirmed successfully!' }
+    try {
+      await this.candidateUserService.confirmationEmail(email, token);
+      return { message: 'Email confirmed successfully!' }
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

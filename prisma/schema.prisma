@@ -20,7 +20,7 @@ model CandidateUser {
   recoverToken             String?            @map("recover_token")
   confirmationToken        String?            @unique @map("confirmation_token")
   expiredConfirmationToken DateTime?          @map("expired_confirmation_token")
-  activated                Boolean?
+  activated                Boolean            @default(false)
   CandidateProfile         CandidateProfile?
   CandidateProject         CandidateProject[]
 

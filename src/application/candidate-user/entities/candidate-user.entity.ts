@@ -9,5 +9,5 @@ export class CandidateUser {
   recoverToken?: string;
   confirmationToken?: string;
   expiredConfirmationToken?: Date;
-  activated?: boolean;
+  activated: boolean;
 }

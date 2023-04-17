@@ -66,7 +66,7 @@ export class CreateCandidateUserDto {
   recoverToken?: string;
   confirmationToken?: string;
   expiredConfirmationToken?: Date;
-  activated?: boolean;
+  activated: boolean;
 
 
   createdAt?: Date;

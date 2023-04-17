@@ -11,14 +11,13 @@ import { SALT_BCRYPT } from '../../constants/constants';
 import { CandidateUserSerialize } from '../../serializers/candidate-user.serialize';
 @Injectable()
 export class CandidateUserPostgresRepository
-  implements CandidateUserRepository
-{
+  implements CandidateUserRepository {
   constructor(
     private readonly prisma: PrismaPostgresService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
-  ) {}
+  ) { }
 
-  async create(candidate: CreateCandidateUserDto): Promise<CandidateUser> {
+  async create(candidate: CreateCandidateUserDto, token, expiredAt): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
@@ -31,6 +30,9 @@ export class CandidateUserPostgresRepository
         ? candidate.provider
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
+      confirmationToken: token,
+      expiredConfirmationToken: expiredAt,
+      activated: candidate.activated
     });
     return await this.prisma.candidateUser.create({ data });
   }

@@ -4,9 +4,9 @@ import { CandidateUserSerialize } from '../../common/serializers/candidate-user.
 import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
-import { randomBytes } from 'crypto';
 import { MailService } from 'src/mails/mail.service';
-import { generateConfirmationToken } from 'src/common/helpers/generate-token';
+import { generateTemporaryToken } from 'src/common/helpers/generate-token';
+import { BadRequestError } from '../../common/exceptions/bad-request.error';
 
 @Injectable()
 export class CandidateUserService {
@@ -18,15 +18,14 @@ export class CandidateUserService {
 
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
-    const { token, expiredAt } = generateConfirmationToken();
+    const { token, expiredAt } = await generateTemporaryToken();
     console.log(token, expiredAt);
 
     if (cadidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
     }
-    createCandidate.confirmationToken = token;
-    createCandidate.expiredConfirmationToken = expiredAt;
-    const newCandidate = await this.candidateRepository.create(createCandidate);
+
+    const newCandidate = await this.candidateRepository.create(createCandidate, token, expiredAt);
 
     await this.mailService.sendActivationEmail(newCandidate, token);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
@@ -77,13 +76,14 @@ export class CandidateUserService {
   async confirmationEmail(email, token) {
     const candidate = await this.candidateRepository.findByEmail(email);
     const now = new Date();
-    if (candidate.confirmationToken === token && candidate.expiredConfirmationToken) {
-      if (candidate.expiredConfirmationToken < now) {
-        throw new Error('Invalid token! Please request a new token');
-      }
-      candidate.activated = true;
-      candidate.confirmationToken = null;
+    if (candidate.confirmationToken !== token || candidate.expiredConfirmationToken < now) {
+      throw new BadRequestError('Invalid token! Please request a new token');
     }
+
+    candidate.activated = true;
+    candidate.confirmationToken = null;
+    candidate.expiredConfirmationToken = null;
+
     await this.candidateRepository.update(candidate.id, candidate);
     return candidate;
   }
