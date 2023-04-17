@@ -14,7 +14,8 @@ export class MailService {
   ) { }
 
   async sendActivationEmail(candidate: CandidateUser, token: string) {
-    const url = `${this.configService.get<string>('urlEmailConfirmation')}?token=${token}`;
+    const url = `${this.configService.get<string>('urlEmailConfirmation')}?id=${candidate.id}
+    &token=${token}`;
     console.log(candidate.email);
     await this.mailerService.sendMail({
       to: candidate.email,

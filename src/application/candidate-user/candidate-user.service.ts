@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
-import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
+import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
 import { MailService } from 'src/mails/mail.service';
 import { generateTemporaryToken } from 'src/common/helpers/generate-token';
@@ -73,8 +73,8 @@ export class CandidateUserService {
     return candidate;
   }
 
-  async confirmationEmail(email, token) {
-    const candidate = await this.candidateRepository.findByEmail(email);
+  async confirmationEmail(id: number, token: string) {
+    const candidate = await this.candidateRepository.findById(id);
     const now = new Date();
     if (candidate.confirmationToken !== token || candidate.expiredConfirmationToken < now) {
       throw new BadRequestError('Invalid token! Please request a new token');
