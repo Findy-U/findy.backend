@@ -29,15 +29,17 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Role } from '../../models/roles.enum';
 import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
-import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
+import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 import {
   ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
+  ApiResponseEmailConfirmation,
   ApiResponseFindAll,
   ApiResponseFindById,
   ApiResponseUpdate,
   ApirParamFindById,
+  ConfirmEmailResponse,
   NotFoundExceptionError,
   ResponseFind,
   UnauthorizedExceptionError,
@@ -126,10 +128,12 @@ export class CandidateUserController {
     return { message: 'Update successfully' };
   }
 
-  @Post('email-confirmation')
-  async emailConfirmation(@Query('token') token: string, @Body('email') email: string) {
+  @Patch('email-confirmation/:id')
+  @ApiResponse({ ...ApiResponseEmailConfirmation, type: ConfirmEmailResponse })
+  @ApiParam(ApirParamFindById)
+  async emailConfirmation(@Param('id') id: string, @Query('token') token: string) {
     try {
-      await this.candidateUserService.confirmationEmail(email, token);
+      await this.candidateUserService.confirmationEmail(+id, token);
       return { message: 'Email confirmed successfully!' }
     } catch (error) {
       throw new BadRequestException(error.message);

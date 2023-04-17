@@ -46,6 +46,12 @@ export class UpdateResponse {
   @ApiProperty({ example: 'Update successfully' })
   message: string;
 }
+
+export class ConfirmEmailResponse {
+  @ApiProperty({ example: 'Email confirmed successfully' })
+  message: string
+}
+
 export class ConflictExceptionError {
   @ApiProperty({ example: 409 })
   statusCode: number;
@@ -99,12 +105,17 @@ export const ApirParamFindById = {
   name: 'id',
   required: true,
   description: 'Um número inteiro para o id do usuário candidato',
-  schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-users/1',
+  schema: { oneOf: [{ type: 'integer' }] }
 };
 
 export const ApiResponseUpdate = {
   status: 200,
   description:
     'Endpoint usando para editar o perfil do usuário candidato. Precisa estar autenticado com o token JWT',
+};
+
+export const ApiResponseEmailConfirmation = {
+  status: 200,
+  description:
+    'Endpoint usado para confirmação do email do usuário candidato'
 };
