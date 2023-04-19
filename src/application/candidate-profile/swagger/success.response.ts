@@ -234,7 +234,6 @@ export const ApiProfileParamFindById = {
   required: true,
   description: 'Um número inteiro para o id do perfil',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-profile/1',
 };
 
 export const ApiProfileResponseUpdate = {
