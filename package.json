@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prod:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate dev --schema=./prisma-postgres/schema.prisma",
+    "prod:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate deploy --schema=./prisma-postgres/schema.prisma",
+    "dev:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate deploy --schema=./prisma-postgres/schema.prisma",
     "prod:seed": "ts-node ./prisma-postgres/seeds.ts"
   },
   "dependencies": {
