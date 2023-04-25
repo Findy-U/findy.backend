@@ -19,7 +19,7 @@ export class CreateCandidateProfileDto {
   phone: string;
 
   @ApiProperty({ example: 'https://www.github.com/eemr3' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   urlGithub: string;
 
