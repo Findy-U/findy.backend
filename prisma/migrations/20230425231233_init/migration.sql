@@ -16,7 +16,7 @@ CREATE TABLE "tb_candidate_users" (
 CREATE TABLE "tb_candidate-profile" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "description" TEXT NOT NULL,
-    "url_github" TEXT NOT NULL,
+    "url_github" TEXT,
     "url_linkedin" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "available_time" TEXT NOT NULL,
