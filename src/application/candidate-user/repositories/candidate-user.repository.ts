@@ -1,4 +1,4 @@
-import { CreateCandidateUserDto } from '../dto/create-cadidate-user.dto';
+import { CreateCandidateUserDto } from '../dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from '../dto/update-cadidate-user.dto';
 import { CandidateUser } from '../entities/candidate-user.entity';
 

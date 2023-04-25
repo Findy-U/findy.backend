@@ -59,7 +59,7 @@ export class AuthController {
     type: LoginUnauthorizedExceptionError,
   })
   async login(@Req() req: AuthRequest) {
-    return this.authService.login(req.user);
+    return await this.authService.login(req.user);
   }
 
   @ApiExcludeEndpoint()

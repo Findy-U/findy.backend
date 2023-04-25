@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCandidateProfileDto } from 'src/application/candidate-profile/dto/create-candidate-profile.dto';
-import { UpdateCandidateProfileDto } from 'src/application/candidate-profile/dto/update-candidate-profile.dto';
+import { CreateCandidateProfileDto } from '../../../application/candidate-profile/dto/create-candidate-profile.dto';
+import { UpdateCandidateProfileDto } from '../../../application/candidate-profile/dto/update-candidate-profile.dto';
 import { CandidateProfile } from 'src/application/candidate-profile/entities/candidate-profile.entity';
-import { CandidateProfileRepository } from 'src/application/candidate-profile/repository/candidate-profile.repository';
+import { CandidateProfileRepository } from '../../../application/candidate-profile/repository/candidate-profile.repository';
 
 @Injectable()
 export class CandidateProfileInMemoryRepository extends CandidateProfileRepository {

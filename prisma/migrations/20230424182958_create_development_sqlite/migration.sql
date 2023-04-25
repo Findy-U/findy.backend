@@ -26,12 +26,12 @@ CREATE TABLE "tb_candidate-profile" (
 );
 
 -- CreateTable
-CREATE TABLE "OccupationArea" (
+CREATE TABLE "tb_occupation_area" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT,
     "user_id" INTEGER,
     "profileId" INTEGER,
-    CONSTRAINT "OccupationArea_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "tb_candidate-profile" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "tb_occupation_area_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "tb_candidate-profile" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -51,7 +51,7 @@ CREATE TABLE "tb_candidate_projects" (
     "url_team_selection" TEXT NOT NULL,
     "responsible" TEXT,
     "contact_responsible" TEXT,
-    "utl_linkedin_responsible" TEXT,
+    "url_linkedin_responsible" TEXT,
     "candidate_user_id" INTEGER,
     "findy_help" TEXT,
     "is_active" BOOLEAN DEFAULT false,

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateCandidateProfileDto } from 'src/application/candidate-profile/dto/create-candidate-profile.dto';
-import { UpdateCandidateProfileDto } from 'src/application/candidate-profile/dto/update-candidate-profile.dto';
-import { CandidateProfile } from 'src/application/candidate-profile/entities/candidate-profile.entity';
-import { CandidateProfileRepository } from 'src/application/candidate-profile/repository/candidate-profile.repository';
+import { CreateCandidateProfileDto } from '../../../application/candidate-profile/dto/create-candidate-profile.dto';
+import { UpdateCandidateProfileDto } from '../../../application/candidate-profile/dto/update-candidate-profile.dto';
+import { CandidateProfile } from '../../../application/candidate-profile/entities/candidate-profile.entity';
+import { CandidateProfileRepository } from '../../../application/candidate-profile/repository/candidate-profile.repository';
 import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
 import { NotFoundError } from '../../exceptions/not-found.error';
 import { ConflictError } from '../../exceptions/conflict-error';

@@ -35,4 +35,4 @@ import { MailService } from './mail.service';
   providers: [MailService, EmailConfirmationInMemory],
   exports: [MailService],
 })
-export class MailModule { }
+export class MailModule {}
