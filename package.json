@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "postinstall": "npx prisma generate --schema=./prisma-postgres/schema.prisma",
-    "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
