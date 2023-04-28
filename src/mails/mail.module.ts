@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { CandidateUserRepository } from '../application/candidate-user/repositories/candidate-user.repository';
 import { EmailConfirmationInMemory } from '../common/repositories/candidate-user/email-confirmation-in-memory.repository';
 import { MailService } from './mail.service';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { MailService } from './mail.service';
           from: `"No Reply" <${config.get('mailFrom')}>`,
         },
         template: {
-          dir: process.cwd() + '/src/mails/templates',
+          dir: join(__dirname, 'templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
