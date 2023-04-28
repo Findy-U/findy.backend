@@ -28,7 +28,7 @@ model CandidateUser {
 model CandidateProfile {
   id              Int              @id @default(autoincrement())
   description     String
-  urlGithub       String           @map("url_github")
+  urlGithub       String?          @map("url_github")
   urlLinkedin     String           @map("url_linkedin")
   phone           String
   availableTime   String           @map("available_time")
@@ -48,6 +48,8 @@ model OccupationArea {
   userId           Int?              @map("user_id")
   profileId        Int?
   CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id])
+
+  @@map("tb_occupation_area")
 }
 
 model ProfileSkills {
@@ -67,7 +69,7 @@ model CandidateProject {
   urlTeamSelection      String         @map("url_team_selection")
   responsible           String?
   contactResponsible    String?        @map("contact_responsible")
-  urlLinkediResponsible String?        @map("utl_linkedin_responsible")
+  urlLinkediResponsible String?        @map("url_linkedin_responsible")
   candidateUserId       Int?           @map("candidate_user_id")
   findyHelp             String?        @map("findy_help")
   isActive              Boolean?       @default(false) @map("is_active")

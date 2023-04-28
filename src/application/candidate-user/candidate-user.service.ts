@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
-import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
+import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
 

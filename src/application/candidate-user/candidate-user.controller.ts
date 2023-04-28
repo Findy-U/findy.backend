@@ -27,7 +27,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Role } from '../../models/roles.enum';
 import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
-import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
+import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
 import {
   ApiConflictResponseCreate,

@@ -11,7 +11,9 @@ describe('CandidateProfileController', () => {
       providers: [CandidateProfileService],
     }).compile();
 
-    controller = module.get<CandidateProfileController>(CandidateProfileController);
+    controller = module.get<CandidateProfileController>(
+      CandidateProfileController,
+    );
   });
 
   it('should be defined', () => {

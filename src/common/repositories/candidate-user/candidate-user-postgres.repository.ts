@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-cadidate-user.dto';
+import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
