@@ -16,7 +16,7 @@ import { CandidateUserSqliteRepository } from '../../common/repositories/candida
     PrismaService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserPostgresRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })
