@@ -20,12 +20,14 @@ export class CandidateUserService {
     }
 
     const newCandidate = await this.candidateRepository.create(createCandidate);
-    return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
+    const result = this.candidateUserSerialize.dbToResponseCreate(newCandidate);
+    return {
+      ...result,
+    };
   }
 
   async findAll() {
     const candidates = await this.candidateRepository.findAll();
-    console.log(candidates);
 
     return candidates.map((candidate) =>
       this.candidateUserSerialize.dbToResponse(candidate),
@@ -59,7 +61,7 @@ export class CandidateUserService {
     }
 
     if (token !== candidate.recoverToken) {
-      throw new Error('Candidate not found');
+      throw new Error('Recover token not found');
     }
 
     return candidate;

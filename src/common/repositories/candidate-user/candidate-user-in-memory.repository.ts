@@ -37,13 +37,11 @@ export class CandidateUserInMemoryRepository
       roles: 'candidate',
       provider: 'findy',
       providerId: null,
-      recoverToken: null,
+      recoverToken: 'any_recover_token',
     },
   ];
 
   async create(user: CreateCandidateUserDto): Promise<CandidateUser> {
-    console.log('repositorio em memo', user);
-
     this.candidate.push({
       id: this.candidate.length + 1,
       name: user.name,
@@ -56,6 +54,7 @@ export class CandidateUserInMemoryRepository
 
     return this.findByEmail(user.email);
   }
+
   async findByEmail(email: string): Promise<CandidateUser> {
     return new Promise((resolve) =>
       resolve(this.candidate.find((user) => user.email === email)),
