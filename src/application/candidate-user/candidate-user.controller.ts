@@ -42,6 +42,7 @@ import {
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
+import { ConflictError } from '../../common/exceptions/conflict-error';
 
 @Controller('candidate-users')
 @ApiTags('candidate_users')
@@ -55,7 +56,11 @@ export class CandidateUserController {
     try {
       return await this.candidateUserService.create(createCandidateUserDto);
     } catch (error) {
-      throw new ConflictException(error.message);
+      if (error instanceof ConflictError) {
+        throw new ConflictException(error.message);
+      }
+
+      console.log(error.message);
     }
   }
 
