@@ -20,10 +20,7 @@ export class CandidateUserService {
     }
 
     const newCandidate = await this.candidateRepository.create(createCandidate);
-    const result = this.candidateUserSerialize.dbToResponseCreate(newCandidate);
-    return {
-      ...result,
-    };
+    return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
 
   async findAll() {

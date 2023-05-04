@@ -9,8 +9,9 @@ export class PrismaPostgresService
   async onModuleInit() {
     await this.$connect();
 
-    this.$on('error', (_e) => {
+    this.$on('error', (e) => {
       // Do something
+      console.error(e);
     });
   }
 

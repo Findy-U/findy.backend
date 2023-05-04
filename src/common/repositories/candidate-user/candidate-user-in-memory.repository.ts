@@ -3,6 +3,7 @@ import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
+import { Role } from '../../../models/roles.enum';
 
 @Injectable()
 export class CandidateUserInMemoryRepository
@@ -42,12 +43,16 @@ export class CandidateUserInMemoryRepository
   ];
 
   async create(user: CreateCandidateUserDto): Promise<CandidateUser> {
+    if (!user.name || !user.email || !user.password) {
+      throw new Error('Invalid data');
+    }
+
     this.candidate.push({
       id: this.candidate.length + 1,
       name: user.name,
       email: user.email,
       password: user.password,
-      roles: user.roles,
+      roles: Role.Candidate,
       provider: user.provider,
       providerId: user.providerId,
     });
