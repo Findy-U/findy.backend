@@ -1,5 +1,5 @@
+// import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
@@ -12,8 +12,9 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  const configService = app.get(ConfigService);
+  // const configService = app.get(ConfigService);
 
+  const PORT = parseInt(process.env.PORT) || 3001;
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Findy API')
@@ -30,9 +31,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(configService.get('port'));
-  console.info(
-    `Application is running on: http://localhost:${configService.get('port')}`,
-  );
+  await app.listen(PORT || 3001);
+  if (PORT === 3001) {
+    console.info(`Application is running on: http://localhost:${PORT}`);
+  }
 }
 bootstrap();
