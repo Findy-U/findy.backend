@@ -11,7 +11,7 @@ import { CandidateProfileSQLiteRepository } from '../../common/repositories/cand
     CandidateProfileService,
     {
       provide: CandidateProfileRepository,
-      useClass: CandidateProfilePostgresRepository,
+      useClass: CandidateProfileSQLiteRepository,
     },
     CandidateProfile,
   ],
