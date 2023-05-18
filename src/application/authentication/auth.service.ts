@@ -6,7 +6,6 @@ import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
-import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { MailService } from '../../mails/mail.service';
 import { AuthProviderType } from '../../models/auth-provider.enum';
 import { UserPayload } from '../../models/candidate-user-payload';
@@ -18,7 +17,6 @@ import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 export class AuthService {
   constructor(
     private readonly candidateUserService: CandidateUserService,
-    private readonly candidateUserSerialize: CandidateUserSerialize,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
   ) {}

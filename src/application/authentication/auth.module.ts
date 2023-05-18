@@ -5,7 +5,6 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
 import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
-import { EmailConfirmationInMemory } from '../../common/repositories/candidate-user/email-confirmation-in-memory.repository';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { MailService } from '../../mails/mail.service';
 import { CandidateUserModule } from '../candidate-user/candidate-user.module';
@@ -38,11 +37,9 @@ import { CandidateUserSqliteRepository } from '../../common/repositories/candida
     CandidateUserService,
     CandidateUserSerialize,
     LocalStrategy,
-    EmailConfirmationInMemory,
     JwtStrategy,
     GoogleStrategy,
     MailService,
-    EmailConfirmationInMemory,
     {
       provide: CandidateUserRepository,
       useClass: CandidateUserSqliteRepository,
