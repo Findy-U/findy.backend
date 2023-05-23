@@ -7,4 +7,6 @@ export class CandidateUser {
   provider?: string;
   providerId?: string;
   recoverToken?: string;
+  createdRecoverToken?: Date;
+  revoverTokenExpiresAt?: Date;
 }

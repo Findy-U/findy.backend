@@ -83,6 +83,7 @@ export class AuthController {
     res.cookie(SESSION_COOKIE_KEY, token.access_token, {
       httpOnly: true,
       sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.redirect(

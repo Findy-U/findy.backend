@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
 import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
@@ -13,8 +12,12 @@ import { GoogleUser } from '../../models/google-user';
 import { Role } from '../../models/roles.enum';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
+import { ExpireTokenValidationService } from '../../common/helpers/token-send-recover-email';
+
 @Injectable()
 export class AuthService {
+  private readonly EXPIRATION_TIME = 48 * 60 * 60 * 1000;
+
   constructor(
     private readonly candidateUserService: CandidateUserService,
     private readonly jwtService: JwtService,
@@ -76,14 +79,18 @@ export class AuthService {
   async sendRecoverPasswordEmail(email: string): Promise<void> {
     const candidate = await this.candidateUserService.findByEmail(email);
 
+    const createTokenRecover = new ExpireTokenValidationService();
+
     if (!candidate) {
       throw new NotFoundError('There is no user registered with this email');
     }
 
-    const token = randomBytes(32).toString('hex');
+    const token = createTokenRecover.generateToken();
+    const expiresAt = new Date(Date.now() + this.EXPIRATION_TIME);
 
     await this.candidateUserService.update(candidate.id, {
       recoverToken: token,
+      recoverTokenExpiresAt: expiresAt,
     });
 
     await this.mailService.sendPasswordRecover(candidate, token);
@@ -100,6 +107,7 @@ export class AuthService {
     await this.candidateUserService.update(id, {
       password: pwdHashed,
       recoverToken: null,
+      recoverTokenExpiresAt: null,
       updatedAt: new Date(),
     });
   }

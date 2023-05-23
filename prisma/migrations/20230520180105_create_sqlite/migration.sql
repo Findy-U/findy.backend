@@ -9,7 +9,8 @@ CREATE TABLE "tb_candidate_users" (
     "provider_id" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME,
-    "recover_token" TEXT
+    "recover_token" TEXT,
+    "created_recover_token" DATETIME
 );
 
 -- CreateTable

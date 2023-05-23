@@ -22,6 +22,7 @@ export class MailService {
       template: './recoverPassword',
       context: {
         name: candidate.name,
+        email: candidate.email,
         url,
       },
     });

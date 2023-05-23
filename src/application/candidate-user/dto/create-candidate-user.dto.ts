@@ -77,4 +77,5 @@ export class CreateCandidateUserDto {
 
   createdAt?: Date;
   updatedAt?: Date;
+  recoverTokenExpiresAt?: Date;
 }

@@ -57,8 +57,15 @@ export class CandidateUserService {
       throw new Error('Candidate not found');
     }
 
-    if (token !== candidate.recoverToken) {
-      throw new Error('Recover token not found');
+    if (
+      token !== candidate.recoverToken ||
+      candidate.recoverTokenExpiresAt < new Date()
+    ) {
+      await this.candidateRepository.update(id, {
+        recoverToken: null,
+        recoverTokenExpiresAt: null,
+      });
+      throw new Error('Recovery token not found or recovery token is expired');
     }
 
     return candidate;
