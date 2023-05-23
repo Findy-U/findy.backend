@@ -23,7 +23,8 @@ export class CreateCandidateUserDto {
   @MaxLength(30, {
     message: 'O nome de usuário deve ter no máximo 30 caracteres.',
   })
-  @Matches(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
+  // créditos https://pt.stackoverflow.com/a/135784 da regex
+  @Matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, {
     message: 'O nome de usuário deve conter apenas letras',
   })
   name: string;
