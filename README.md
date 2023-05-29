@@ -24,6 +24,21 @@ $ npm run prod:prisma
 $ npm run prod:seed
 ```
 
+```bash
+# development
+$ npx prisma generate
+```
+
+```bash
+# development
+$ npx prisma migrate dev
+```
+
+```bash
+# development
+$ npm run dev:seed
+```
+
 ## Running the app
 
 ````bash
