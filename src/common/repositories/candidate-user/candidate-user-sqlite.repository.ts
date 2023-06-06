@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
-import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
+import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
@@ -16,7 +16,11 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
     private readonly prisma: PrismaService,
   ) {}
 
-  async create(candidate: CreateCandidateUserDto): Promise<CandidateUser> {
+  async create(
+    candidate: CreateCandidateUserDto,
+    token,
+    expiredAt,
+  ): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
@@ -29,6 +33,8 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
         ? candidate.provider
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
+      confirmationToken: token,
+      expiredConfirmationToken: expiredAt,
     });
     return await this.prisma.candidateUser.create({ data });
   }

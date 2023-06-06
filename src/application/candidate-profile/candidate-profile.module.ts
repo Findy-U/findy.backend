@@ -16,4 +16,4 @@ import { CandidateProfileSQLiteRepository } from '../../common/repositories/cand
     CandidateProfile,
   ],
 })
-export class CandidateProfileModule {}
+export class CandidateProfileModule { }

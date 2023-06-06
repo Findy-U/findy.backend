@@ -8,19 +8,22 @@ datasource db {
 }
 
 model CandidateUser {
-  id                    Int                @id @default(autoincrement())
-  name                  String
-  email                 String             @unique
-  password              String?
-  roles                 String?
-  provider              String?
-  providerId            String?            @map("provider_id")
-  createdAt             DateTime           @default(now()) @map("created_at")
-  updatedAt             DateTime?          @map("updated_at")
-  recoverToken          String?            @map("recover_token")
-  recoverTokenExpiresAt DateTime?          @map("recover_token_expires_at")
-  CandidateProfile      CandidateProfile?
-  CandidateProject      CandidateProject[]
+  id                       Int                @id @default(autoincrement())
+  name                     String
+  email                    String             @unique
+  password                 String?
+  roles                    String?
+  provider                 String?
+  providerId               String?            @map("provider_id")
+  createdAt                DateTime           @default(now()) @map("created_at")
+  updatedAt                DateTime?          @map("updated_at")
+  recoverToken             String?            @map("recover_token")
+  recoverTokenExpiresAt    DateTime?          @map("recover_token_expires_at")
+  confirmationToken        String?            @unique @map("confirmation_token")
+  expiredConfirmationToken DateTime?          @map("expired_confirmation_token")
+  activated                Boolean            @default(false)
+  CandidateProfile         CandidateProfile?
+  CandidateProject         CandidateProject[]
 
   @@map("tb_candidate_users")
 }

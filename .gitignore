@@ -43,5 +43,7 @@ lerna-debug.log*
 
 /prisma-*/migrations
 /prisma/migrations
+/prisma/*.db
 /prisma/dev.db
 /prisma/dev.db-*
+dev.db

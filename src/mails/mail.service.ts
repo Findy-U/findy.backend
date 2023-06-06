@@ -10,6 +10,24 @@ export class MailService {
     private mailerService: MailerService,
   ) {}
 
+  async sendActivationEmail(candidate: CandidateUser, token: string) {
+    const url = `${this.configService.get<string>('urlEmailConfirmation')}?id=${
+      candidate.id
+    }
+    &token=${token}`;
+
+    await this.mailerService.sendMail({
+      to: candidate.email,
+      from: '"Support Findy Team" noreply@application.com',
+      subject: 'Email de ativação',
+      template: './activationEmail',
+      context: {
+        name: candidate.name,
+        url,
+      },
+    });
+  }
+
   async sendPasswordRecover(candidate: CandidateUser, token: string) {
     const url = `${this.configService.get<string>('urlRecoverPassword')}?id=${
       candidate.id

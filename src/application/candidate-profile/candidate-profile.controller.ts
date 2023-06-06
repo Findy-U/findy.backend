@@ -25,7 +25,7 @@ import {
 import { CandidateProfileService } from './candidate-profile.service';
 import { CreateCandidateProfileDto } from './dto/create-candidate-profile.dto';
 import { UpdateCandidateProfileDto } from './dto/update-candidate-profile.dto';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
   ApiProfileCreatedResponseCreate,
   ApiProfileParamFindById,

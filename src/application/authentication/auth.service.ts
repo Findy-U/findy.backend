@@ -65,6 +65,7 @@ export class AuthService {
         roles: Role.Candidate,
         provider: AuthProviderType.google,
         providerId: googleUser.id,
+        activated: true,
       });
       return newCandidate;
     }
