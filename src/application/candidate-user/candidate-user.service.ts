@@ -69,6 +69,7 @@ export class CandidateUserService {
       throw new Error('Candidate not found');
     }
 
+
     if (
       token !== candidate.recoverToken ||
       candidate.recoverTokenExpiresAt < new Date()
@@ -91,6 +92,7 @@ export class CandidateUserService {
       candidate.expiredConfirmationToken < now
     ) {
       throw new BadRequestError('Invalid token! Please request a new token');
+
     }
 
     candidate.activated = true;
