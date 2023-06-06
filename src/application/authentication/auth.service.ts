@@ -22,7 +22,7 @@ export class AuthService {
     private readonly candidateUserService: CandidateUserService,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async login(user: CandidateUserInterface) {
     const payload: UserPayload = {
@@ -65,6 +65,7 @@ export class AuthService {
         roles: Role.Candidate,
         provider: AuthProviderType.google,
         providerId: googleUser.id,
+        activated: true
       });
       return newCandidate;
     }

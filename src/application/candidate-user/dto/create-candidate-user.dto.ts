@@ -15,17 +15,12 @@ export class CreateCandidateUserDto {
       'Campo é obrigatório. Trata-se do nome completo do usuário candidato e deve conter no mínimo 3 caracteres.',
     example: 'John Doe',
   })
-  @IsNotEmpty({ message: 'O nome de usuário não pode estar vazio.' })
+  @IsNotEmpty()
   @IsString()
-  @MinLength(3, {
-    message: 'O nome de usuário deve ter no mínimo 3 caracteres.',
-  })
-  @MaxLength(30, {
-    message: 'O nome de usuário deve ter no máximo 30 caracteres.',
-  })
-  // créditos https://pt.stackoverflow.com/a/135784 da regex
-  @Matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, {
-    message: 'O nome de usuário deve conter apenas letras',
+  @MinLength(3)
+  @MaxLength(30)
+  @Matches(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
+    message: 'The name must contain only letters',
   })
   name: string;
 
@@ -34,11 +29,8 @@ export class CreateCandidateUserDto {
       'Campo é obrigatório. Trata-se do e-mail que será usado para realizar o login na aplicação.',
     example: 'johndoe@email.com',
   })
-  @IsNotEmpty({ message: 'Este campo é obrigatório.' })
-  @IsEmail(
-    {},
-    { message: 'O e-mail deve ser válido, no formato "usuario@email.com.br"' },
-  )
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty({
@@ -48,12 +40,11 @@ export class CreateCandidateUserDto {
     example: 'B12#&d@m',
   })
   @IsString()
-  @IsNotEmpty({ message: 'Este campo é obrigatório.' })
-  @MinLength(8, { message: 'A senha deve ter no mínimo 8 caracteres.' })
-  @MaxLength(20, { message: 'A senha deve ter no máximo 20 caracteres.' })
+  @IsNotEmpty()
+  @MinLength(8)
+  @MaxLength(20)
   @Matches(/(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message:
-      'A senha escolhida é muito fraca. Por favor, escolha uma senha mais forte.',
+    message: 'password too weak',
   })
   password?: string;
 
@@ -62,11 +53,9 @@ export class CreateCandidateUserDto {
       'Campo é obrigatório, campo usado para confirmar a senha digitada.',
     example: 'B12#&d@m',
   })
-  @IsNotEmpty({ message: 'A confirmação de senha não pode estar vazia.' })
+  @IsNotEmpty()
   @IsString()
-  @IsEqualTo<CreateCandidateUserDto>('password', {
-    message: 'As senhas não coincidem.',
-  })
+  @IsEqualTo<CreateCandidateUserDto>('password')
   confirmPassword?: string;
 
   roles?: string;
@@ -75,8 +64,11 @@ export class CreateCandidateUserDto {
 
   providerId?: string;
   recoverToken?: string;
+  recoverTokenExpiresAt: Date;
+  confirmationToken?: string;
+  expiredConfirmationToken?: Date;
+  activated: boolean;
 
   createdAt?: Date;
   updatedAt?: Date;
-  recoverTokenExpiresAt?: Date;
 }

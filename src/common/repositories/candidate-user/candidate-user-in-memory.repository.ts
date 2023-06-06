@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
-import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
+import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 import { Role } from '../../interfaces/authentication/roles.enum';
@@ -19,6 +19,7 @@ export class CandidateUserInMemoryRepository
       provider: null,
       providerId: null,
       recoverToken: null,
+      activated: false,
     },
     {
       id: 2,
@@ -29,6 +30,7 @@ export class CandidateUserInMemoryRepository
       provider: 'google',
       providerId: '109937089733594757055',
       recoverToken: null,
+      activated: false,
     },
     {
       id: 3,
@@ -38,7 +40,8 @@ export class CandidateUserInMemoryRepository
       roles: 'candidate',
       provider: 'findy',
       providerId: null,
-      recoverToken: 'any_recover_token',
+      recoverToken: null,
+      activated: false,
     },
   ];
 
@@ -55,6 +58,7 @@ export class CandidateUserInMemoryRepository
       roles: Role.Candidate,
       provider: user.provider,
       providerId: user.providerId,
+      activated: user.activated,
     });
 
     return this.findByEmail(user.email);

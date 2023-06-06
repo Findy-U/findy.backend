@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
 import { CandidateUserPostgresRepository } from '../../common/repositories/candidate-user/candidate-user-postgres.repository';
+import { EmailConfirmationInMemory } from '../../common/repositories/email-confirmation/email-confirmation-in-memory.repository';
 import { MailService } from '../../mails/mail.service';
 import { CandidateUserModule } from '../candidate-user/candidate-user.module';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
