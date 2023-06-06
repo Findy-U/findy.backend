@@ -59,16 +59,13 @@ export class CreateCandidateUserDto {
   confirmPassword?: string;
 
   roles?: string;
-
   provider?: string;
-
   providerId?: string;
   recoverToken?: string;
-  recoverTokenExpiresAt: Date;
+  recoverTokenExpiresAt?: Date;
   confirmationToken?: string;
   expiredConfirmationToken?: Date;
-  activated: boolean;
-
+  activated?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

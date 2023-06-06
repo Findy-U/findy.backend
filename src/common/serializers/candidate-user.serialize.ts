@@ -11,7 +11,7 @@ export class CandidateUserSerialize {
       providerId: candidate.providerId,
       confirmationToken: candidate.confirmationToken,
       expiredConfirmationToken: candidate.expiredConfirmationToken,
-      activated: candidate.activated
+      activated: candidate.activated,
     };
   }
 
