@@ -24,7 +24,6 @@ import {
 import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../../models/roles.enum';
 import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
@@ -43,6 +42,7 @@ import {
   UpdateResponse,
 } from './swagger/success.response';
 import { ConflictError } from '../../common/exceptions/conflict-error';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
 
 @Controller('candidate-users')
 @ApiTags('candidate_users')
@@ -82,6 +82,8 @@ export class CandidateUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Candidate, Role.Project)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })

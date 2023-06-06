@@ -6,8 +6,8 @@ import { CandidateUser } from '../application/candidate-user/entities/candidate-
 @Injectable()
 export class MailService {
   constructor(
-    private mailerService: MailerService,
     private readonly configService: ConfigService,
+    private mailerService: MailerService,
   ) {}
 
   async sendPasswordRecover(candidate: CandidateUser, token: string) {

@@ -4,7 +4,7 @@ import { ConflictError } from '../../common/exceptions/conflict-error';
 import { CreateCandidateProjectDto } from './dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from './repositories/candidate-project.repository';
-import { CandidateUser } from '../../models/candidate-project';
+import { CandidateUser } from '../../common/interfaces/candidate-projects/candidate-project';
 
 @Injectable()
 export class CandidateProjectService {

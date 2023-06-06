@@ -4,7 +4,7 @@ import { UpdateCandidateProjectDto } from '../dto/update-candidate-project.dto';
 import {
   CandidateProjectResponse,
   CandidateUser,
-} from '../../../models/candidate-project';
+} from '../../../common/interfaces/candidate-projects/candidate-project';
 
 export abstract class CandidateProjectRepository {
   abstract create(

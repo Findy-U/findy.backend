@@ -19,7 +19,6 @@ import { CandidateProjectModule } from './application/candidate-project/candidat
     CandidateProfileModule,
     CandidateProjectModule,
   ],
-  controllers: [],
   providers: [],
 })
 export class AppModule {}

@@ -27,7 +27,7 @@ import { Request, Response } from 'express';
 import { SESSION_COOKIE_KEY } from '../../common/constants/constants';
 import { GoogleOAuthGuard } from '../../common/guards/google-oauth.guard';
 import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
-import { AuthRequest } from '../../models/auth-request';
+import { AuthRequest } from '../../common/interfaces/authentication/auth-request';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { AuthService } from './auth.service';
 import {

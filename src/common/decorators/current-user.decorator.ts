@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-import { AuthRequest } from '../../models/auth-request';
-import { CandidateUserInterface } from '../interfaces/candidate-user.interface';
+import { CandidateUserInterface } from '../interfaces/candidate-user/candidate-user.interface';
+import { AuthRequest } from '../interfaces/authentication/auth-request';
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext): CandidateUserInterface => {
