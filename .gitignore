@@ -46,3 +46,4 @@ lerna-debug.log*
 /prisma/*.db
 /prisma/dev.db
 /prisma/dev.db-*
+dev.db
