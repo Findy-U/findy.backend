@@ -8,7 +8,7 @@ import { NotFoundError } from '../../exceptions/not-found.error';
 import {
   CandidateProjectResponse,
   CandidateUser,
-} from '../../../models/candidate-project';
+} from '../../interfaces/candidate-projects/candidate-project';
 
 @Injectable()
 export class CandidateProjectSqliteRepository

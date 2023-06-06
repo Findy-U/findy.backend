@@ -3,7 +3,7 @@ import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
-import { Role } from '../../../models/roles.enum';
+import { Role } from '../../interfaces/authentication/roles.enum';
 
 @Injectable()
 export class CandidateUserInMemoryRepository

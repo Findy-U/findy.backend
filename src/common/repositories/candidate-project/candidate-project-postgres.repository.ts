@@ -7,7 +7,7 @@ import { PrismaPostgresService } from '../../../config/database/prisma/prisma-po
 import {
   CandidateProjectResponse,
   CandidateUser,
-} from '../../../models/candidate-project';
+} from '../../interfaces/candidate-projects/candidate-project';
 import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()

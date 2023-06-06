@@ -77,7 +77,6 @@ describe('CadidateUserService', () => {
           provide: CandidateUserRepository,
           useClass: CandidateUserInMemoryRepository,
         },
-        CandidateUserSerialize,
       ],
     }).compile();
     service = module.get<CandidateUserService>(CandidateUserService);

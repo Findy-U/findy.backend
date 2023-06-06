@@ -4,15 +4,15 @@ import * as bcrypt from 'bcrypt';
 import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
-import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
+import { ExpireTokenValidationService } from '../../common/helpers/token-send-recover-email';
+import { AuthProviderType } from '../../common/interfaces/authentication/auth-provider.enum';
+import { GoogleUser } from '../../common/interfaces/authentication/google-user';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
+import { CandidateUserInterface } from '../../common/interfaces/candidate-user/candidate-user.interface';
 import { MailService } from '../../mails/mail.service';
-import { AuthProviderType } from '../../models/auth-provider.enum';
-import { UserPayload } from '../../models/candidate-user-payload';
-import { GoogleUser } from '../../models/google-user';
-import { Role } from '../../models/roles.enum';
+import { UserPayload } from '../../common/interfaces/candidate-user/candidate-user-payload';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
-import { ExpireTokenValidationService } from '../../common/helpers/token-send-recover-email';
 
 @Injectable()
 export class AuthService {
