@@ -6,6 +6,7 @@ import { CandidateUserController } from './candidate-user.controller';
 import { CandidateUserService } from './candidate-user.service';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
 import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
+import { MailService } from 'src/mails/mail.service';
 
 @Module({
   imports: [],
@@ -14,10 +15,11 @@ import { CandidateUserSqliteRepository } from '../../common/repositories/candida
     CandidateUserService,
     CandidateUserSerialize,
     PrismaService,
+    MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserPostgresRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })
-export class CandidateUserModule {}
+export class CandidateUserModule { }

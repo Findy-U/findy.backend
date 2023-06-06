@@ -1,4 +1,4 @@
-import { CandidateUserInterface } from '../interfaces/candidate-user.interface';
+import { CandidateUserInterface } from '../interfaces/candidate-user/candidate-user.interface';
 
 export class CandidateUserSerialize {
   requestToDb(candidate: CandidateUserInterface) {
@@ -9,6 +9,9 @@ export class CandidateUserSerialize {
       roles: candidate.roles,
       provider: candidate.provider,
       providerId: candidate.providerId,
+      confirmationToken: candidate.confirmationToken,
+      expiredConfirmationToken: candidate.expiredConfirmationToken,
+      activated: candidate.activated
     };
   }
 
