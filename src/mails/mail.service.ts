@@ -15,7 +15,7 @@ export class MailService {
       candidate.id
     }
     &token=${token}`;
-    console.log(candidate.email);
+
     await this.mailerService.sendMail({
       to: candidate.email,
       from: '"Support Findy Team" noreply@application.com',

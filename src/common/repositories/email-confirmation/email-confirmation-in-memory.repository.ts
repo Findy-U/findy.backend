@@ -33,7 +33,7 @@ export class EmailConfirmationInMemory {
     if (!this.user) {
       console.log('Usuário não encontrado');
     }
-    console.log(this.users);
+
     return this.user;
   }
 

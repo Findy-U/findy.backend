@@ -19,7 +19,6 @@ export class CandidateUserService {
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
     const { token, expiredAt } = await generateTemporaryToken();
-    console.log(token, expiredAt);
 
     if (cadidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
