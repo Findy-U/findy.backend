@@ -5,18 +5,22 @@ import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { AuthProviderType } from '../../../models/auth-provider.enum';
-import { Role } from '../../../models/roles.enum';
+import { AuthProviderType } from '../../interfaces/authentication/auth-provider.enum';
 import { SALT_BCRYPT } from '../../constants/constants';
 import { CandidateUserSerialize } from '../../serializers/candidate-user.serialize';
+import { Role } from '../../interfaces/authentication/roles.enum';
 @Injectable()
 export class CandidateUserSqliteRepository implements CandidateUserRepository {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
-  ) { }
+    private readonly prisma: PrismaService,
+  ) {}
 
-  async create(candidate: CreateCandidateUserDto, token, expiredAt): Promise<CandidateUser> {
+  async create(
+    candidate: CreateCandidateUserDto,
+    token,
+    expiredAt,
+  ): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
@@ -30,7 +34,7 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
       confirmationToken: token,
-      expiredConfirmationToken: expiredAt
+      expiredConfirmationToken: expiredAt,
     });
     return await this.prisma.candidateUser.create({ data });
   }

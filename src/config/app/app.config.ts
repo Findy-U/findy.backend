@@ -1,7 +1,9 @@
 import { AppConfig } from '../../common/interfaces/app-config';
 
+const PORT = parseInt(process.env.URL_BACKEND_PROD);
+
 export default (): AppConfig => ({
-  port: parseInt(process.env.PORT) || 3001,
+  port: PORT || 3001,
   mailHost: process.env.MAIL_HOST,
   mailUser: process.env.MAIL_USER,
   mailPassword: process.env.MAIL_PASSWORD,

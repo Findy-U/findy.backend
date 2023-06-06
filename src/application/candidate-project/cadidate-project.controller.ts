@@ -30,7 +30,6 @@ import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../../models/roles.enum';
 import { CandidateProjectService } from './candidate-project.service';
 import { CreateCandidateProjectDto } from './dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
@@ -59,6 +58,7 @@ import {
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
 @Controller('candidate-projects')
 @ApiTags('candidate_projects')
 export class CandidateProjectController {

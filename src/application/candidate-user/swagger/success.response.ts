@@ -49,7 +49,7 @@ export class UpdateResponse {
 
 export class ConfirmEmailResponse {
   @ApiProperty({ example: 'Email confirmed successfully' })
-  message: string
+  message: string;
 }
 
 export class ConflictExceptionError {
@@ -105,7 +105,7 @@ export const ApirParamFindById = {
   name: 'id',
   required: true,
   description: 'Um número inteiro para o id do usuário candidato',
-  schema: { oneOf: [{ type: 'integer' }] }
+  schema: { oneOf: [{ type: 'integer' }] },
 };
 
 export const ApiResponseUpdate = {
@@ -116,6 +116,5 @@ export const ApiResponseUpdate = {
 
 export const ApiResponseEmailConfirmation = {
   status: 200,
-  description:
-    'Endpoint usado para confirmação do email do usuário candidato'
+  description: 'Endpoint usado para confirmação do email do usuário candidato',
 };

@@ -10,4 +10,6 @@ export class CandidateUser {
   confirmationToken?: string;
   expiredConfirmationToken?: Date;
   activated: boolean;
+  createdRecoverToken?: Date;
+  revoverTokenExpiresAt?: Date;
 }

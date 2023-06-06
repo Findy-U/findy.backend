@@ -26,7 +26,6 @@ import {
 import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../../models/roles.enum';
 import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
@@ -46,11 +45,13 @@ import {
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
+import { ConflictError } from '../../common/exceptions/conflict-error';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
 
 @Controller('candidate-users')
 @ApiTags('candidate_users')
 export class CandidateUserController {
-  constructor(private readonly candidateUserService: CandidateUserService) { }
+  constructor(private readonly candidateUserService: CandidateUserService) {}
 
   @Post()
   @ApiCreatedResponse(ApiCreatedResponseCreate)
@@ -82,6 +83,8 @@ export class CandidateUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Candidate, Role.Project)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
@@ -131,10 +134,13 @@ export class CandidateUserController {
   @Patch('email-confirmation/:id')
   @ApiResponse({ ...ApiResponseEmailConfirmation, type: ConfirmEmailResponse })
   @ApiParam(ApirParamFindById)
-  async emailConfirmation(@Param('id') id: string, @Query('token') token: string) {
+  async emailConfirmation(
+    @Param('id') id: string,
+    @Query('token') token: string,
+  ) {
     try {
       await this.candidateUserService.confirmationEmail(+id, token);
-      return { message: 'Email confirmed successfully!' }
+      return { message: 'Email confirmed successfully!' };
     } catch (error) {
       throw new BadRequestException(error.message);
     }

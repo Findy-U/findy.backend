@@ -3,10 +3,12 @@ import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
+import { Role } from '../../interfaces/authentication/roles.enum';
 
 @Injectable()
 export class CandidateUserInMemoryRepository
-  implements CandidateUserRepository {
+  implements CandidateUserRepository
+{
   private candidate: CandidateUser[] = [
     {
       id: 1,
@@ -17,7 +19,7 @@ export class CandidateUserInMemoryRepository
       provider: null,
       providerId: null,
       recoverToken: null,
-      activated: false
+      activated: false,
     },
     {
       id: 2,
@@ -28,7 +30,7 @@ export class CandidateUserInMemoryRepository
       provider: 'google',
       providerId: '109937089733594757055',
       recoverToken: null,
-      activated: false
+      activated: false,
     },
     {
       id: 3,
@@ -39,26 +41,29 @@ export class CandidateUserInMemoryRepository
       provider: 'findy',
       providerId: null,
       recoverToken: null,
-      activated: false
+      activated: false,
     },
   ];
 
   async create(user: CreateCandidateUserDto): Promise<CandidateUser> {
-    console.log('repositorio em memo', user);
+    if (!user.name || !user.email || !user.password) {
+      throw new Error('Invalid data');
+    }
 
     this.candidate.push({
       id: this.candidate.length + 1,
       name: user.name,
       email: user.email,
       password: user.password,
-      roles: user.roles,
+      roles: Role.Candidate,
       provider: user.provider,
       providerId: user.providerId,
-      activated: user.activated
+      activated: user.activated,
     });
 
     return this.findByEmail(user.email);
   }
+
   async findByEmail(email: string): Promise<CandidateUser> {
     return new Promise((resolve) =>
       resolve(this.candidate.find((user) => user.email === email)),

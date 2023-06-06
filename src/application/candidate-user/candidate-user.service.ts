@@ -13,8 +13,8 @@ export class CandidateUserService {
   constructor(
     private readonly candidateRepository: CandidateUserRepository,
     private readonly candidateUserSerialize: CandidateUserSerialize,
-    private readonly mailService: MailService
-  ) { }
+    private readonly mailService: MailService,
+  ) {}
 
   async create(createCandidate: CreateCandidateUserDto) {
     const cadidateExists = await this.findByEmail(createCandidate.email);
@@ -25,7 +25,11 @@ export class CandidateUserService {
       throw new Error('Candidate user already exists');
     }
 
-    const newCandidate = await this.candidateRepository.create(createCandidate, token, expiredAt);
+    const newCandidate = await this.candidateRepository.create(
+      createCandidate,
+      token,
+      expiredAt,
+    );
 
     await this.mailService.sendActivationEmail(newCandidate, token);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
@@ -33,7 +37,6 @@ export class CandidateUserService {
 
   async findAll() {
     const candidates = await this.candidateRepository.findAll();
-    console.log(candidates);
 
     return candidates.map((candidate) =>
       this.candidateUserSerialize.dbToResponse(candidate),
@@ -66,8 +69,15 @@ export class CandidateUserService {
       throw new Error('Candidate not found');
     }
 
-    if (token !== candidate.recoverToken) {
-      throw new Error('Candidate not found');
+    if (
+      token !== candidate.recoverToken ||
+      candidate.recoverTokenExpiresAt < new Date()
+    ) {
+      await this.candidateRepository.update(id, {
+        recoverToken: null,
+        recoverTokenExpiresAt: null,
+      });
+      throw new Error('Recovery token not found or recovery token is expired');
     }
 
     return candidate;
@@ -76,7 +86,10 @@ export class CandidateUserService {
   async confirmationEmail(id: number, token: string) {
     const candidate = await this.candidateRepository.findById(id);
     const now = new Date();
-    if (candidate.confirmationToken !== token || candidate.expiredConfirmationToken < now) {
+    if (
+      candidate.confirmationToken !== token ||
+      candidate.expiredConfirmationToken < now
+    ) {
       throw new BadRequestError('Invalid token! Please request a new token');
     }
 

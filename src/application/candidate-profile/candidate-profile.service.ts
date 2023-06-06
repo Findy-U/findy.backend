@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'src/common/exceptions/not-found.error';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { CreateCandidateProfileDto } from './dto/create-candidate-profile.dto';
 import { UpdateCandidateProfileDto } from './dto/update-candidate-profile.dto';
 import { CandidateProfile } from './entities/candidate-profile.entity';

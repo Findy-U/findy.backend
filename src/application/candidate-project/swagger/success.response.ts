@@ -277,7 +277,6 @@ export const ApirParamFindById = {
   required: true,
   description: 'Um número inteiro para o id do projeto',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-projects/1',
 };
 
 export const ApiResponseUpdate = {
@@ -321,7 +320,6 @@ export const ApirParamRoleFindById = {
   required: true,
   description: 'Um número inteiro para o id da profissão/cargo',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-projects/roles/1',
 };
 
 export const ApirParamStackFindById = {
@@ -329,5 +327,4 @@ export const ApirParamStackFindById = {
   required: true,
   description: 'Um número inteiro para o id da linguagem/ferramenta',
   schema: { oneOf: [{ type: 'integer' }] },
-  example: 'candidate-projects/skills/1',
 };
