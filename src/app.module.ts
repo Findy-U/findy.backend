@@ -7,7 +7,7 @@ import { PrismaModule } from './config/database/prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
 import { CandidateProfileModule } from './application/candidate-profile/candidate-profile.module';
 import { CandidateProjectModule } from './application/candidate-project/candidate-project.module';
-import { CadidateUserDetailsModule } from './application/cadidate-user-details/cadidate-user-details.module';
+import { CandidateUserDetailsModule } from './application/candidate-user-details/candidate-user-details.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { CadidateUserDetailsModule } from './application/cadidate-user-details/c
     CandidateUserModule,
     CandidateProfileModule,
     CandidateProjectModule,
-    CadidateUserDetailsModule,
+    CandidateUserDetailsModule,
   ],
   providers: [],
 })
