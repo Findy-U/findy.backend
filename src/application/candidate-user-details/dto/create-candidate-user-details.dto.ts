@@ -27,4 +27,7 @@ export class CreateCandidateUserDetailsDto {
   @IsString()
   @IsNotEmpty()
   residencePlace: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
