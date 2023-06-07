@@ -24,8 +24,20 @@ model CandidateUser {
   activated                Boolean            @default(false)
   CandidateProfile         CandidateProfile?
   CandidateProject         CandidateProject[]
+  CandidateUserDetails     CandidateUserDetails?
 
   @@map("tb_candidate_users")
+}
+
+model CandidateUserDetails {
+  id                       Int                @id @default(autoincrement())
+  genero                   String
+  dataNascimento           DateTime?      @map("data_nascimento")
+  localResidencia          String?        @map("local_residencia")
+  candidateUserId          Int?           @map("candidate_user_id")
+  CandidateUser            CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+
+  @@map("tb_candidate_users_details")
 }
 
 model CandidateProfile {
