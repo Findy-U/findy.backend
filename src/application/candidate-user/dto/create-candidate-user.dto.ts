@@ -19,8 +19,9 @@ export class CreateCandidateUserDto {
   @IsString()
   @MinLength(3)
   @MaxLength(30)
-  @Matches(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
-    message: 'The name must contain only letters',
+  // créditos https://pt.stackoverflow.com/a/135784 da regex
+  @Matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, {
+    message: 'O nome de usuário deve conter apenas letras',
   })
   name: string;
 
