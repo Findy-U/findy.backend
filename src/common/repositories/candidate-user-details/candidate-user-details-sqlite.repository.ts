@@ -4,27 +4,24 @@ import { UpdateCandidateUserDetailsDto } from '../../../application/candidate-us
 import { CandidateUserDetailsEntity } from '../../../application/candidate-user-details/entities/candidate-user-details.entity';
 import { CandidateUserDetailsRepository } from '../../../application/candidate-user-details/repositories/candidate-user-details.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { CandidateUserDetailsSerialize } from '../../serializers/candidate-user-details.serialize';
 
 @Injectable()
 export class CandidateUserDetailsSqliteRepository
   implements CandidateUserDetailsRepository
 {
-  constructor(
-    private readonly candidateUserDetailsSerialize: CandidateUserDetailsSerialize,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     candidate: CreateCandidateUserDetailsDto,
   ): Promise<CandidateUserDetailsEntity> {
-    const data = this.candidateUserDetailsSerialize.requestToDb({
-      ...candidate,
-      gender: candidate.gender,
-      birthDate: candidate.birthDate,
-      residencePlace: candidate.residencePlace,
+    return await this.prisma.candidateUserDetails.create({
+      data: {
+        gender: candidate.gender,
+        birthDate: new Date(candidate.birthDate),
+        residencePlace: candidate.residencePlace,
+        candidateUserId: candidate.candidateUserId,
+      },
     });
-    return await this.prisma.candidateUserDetails.create({ data });
   }
 
   async findAll(): Promise<any[]> {

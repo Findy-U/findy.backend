@@ -4,26 +4,22 @@ import { UpdateCandidateUserDetailsDto } from '../../../application/candidate-us
 import { CandidateUserDetailsEntity } from '../../../application/candidate-user-details/entities/candidate-user-details.entity';
 import { CandidateUserDetailsRepository } from '../../../application/candidate-user-details/repositories/candidate-user-details.repository';
 import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
-import { CandidateUserDetailsSerialize } from '../../serializers/candidate-user-details.serialize';
 
 @Injectable()
 export class CandidateUserDetailsPostgresRepository
   implements CandidateUserDetailsRepository
 {
-  constructor(
-    private readonly candidateUserDetailsSerialize: CandidateUserDetailsSerialize,
-    private readonly prisma: PrismaPostgresService,
-  ) {}
+  constructor(private readonly prisma: PrismaPostgresService) {}
 
   async create(
     candidate: CreateCandidateUserDetailsDto,
   ): Promise<CandidateUserDetailsEntity> {
-    const data = this.candidateUserDetailsSerialize.requestToDb({
+    const data = {
       ...candidate,
       gender: candidate.gender,
       birthDate: candidate.birthDate,
       residencePlace: candidate.residencePlace,
-    });
+    };
     return await this.prisma.candidateUserDetails.create({ data });
   }
 
