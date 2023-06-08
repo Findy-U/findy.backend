@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 export class CreateCandidateUserDetailsDto {
+  @ApiProperty({ description: 'Campo numérico', example: 2 })
+  @IsNumber()
+  candidateUserId?: number | null;
+
+  candidateUser?: any;
+
   @ApiProperty({
     description:
       'Campo é obrigatório. Trata-se do gênero do usuário candidato, a ser selecionado dentre as opções fornecidas.',
