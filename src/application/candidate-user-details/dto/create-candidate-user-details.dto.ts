@@ -3,10 +3,7 @@ import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 export class CreateCandidateUserDetailsDto {
   @ApiProperty({ description: 'Campo numérico', example: 2 })
-  @IsNumber()
-  candidateUserId?: number | null;
-
-  candidateUser?: any;
+  candidateUserId?: number;
 
   @ApiProperty({
     description:

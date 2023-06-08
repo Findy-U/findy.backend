@@ -8,6 +8,7 @@ import {
   ConflictException,
   UseGuards,
   NotFoundException,
+  Req,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -20,6 +21,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
   ApiConflictResponseCreate,
@@ -55,11 +57,14 @@ export class CandidateUserDetailsController {
   })
   async create(
     @Body() createCandidateUserDetailsDto: CreateCandidateUserDetailsDto,
+    @Req() req: Request,
   ) {
     try {
-      return await this.candidateUserDetailsService.create(
-        createCandidateUserDetailsDto,
-      );
+      const userData = {
+        ...createCandidateUserDetailsDto,
+        candidateUserId: req.user.id,
+      };
+      return await this.candidateUserDetailsService.create(userData);
     } catch (error) {
       console.log(error);
       throw new ConflictException(error.message);
