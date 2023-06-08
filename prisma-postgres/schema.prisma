@@ -25,6 +25,7 @@ model CandidateUser {
   activated                Boolean            @default(false)
   CandidateProfile         CandidateProfile?
   CandidateProject         CandidateProject[]
+  CandidateUserDetails     CandidateUserDetails?
 
   @@map("tb_candidate_users")
 }
