@@ -1,4 +1,4 @@
-export class CandidateUserDetails {
+export class CandidateUserDetailsEntity {
   id?: number;
   candidateUserId?: number;
   gender: string;
