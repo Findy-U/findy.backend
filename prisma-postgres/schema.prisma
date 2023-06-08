@@ -31,7 +31,7 @@ model CandidateUser {
 
 model CandidateUserDetails {
   id                       Int                @id @default(autoincrement())
-  candidateUserId          Int?               @map("candidate_user_id")
+  candidateUserId          Int?               @unique @map("candidate_user_id")
   gender                   String
   birthDate                DateTime?          @map("birth_date")
   residencePlace           String?            @map("residence_place")
