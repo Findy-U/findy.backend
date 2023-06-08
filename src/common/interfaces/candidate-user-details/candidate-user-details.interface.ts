@@ -4,6 +4,6 @@ export interface CandidateUserDetailsInterface {
   gender: string;
   birthDate: Date;
   residencePlace: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
