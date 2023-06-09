@@ -22,4 +22,4 @@ import { MailService } from 'src/mails/mail.service';
     },
   ],
 })
-export class CandidateUserModule { }
+export class CandidateUserModule {}
