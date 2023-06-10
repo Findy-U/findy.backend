@@ -2,28 +2,32 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatesuccessResponse {
   @ApiProperty({ example: 1 })
-  id: number;
+  detailsId: number;
+  @ApiProperty({ example: 1 })
+  candidateUserId: number;
   @ApiProperty({ example: 'Female' })
   gender: string;
   @ApiProperty({ example: '01/01/2001' })
-  birthDate: Date;
+  birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
 }
 
 export class ResponseFind {
   @ApiProperty({ example: 1 })
-  id: number;
+  detailsId: number;
+  @ApiProperty({ example: 1 })
+  candidateUserId: number;
   @ApiProperty({ example: 'Female' })
   gender: string;
   @ApiProperty({ example: '01/01/2001' })
-  birthDate: Date;
+  birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 export class UpdateDTOSwagger {
@@ -32,14 +36,16 @@ export class UpdateDTOSwagger {
 }
 
 export class UpdateResponse {
-  @ApiProperty({ example: 'Update successfully' })
+  @ApiProperty({ example: 'Updated successfully' })
   message: string;
 }
 
 export class ConflictExceptionError {
   @ApiProperty({ example: 409 })
   statusCode: number;
-  @ApiProperty({ example: 'Candidate user already exists' })
+  @ApiProperty({
+    example: 'This candidate user already has registered details',
+  })
   message: string;
   @ApiProperty({ example: 'Conflict' })
   error: string;
@@ -56,7 +62,7 @@ export class NotFoundExceptionError {
 export class UnauthorizedExceptionError {
   @ApiProperty({ example: 401 })
   statusCode: number;
-  @ApiProperty({ example: 'Unauthorized user' })
+  @ApiProperty({ example: 'Unauthorized user details' })
   message: string;
   @ApiProperty({ example: 'Unauthorized' })
   error: string;
