@@ -8,6 +8,9 @@ export abstract class CandidateUserDetailsRepository {
   ): Promise<CandidateUserDetailsEntity>;
   abstract findAll(): Promise<CandidateUserDetailsEntity[]>;
   abstract findById(id: number);
+  abstract findUnique(
+    candidateUserId: number,
+  ): Promise<CandidateUserDetailsEntity>;
   abstract update(
     id: number,
     candidate: UpdateCandidateUserDetailsDto,

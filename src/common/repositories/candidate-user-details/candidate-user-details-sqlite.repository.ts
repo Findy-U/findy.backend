@@ -32,6 +32,13 @@ export class CandidateUserDetailsSqliteRepository
       where: { id },
     });
   }
+  async findUnique(
+    candidateUserId: number,
+  ): Promise<CandidateUserDetailsEntity> {
+    return await this.prisma.candidateUserDetails.findUnique({
+      where: { candidateUserId },
+    });
+  }
 
   async update(
     id: number,

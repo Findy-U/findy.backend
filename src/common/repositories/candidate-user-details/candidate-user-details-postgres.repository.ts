@@ -33,6 +33,14 @@ export class CandidateUserDetailsPostgresRepository
     });
   }
 
+  async findUnique(
+    candidateUserId: number,
+  ): Promise<CandidateUserDetailsEntity> {
+    return await this.prisma.candidateUserDetails.findUnique({
+      where: { candidateUserId },
+    });
+  }
+
   async update(
     id: number,
     details: UpdateCandidateUserDetailsDto,
