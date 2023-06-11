@@ -30,10 +30,6 @@ export class CandidateUserDetailsService {
     return this.candidateUserDetailsSerialize.dbToResponseCreate(userDetails);
   }
 
-  async findByCandidateUserId(candidateUserId: number) {
-    return await this.candidateRepository.findUnique(candidateUserId);
-  }
-
   async findAll() {
     const details = await this.candidateRepository.findAll();
 
@@ -56,6 +52,10 @@ export class CandidateUserDetailsService {
     updateCandidateUserDetailsDto: UpdateCandidateUserDetailsDto,
   ) {
     await this.findOne(id);
-    await this.candidateRepository.update(id, updateCandidateUserDetailsDto);
+    const candidateDetails = await this.candidateRepository.update(
+      id,
+      updateCandidateUserDetailsDto,
+    );
+    return this.candidateUserDetailsSerialize.dbToResponse(candidateDetails);
   }
 }
