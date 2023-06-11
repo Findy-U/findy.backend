@@ -88,7 +88,7 @@ export class CandidateUserDetailsController {
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
   @ApiNotFoundResponse({
-    description: 'Erro quando não encontra o usuário no BD',
+    description: 'Erro quando não encontra o registro no BD',
     type: NotFoundExceptionError,
   })
   @ApiUnauthorizedResponse({
@@ -126,9 +126,13 @@ export class CandidateUserDetailsController {
     @Param('id') id: string,
     @Body() updateCandidateUserDetailsDto: UpdateCandidateUserDetailsDto,
   ) {
-    return this.candidateUserDetailsService.update(
-      +id,
-      updateCandidateUserDetailsDto,
-    );
+    try {
+      return this.candidateUserDetailsService.update(
+        +id,
+        updateCandidateUserDetailsDto,
+      );
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }
