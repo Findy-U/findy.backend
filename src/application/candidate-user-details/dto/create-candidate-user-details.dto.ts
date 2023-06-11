@@ -20,7 +20,7 @@ export class CreateCandidateUserDetailsDto {
     example: '01/01/2001',
   })
   @IsNotEmpty()
-  birthDate: Date;
+  birthDate: string;
 
   @ApiProperty({
     description:
