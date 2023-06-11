@@ -46,7 +46,12 @@ export class CandidateUserDetailsSqliteRepository
   ): Promise<CandidateUserDetailsEntity> {
     return await this.prisma.candidateUserDetails.update({
       where: { id },
-      data: details,
+      data: {
+        gender: details.gender,
+        birthDate: new Date(details.birthDate),
+        residencePlace: details.residencePlace,
+        candidateUserId: details.candidateUserId,
+      },
     });
   }
 }
