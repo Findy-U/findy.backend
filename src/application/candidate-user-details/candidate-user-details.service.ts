@@ -56,6 +56,8 @@ export class CandidateUserDetailsService {
       id,
       updateCandidateUserDetailsDto,
     );
-    return this.candidateUserDetailsSerialize.dbToResponse(candidateDetails);
+    return this.candidateUserDetailsSerialize.dbToResponseUpdate(
+      candidateDetails,
+    );
   }
 }
