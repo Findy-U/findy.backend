@@ -25,9 +25,9 @@ export class ResponseFind {
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
   @ApiProperty()
-  createdAt: string;
+  createdAt: string | null;
   @ApiProperty()
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export class UpdateDTOSwagger {
@@ -38,6 +38,20 @@ export class UpdateDTOSwagger {
 export class UpdateResponse {
   @ApiProperty({ example: 'Updated successfully' })
   message: string;
+  @ApiProperty({ example: 1 })
+  detailsId: number;
+  @ApiProperty({ example: 1 })
+  candidateUserId: number;
+  @ApiProperty({ example: 'Female' })
+  gender: string;
+  @ApiProperty({ example: '01/01/2001' })
+  birthDate: string;
+  @ApiProperty({ example: 'Rio de Janeiro' })
+  residencePlace: string;
+  @ApiProperty()
+  createdAt: string | null;
+  @ApiProperty()
+  updatedAt: string | null;
 }
 
 export class ConflictExceptionError {
