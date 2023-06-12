@@ -25,7 +25,7 @@ export class ResponseFind {
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
   @ApiProperty({ example: '01/01/2001' })
-  createdAt: string | null;
+  createdAt: string;
   @ApiProperty({ example: '01/01/2001' })
   updatedAt: string | null;
 }
@@ -49,7 +49,7 @@ export class UpdateResponse {
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
   @ApiProperty({ example: '01/01/2001' })
-  createdAt: string | null;
+  createdAt: string;
   @ApiProperty({ example: '01/01/2001' })
   updatedAt: string | null;
 }
