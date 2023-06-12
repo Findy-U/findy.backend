@@ -19,14 +19,7 @@ export class CandidateUserDetailsService {
     if (candidateUserId) {
       throw new Error('this user already has registered details');
     }
-    const userDetails = await this.candidateRepository.create({
-      candidateUserId: details.candidateUserId,
-      gender: details.gender,
-      birthDate: details.birthDate,
-      residencePlace: details.residencePlace,
-      createdAt: details.createdAt,
-      updatedAt: details.updatedAt,
-    });
+    const userDetails = await this.candidateRepository.create(details);
     return this.candidateUserDetailsSerialize.dbToResponseCreate(userDetails);
   }
 
