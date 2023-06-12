@@ -24,9 +24,9 @@ export class ResponseFind {
   birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
-  @ApiProperty()
+  @ApiProperty({ example: '01/01/2001' })
   createdAt: string | null;
-  @ApiProperty()
+  @ApiProperty({ example: '01/01/2001' })
   updatedAt: string | null;
 }
 
@@ -48,9 +48,9 @@ export class UpdateResponse {
   birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
-  @ApiProperty()
+  @ApiProperty({ example: '01/01/2001' })
   createdAt: string | null;
-  @ApiProperty()
+  @ApiProperty({ example: '01/01/2001' })
   updatedAt: string | null;
 }
 
