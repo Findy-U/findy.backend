@@ -30,6 +30,9 @@ export class CandidateUserDetailsSqliteRepository
   async findById(id: number) {
     return await this.prisma.candidateUserDetails.findUnique({
       where: { id },
+      include: {
+        CandidateUser: true,
+      },
     });
   }
   async findUnique(

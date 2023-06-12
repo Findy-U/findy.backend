@@ -27,7 +27,7 @@ export class CandidateUserDetailsService {
     const details = await this.candidateRepository.findAll();
 
     return details.map((details) =>
-      this.candidateUserDetailsSerialize.dbToResponse(details),
+      this.candidateUserDetailsSerialize.dbToResponseAll(details),
     );
   }
 
@@ -37,7 +37,7 @@ export class CandidateUserDetailsService {
       throw new NotFoundError('Candidate not found');
     }
 
-    return this.candidateUserDetailsSerialize.dbToResponse(candidateDetails);
+    return this.candidateUserDetailsSerialize.dbToResponseOne(candidateDetails);
   }
 
   async update(

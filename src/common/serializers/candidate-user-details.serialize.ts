@@ -23,7 +23,7 @@ export class CandidateUserDetailsSerialize {
     };
   }
 
-  dbToResponse(details: any) {
+  dbToResponseAll(details: any) {
     let createdAt = '';
     let updatedAt = '';
     details.createdAt
@@ -40,6 +40,31 @@ export class CandidateUserDetailsSerialize {
       residencePlace: details.residencePlace,
       createdAt,
       updatedAt,
+    };
+  }
+
+  dbToResponseOne(details: any) {
+    let createdAt = '';
+    let updatedAt = '';
+    details.createdAt
+      ? (createdAt = details.createdAt.toLocaleDateString('pt-BR'))
+      : (createdAt = null);
+    details.updatedAt
+      ? (updatedAt = details.updatedAt.toLocaleDateString('pt-BR'))
+      : (updatedAt = null);
+    return {
+      detailsId: details.id,
+      candidateUserId: details.candidateUserId,
+      gender: details.gender,
+      birthDate: details.birthDate.toLocaleDateString('pt-BR'),
+      residencePlace: details.residencePlace,
+      createdAt,
+      updatedAt,
+      user: {
+        name: details.CandidateUser.name,
+        email: details.CandidateUser.email,
+        roles: details.CandidateUser.roles,
+      },
     };
   }
 
