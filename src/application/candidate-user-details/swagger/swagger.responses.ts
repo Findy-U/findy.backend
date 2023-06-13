@@ -76,7 +76,7 @@ export class NotFoundExceptionError {
 export class UnauthorizedExceptionError {
   @ApiProperty({ example: 401 })
   statusCode: number;
-  @ApiProperty({ example: 'Unauthorized user details' })
+  @ApiProperty({ example: 'Unauthorized user' })
   message: string;
   @ApiProperty({ example: 'Unauthorized' })
   error: string;
