@@ -4,19 +4,19 @@ import * as bcrypt from 'bcrypt';
 import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
-import { ExpireTokenValidationService } from '../../common/helpers/token-send-recover-email';
+import { generateTemporaryToken } from '../../common/helpers/generate-token';
 import { AuthProviderType } from '../../common/interfaces/authentication/auth-provider.enum';
 import { GoogleUser } from '../../common/interfaces/authentication/google-user';
 import { Role } from '../../common/interfaces/authentication/roles.enum';
+import { UserPayload } from '../../common/interfaces/candidate-user/candidate-user-payload';
 import { CandidateUserInterface } from '../../common/interfaces/candidate-user/candidate-user.interface';
 import { MailService } from '../../mails/mail.service';
-import { UserPayload } from '../../common/interfaces/candidate-user/candidate-user-payload';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 
 @Injectable()
 export class AuthService {
-  private readonly EXPIRATION_TIME = 48 * 60 * 60 * 1000;
+  // private readonly EXPIRATION_TIME = 48 * 60 * 60 * 1000;
 
   constructor(
     private readonly candidateUserService: CandidateUserService,
@@ -80,14 +80,12 @@ export class AuthService {
   async sendRecoverPasswordEmail(email: string): Promise<void> {
     const candidate = await this.candidateUserService.findByEmail(email);
 
-    const createTokenRecover = new ExpireTokenValidationService();
-
     if (!candidate) {
       throw new NotFoundError('There is no user registered with this email');
     }
 
-    const token = createTokenRecover.generateToken();
-    const expiresAt = new Date(Date.now() + this.EXPIRATION_TIME);
+    const token = generateTemporaryToken.token;
+    const expiresAt = generateTemporaryToken.expiredAtRecoverToken;
 
     await this.candidateUserService.update(candidate.id, {
       recoverToken: token,
