@@ -30,6 +30,16 @@ export class CandidateUserDetailsSqliteRepository
   async findById(id: number) {
     return await this.prisma.candidateUserDetails.findUnique({
       where: { id },
+      include: {
+        CandidateUser: true,
+      },
+    });
+  }
+  async findUnique(
+    candidateUserId: number,
+  ): Promise<CandidateUserDetailsEntity> {
+    return await this.prisma.candidateUserDetails.findUnique({
+      where: { candidateUserId },
     });
   }
 
@@ -39,7 +49,12 @@ export class CandidateUserDetailsSqliteRepository
   ): Promise<CandidateUserDetailsEntity> {
     return await this.prisma.candidateUserDetails.update({
       where: { id },
-      data: details,
+      data: {
+        gender: details.gender,
+        birthDate: new Date(details.birthDate),
+        residencePlace: details.residencePlace,
+        candidateUserId: details.candidateUserId,
+      },
     });
   }
 }

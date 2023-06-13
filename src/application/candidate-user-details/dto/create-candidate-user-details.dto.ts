@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCandidateUserDetailsDto {
   @ApiProperty({ description: 'Campo numérico', example: 2 })
@@ -20,11 +20,11 @@ export class CreateCandidateUserDetailsDto {
     example: '01/01/2001',
   })
   @IsNotEmpty()
-  birthDate: Date;
+  birthDate: string;
 
   @ApiProperty({
     description:
-      'Capo é obrigatório. Trata-se do local de residência do usuário, a ser selecionado dentre as opções fornecidas.',
+      'Campo é obrigatório. Trata-se do local de residência do usuário, a ser selecionado dentre as opções fornecidas.',
     example: 'Rio de Janeiro',
   })
   @IsString()

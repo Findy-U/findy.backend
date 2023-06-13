@@ -33,13 +33,26 @@ export class CandidateUserDetailsPostgresRepository
     });
   }
 
+  async findUnique(
+    candidateUserId: number,
+  ): Promise<CandidateUserDetailsEntity> {
+    return await this.prisma.candidateUserDetails.findUnique({
+      where: { candidateUserId },
+    });
+  }
+
   async update(
     id: number,
     details: UpdateCandidateUserDetailsDto,
   ): Promise<CandidateUserDetailsEntity> {
     return await this.prisma.candidateUserDetails.update({
       where: { id },
-      data: details,
+      data: {
+        gender: details.gender,
+        birthDate: new Date(details.birthDate),
+        residencePlace: details.residencePlace,
+        candidateUserId: details.candidateUserId,
+      },
     });
   }
 }
