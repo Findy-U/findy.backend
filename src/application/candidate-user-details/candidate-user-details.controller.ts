@@ -15,6 +15,7 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
@@ -51,6 +52,7 @@ export class CandidateUserDetailsController {
   @Post()
   @ApiCreatedResponse(ApiCreatedResponseCreate)
   @ApiConflictResponse(ApiConflictResponseCreate)
+  @ApiBearerAuth()
   @ApiUnauthorizedResponse({
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
@@ -73,6 +75,7 @@ export class CandidateUserDetailsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiExcludeEndpoint()
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindAll, type: [ResponseFind] })
   @ApiUnauthorizedResponse({
@@ -85,6 +88,7 @@ export class CandidateUserDetailsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @ApiExcludeEndpoint()
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
   @ApiNotFoundResponse({
@@ -106,6 +110,7 @@ export class CandidateUserDetailsController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @ApiExcludeEndpoint()
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseUpdate, type: UpdateResponse })
   @ApiNotFoundResponse({

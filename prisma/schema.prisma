@@ -8,37 +8,38 @@ datasource db {
 }
 
 model CandidateUser {
-  id                       Int                @id @default(autoincrement())
+  id                       Int                      @id @default(autoincrement())
   name                     String
-  email                    String             @unique
+  email                    String                   @unique
   password                 String?
   roles                    String?
   provider                 String?
-  providerId               String?            @map("provider_id")
-  createdAt                DateTime           @default(now()) @map("created_at")
-  updatedAt                DateTime?          @map("updated_at")
-  recoverToken             String?            @map("recover_token")
-  recoverTokenExpiresAt    DateTime?          @map("recover_token_expires_at")
-  confirmationToken        String?            @unique @map("confirmation_token")
-  expiredConfirmationToken DateTime?          @map("expired_confirmation_token")
-  activated                Boolean            @default(false)
+  providerId               String?                  @map("provider_id")
+  createdAt                DateTime                 @default(now()) @map("created_at")
+  updatedAt                DateTime?                @map("updated_at")
+  recoverToken             String?                  @map("recover_token")
+  recoverTokenExpiresAt    DateTime?                @map("recover_token_expires_at")
+  confirmationToken        String?                  @unique @map("confirmation_token")
+  expiredConfirmationToken DateTime?                @map("expired_confirmation_token")
+  activated                Boolean                  @default(false)
   CandidateProfile         CandidateProfile?
   CandidateProject         CandidateProject[]
   CandidateUserDetails     CandidateUserDetails?
+  SurveyMarketInformation  SurveyMarketInformation?
 
   @@map("tb_candidate_users")
 }
 
 model CandidateUserDetails {
-  id                       Int                @id @default(autoincrement())
-  candidateUserId          Int?               @unique @map("candidate_user_id")
-  gender                   String
-  birthDate                DateTime?          @map("birth_date")
-  residencePlace           String?            @map("residence_place")
-  createdAt                DateTime           @default(now()) @map("created_at")
-  updatedAt                DateTime?          @map("updated_at")
+  id              Int       @id @default(autoincrement())
+  candidateUserId Int?      @unique @map("candidate_user_id")
+  gender          String
+  birthDate       DateTime? @map("birth_date")
+  residencePlace  String?   @map("residence_place")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
 
-  CandidateUser            CandidateUser?     @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
 
   @@map("tb_candidate_users_details")
 }
@@ -140,4 +141,17 @@ model Leader {
   id Int @id @default(autoincrement())
 
   @@map("tb_leaders")
+}
+
+model SurveyMarketInformation {
+  id              Int            @id @default(autoincrement())
+  metFindy        String         @map("met_findy")
+  candidateUserId Int?           @unique() @map("candidate_user_id")
+  friendName      String?        @map("friend_name")
+  friendEmail     String?        @map("friend_email")
+  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("survey_market_information")
 }

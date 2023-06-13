@@ -18,7 +18,8 @@ export class CandidateUserService {
 
   async create(createCandidate: CreateCandidateUserDto) {
     const candidateExists = await this.findByEmail(createCandidate.email);
-    const { token, expiredAt } = await generateTemporaryToken();
+    const token = generateTemporaryToken.token;
+    const expiredAt = generateTemporaryToken.expiredAtConfirmationToken();
 
     if (candidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
@@ -92,11 +93,11 @@ export class CandidateUserService {
       throw new BadRequestError('Invalid token! Please request a new token');
     }
 
-    candidate.activated = true;
-    candidate.confirmationToken = null;
-    candidate.expiredConfirmationToken = null;
-
-    await this.candidateRepository.update(candidate.id, candidate);
+    await this.candidateRepository.update(candidate.id, {
+      activated: true,
+      confirmationToken: null,
+      expiredConfirmationToken: null,
+    });
     return candidate;
   }
 }
