@@ -9,7 +9,9 @@ describe('SurveyMarketInformationService', () => {
       providers: [SurveyMarketInformationService],
     }).compile();
 
-    service = module.get<SurveyMarketInformationService>(SurveyMarketInformationService);
+    service = module.get<SurveyMarketInformationService>(
+      SurveyMarketInformationService,
+    );
   });
 
   it('should be defined', () => {

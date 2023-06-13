@@ -11,7 +11,9 @@ describe('SurveyMarketInformationController', () => {
       providers: [SurveyMarketInformationService],
     }).compile();
 
-    controller = module.get<SurveyMarketInformationController>(SurveyMarketInformationController);
+    controller = module.get<SurveyMarketInformationController>(
+      SurveyMarketInformationController,
+    );
   });
 
   it('should be defined', () => {
