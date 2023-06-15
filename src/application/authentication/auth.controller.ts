@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -40,6 +41,7 @@ import {
   SendRecoverPasswordEmailBodyProperty,
   SuccessResponse,
 } from './swagger/auth-success.response';
+import { ForbiddenError } from '../../common/exceptions/forbidden.error';
 
 @Controller()
 @ApiTags('authentication')
