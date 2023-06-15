@@ -1,1 +1,2 @@
-export declare class CandidateProfileModule {}
+export declare class CandidateProfileModule {
+}

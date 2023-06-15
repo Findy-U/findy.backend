@@ -6,7 +6,7 @@ import { PrismaPostgresService } from '../../../config/database/prisma/prisma-po
 export declare class CandidateProfilePostgresRepository implements CandidateProfileRepository {
     private readonly prisma;
     constructor(prisma: PrismaPostgresService);
-    create(profile: CreateCandidateProfileDto): Promise<any>;
+    create(profile: CreateCandidateProfileDto): Promise<import("@internal/prisma-postgres/client").CandidateProfile>;
     findAll(): Promise<CandidateProfile[]>;
     findById(id: number): Promise<CandidateProfile>;
     update(id: number, profile: UpdateCandidateProfileDto): Promise<void>;

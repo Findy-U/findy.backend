@@ -13,19 +13,18 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
-const crypto_1 = require("crypto");
 const constants_1 = require("../../common/constants/constants");
 const not_found_error_1 = require("../../common/exceptions/not-found.error");
 const unauthorized_error_1 = require("../../common/exceptions/unauthorized.error");
-const candidate_user_serialize_1 = require("../../common/serializers/candidate-user.serialize");
+const generate_token_1 = require("../../common/helpers/generate-token");
+const auth_provider_enum_1 = require("../../common/interfaces/authentication/auth-provider.enum");
+const roles_enum_1 = require("../../common/interfaces/authentication/roles.enum");
 const mail_service_1 = require("../../mails/mail.service");
-const auth_provider_enum_1 = require("../../models/auth-provider.enum");
-const roles_enum_1 = require("../../models/roles.enum");
 const candidate_user_service_1 = require("../candidate-user/candidate-user.service");
+const forbidden_error_1 = require("../../common/exceptions/forbidden.error");
 let AuthService = class AuthService {
-    constructor(candidateUserService, candidateUserSerialize, jwtService, mailService) {
+    constructor(candidateUserService, jwtService, mailService) {
         this.candidateUserService = candidateUserService;
-        this.candidateUserSerialize = candidateUserSerialize;
         this.jwtService = jwtService;
         this.mailService = mailService;
     }
@@ -42,7 +41,10 @@ let AuthService = class AuthService {
     }
     async validateLocalAuth(email, password) {
         const candidate = await this.candidateUserService.findByEmail(email);
-        if (candidate) {
+        if (candidate && candidate.activated === false) {
+            throw new forbidden_error_1.ForbiddenError('Account is not activated');
+        }
+        if (candidate && candidate.activated) {
             const isPasswordValid = await bcrypt.compare(password, candidate.password);
             if (isPasswordValid) {
                 return candidate;
@@ -59,6 +61,7 @@ let AuthService = class AuthService {
                 roles: roles_enum_1.Role.Candidate,
                 provider: auth_provider_enum_1.AuthProviderType.google,
                 providerId: googleUser.id,
+                activated: true,
             });
             return newCandidate;
         }
@@ -72,9 +75,11 @@ let AuthService = class AuthService {
         if (!candidate) {
             throw new not_found_error_1.NotFoundError('There is no user registered with this email');
         }
-        const token = (0, crypto_1.randomBytes)(32).toString('hex');
+        const token = generate_token_1.generateTemporaryToken.token;
+        const expiresAt = generate_token_1.generateTemporaryToken.expiredAtRecoverToken;
         await this.candidateUserService.update(candidate.id, {
             recoverToken: token,
+            recoverTokenExpiresAt: expiresAt,
         });
         await this.mailService.sendPasswordRecover(candidate, token);
     }
@@ -84,6 +89,7 @@ let AuthService = class AuthService {
         await this.candidateUserService.update(id, {
             password: pwdHashed,
             recoverToken: null,
+            recoverTokenExpiresAt: null,
             updatedAt: new Date(),
         });
     }
@@ -91,7 +97,6 @@ let AuthService = class AuthService {
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [candidate_user_service_1.CandidateUserService,
-        candidate_user_serialize_1.CandidateUserSerialize,
         jwt_1.JwtService,
         mail_service_1.MailService])
 ], AuthService);

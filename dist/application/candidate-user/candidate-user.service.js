@@ -14,22 +14,28 @@ const common_1 = require("@nestjs/common");
 const not_found_error_1 = require("../../common/exceptions/not-found.error");
 const candidate_user_serialize_1 = require("../../common/serializers/candidate-user.serialize");
 const candidate_user_repository_1 = require("./repositories/candidate-user.repository");
+const mail_service_1 = require("../../mails/mail.service");
+const generate_token_1 = require("../../common/helpers/generate-token");
+const bad_request_error_1 = require("../../common/exceptions/bad-request.error");
 let CandidateUserService = class CandidateUserService {
-    constructor(candidateRepository, candidateUserSerialize) {
+    constructor(candidateRepository, candidateUserSerialize, mailService) {
         this.candidateRepository = candidateRepository;
         this.candidateUserSerialize = candidateUserSerialize;
+        this.mailService = mailService;
     }
     async create(createCandidate) {
-        const cadidateExists = await this.findByEmail(createCandidate.email);
-        if (cadidateExists && !createCandidate.provider) {
+        const candidateExists = await this.findByEmail(createCandidate.email);
+        const token = generate_token_1.generateTemporaryToken.token;
+        const expiredAt = generate_token_1.generateTemporaryToken.expiredAtConfirmationToken();
+        if (candidateExists && !createCandidate.provider) {
             throw new Error('Candidate user already exists');
         }
-        const newCandidate = await this.candidateRepository.create(createCandidate);
+        const newCandidate = await this.candidateRepository.create(createCandidate, token, expiredAt);
+        await this.mailService.sendActivationEmail(newCandidate, token);
         return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
     }
     async findAll() {
         const candidates = await this.candidateRepository.findAll();
-        console.log(candidates);
         return candidates.map((candidate) => this.candidateUserSerialize.dbToResponse(candidate));
     }
     async findOne(id) {
@@ -51,16 +57,36 @@ let CandidateUserService = class CandidateUserService {
         if (!candidate) {
             throw new Error('Candidate not found');
         }
-        if (token !== candidate.recoverToken) {
-            throw new Error('Candidate not found');
+        if (token !== candidate.recoverToken ||
+            candidate.recoverTokenExpiresAt < new Date()) {
+            await this.candidateRepository.update(id, {
+                recoverToken: null,
+                recoverTokenExpiresAt: null,
+            });
+            throw new Error('Recovery token not found or recovery token is expired');
         }
+        return candidate;
+    }
+    async confirmationEmail(id, token) {
+        const candidate = await this.candidateRepository.findById(id);
+        const now = new Date();
+        if (candidate.confirmationToken !== token ||
+            candidate.expiredConfirmationToken < now) {
+            throw new bad_request_error_1.BadRequestError('Invalid token! Please request a new token');
+        }
+        await this.candidateRepository.update(candidate.id, {
+            activated: true,
+            confirmationToken: null,
+            expiredConfirmationToken: null,
+        });
         return candidate;
     }
 };
 CandidateUserService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [candidate_user_repository_1.CandidateUserRepository,
-        candidate_user_serialize_1.CandidateUserSerialize])
+        candidate_user_serialize_1.CandidateUserSerialize,
+        mail_service_1.MailService])
 ], CandidateUserService);
 exports.CandidateUserService = CandidateUserService;
 //# sourceMappingURL=candidate-user.service.js.map

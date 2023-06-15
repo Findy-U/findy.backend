@@ -11,8 +11,8 @@ const common_1 = require("@nestjs/common");
 const candidate_profile_controller_1 = require("./candidate-profile.controller");
 const candidate_profile_service_1 = require("./candidate-profile.service");
 const candidate_profile_entity_1 = require("./entities/candidate-profile.entity");
-const candidate_profile_postgres_repository_1 = require("../../common/repositories/candidate-profile/candidate-profile-postgres-repository");
 const candidate_profile_repository_1 = require("../../application/candidate-profile/repository/candidate-profile.repository");
+const candidate_profile_sqlite_repository_1 = require("../../common/repositories/candidate-profile/candidate-profile-sqlite-repository");
 let CandidateProfileModule = class CandidateProfileModule {
 };
 CandidateProfileModule = __decorate([
@@ -22,7 +22,7 @@ CandidateProfileModule = __decorate([
             candidate_profile_service_1.CandidateProfileService,
             {
                 provide: candidate_profile_repository_1.CandidateProfileRepository,
-                useClass: candidate_profile_postgres_repository_1.CandidateProfilePostgresRepository,
+                useClass: candidate_profile_sqlite_repository_1.CandidateProfileSQLiteRepository,
             },
             candidate_profile_entity_1.CandidateProfile,
         ],

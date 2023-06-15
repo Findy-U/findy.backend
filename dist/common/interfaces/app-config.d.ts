@@ -5,6 +5,7 @@ export interface AppConfig {
     mailPassword: string;
     urlRedirectAuthGoogle: string;
     urlRecoverPassword: string;
+    urlEmailConfirmation: string;
     auth: {
         jwt: {
             secret: string;

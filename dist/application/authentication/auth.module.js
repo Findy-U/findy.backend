@@ -12,9 +12,6 @@ const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const login_validation_middleware_1 = require("../../common/middlewares/login-validation.middleware");
-const candidate_user_postgres_repository_1 = require("../../common/repositories/candidate-user/candidate-user-postgres.repository");
-const email_confirmation_in_memory_repository_1 = require("../../common/repositories/candidate-user/email-confirmation-in-memory.repository");
-const candidate_user_serialize_1 = require("../../common/serializers/candidate-user.serialize");
 const mail_service_1 = require("../../mails/mail.service");
 const candidate_user_module_1 = require("../candidate-user/candidate-user.module");
 const candidate_user_service_1 = require("../candidate-user/candidate-user.service");
@@ -24,6 +21,8 @@ const auth_service_1 = require("./auth.service");
 const google_strategy_1 = require("./strategies/google.strategy");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const local_strategy_ts_1 = require("./strategies/local.strategy.ts");
+const candidate_user_sqlite_repository_1 = require("../../common/repositories/candidate-user/candidate-user-sqlite.repository");
+const candidate_user_serialize_1 = require("../../common/serializers/candidate-user.serialize");
 let AuthModule = class AuthModule {
     configure(consumer) {
         consumer.apply(login_validation_middleware_1.LoginValidationMiddleware).forRoutes('api/login');
@@ -50,14 +49,12 @@ AuthModule = __decorate([
             candidate_user_service_1.CandidateUserService,
             candidate_user_serialize_1.CandidateUserSerialize,
             local_strategy_ts_1.LocalStrategy,
-            email_confirmation_in_memory_repository_1.EmailConfirmationInMemory,
             jwt_strategy_1.JwtStrategy,
             google_strategy_1.GoogleStrategy,
             mail_service_1.MailService,
-            email_confirmation_in_memory_repository_1.EmailConfirmationInMemory,
             {
                 provide: candidate_user_repository_1.CandidateUserRepository,
-                useClass: candidate_user_postgres_repository_1.CandidateUserPostgresRepository,
+                useClass: candidate_user_sqlite_repository_1.CandidateUserSqliteRepository,
             },
         ],
     })

@@ -13,23 +13,23 @@ exports.CandidateUserSqliteRepository = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../../../config/database/prisma/prisma.service");
-const auth_provider_enum_1 = require("../../../models/auth-provider.enum");
-const roles_enum_1 = require("../../../models/roles.enum");
+const auth_provider_enum_1 = require("../../interfaces/authentication/auth-provider.enum");
 const constants_1 = require("../../constants/constants");
 const candidate_user_serialize_1 = require("../../serializers/candidate-user.serialize");
+const roles_enum_1 = require("../../interfaces/authentication/roles.enum");
 let CandidateUserSqliteRepository = class CandidateUserSqliteRepository {
-    constructor(prisma, candidateUserSerialize) {
-        this.prisma = prisma;
+    constructor(candidateUserSerialize, prisma) {
         this.candidateUserSerialize = candidateUserSerialize;
+        this.prisma = prisma;
     }
-    async create(candidate) {
+    async create(candidate, token, expiredAt) {
         let pwdHashed = '';
         if (candidate.password) {
             pwdHashed = await bcrypt.hash(candidate.password, constants_1.SALT_BCRYPT);
         }
         const data = this.candidateUserSerialize.requestToDb(Object.assign(Object.assign({}, candidate), { password: pwdHashed, roles: roles_enum_1.Role.Candidate, provider: candidate.provider
                 ? candidate.provider
-                : auth_provider_enum_1.AuthProviderType.findy, providerId: candidate.providerId ? candidate.providerId : null }));
+                : auth_provider_enum_1.AuthProviderType.findy, providerId: candidate.providerId ? candidate.providerId : null, confirmationToken: token, expiredConfirmationToken: expiredAt }));
         return await this.prisma.candidateUser.create({ data });
     }
     async findAll() {
@@ -60,8 +60,8 @@ let CandidateUserSqliteRepository = class CandidateUserSqliteRepository {
 };
 CandidateUserSqliteRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        candidate_user_serialize_1.CandidateUserSerialize])
+    __metadata("design:paramtypes", [candidate_user_serialize_1.CandidateUserSerialize,
+        prisma_service_1.PrismaService])
 ], CandidateUserSqliteRepository);
 exports.CandidateUserSqliteRepository = CandidateUserSqliteRepository;
 //# sourceMappingURL=candidate-user-sqlite.repository.js.map

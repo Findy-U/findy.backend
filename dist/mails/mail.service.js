@@ -13,15 +13,24 @@ exports.MailService = void 0;
 const mailer_1 = require("@nestjs-modules/mailer");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const email_confirmation_in_memory_repository_1 = require("../common/repositories/candidate-user/email-confirmation-in-memory.repository");
 let MailService = class MailService {
-    constructor(mailerService, configService, emailConfirmationRepository) {
-        this.mailerService = mailerService;
+    constructor(configService, mailerService) {
         this.configService = configService;
-        this.emailConfirmationRepository = emailConfirmationRepository;
+        this.mailerService = mailerService;
     }
-    confirmRegistration(token) {
-        return this.emailConfirmationRepository.confirmRegistration(token);
+    async sendActivationEmail(candidate, token) {
+        const url = `${this.configService.get('urlEmailConfirmation')}?id=${candidate.id}
+    &token=${token}`;
+        await this.mailerService.sendMail({
+            to: candidate.email,
+            from: '"Support Findy Team" noreply@application.com',
+            subject: 'Email de ativação',
+            template: './activationEmail',
+            context: {
+                name: candidate.name,
+                url,
+            },
+        });
     }
     async sendPasswordRecover(candidate, token) {
         const url = `${this.configService.get('urlRecoverPassword')}?id=${candidate.id}&token=${token}`;
@@ -32,6 +41,7 @@ let MailService = class MailService {
             template: './recoverPassword',
             context: {
                 name: candidate.name,
+                email: candidate.email,
                 url,
             },
         });
@@ -39,9 +49,8 @@ let MailService = class MailService {
 };
 MailService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [mailer_1.MailerService,
-        config_1.ConfigService,
-        email_confirmation_in_memory_repository_1.EmailConfirmationInMemory])
+    __metadata("design:paramtypes", [config_1.ConfigService,
+        mailer_1.MailerService])
 ], MailService);
 exports.MailService = MailService;
 //# sourceMappingURL=mail.service.js.map

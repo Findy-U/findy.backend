@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginValidationMiddleware = void 0;
 const common_1 = require("@nestjs/common");
 const class_validator_1 = require("class-validator");
-const login_request_body_1 = require("../../models/login-request-body");
+const login_request_body_1 = require("../interfaces/authentication/login-request-body");
 let LoginValidationMiddleware = class LoginValidationMiddleware {
     async use(req, res, next) {
         const body = req.body;

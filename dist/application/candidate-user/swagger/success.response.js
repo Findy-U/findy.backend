@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiResponseUpdate = exports.ApirParamFindById = exports.ApiResponseFindById = exports.ApiResponseFindAll = exports.ApiConflictResponseCreate = exports.ApiCreatedResponseCreate = exports.UnauthorizedExceptionError = exports.NotFoundExceptionError = exports.ConflictExceptionError = exports.UpdateResponse = exports.UpdateDTOSwagger = exports.ResponseFind = exports.CreatesuccessResponse = void 0;
+exports.ApiResponseEmailConfirmation = exports.ApiResponseUpdate = exports.ApirParamFindById = exports.ApiResponseFindById = exports.ApiResponseFindAll = exports.ApiConflictResponseCreate = exports.ApiCreatedResponseCreate = exports.UnauthorizedExceptionError = exports.NotFoundExceptionError = exports.ConflictExceptionError = exports.ConfirmEmailResponse = exports.UpdateResponse = exports.UpdateDTOSwagger = exports.ResponseFind = exports.CreatesuccessResponse = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class CreatesuccessResponse {
 }
@@ -79,6 +79,13 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateResponse.prototype, "message", void 0);
 exports.UpdateResponse = UpdateResponse;
+class ConfirmEmailResponse {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Email confirmed successfully' }),
+    __metadata("design:type", String)
+], ConfirmEmailResponse.prototype, "message", void 0);
+exports.ConfirmEmailResponse = ConfirmEmailResponse;
 class ConflictExceptionError {
 }
 __decorate([
@@ -149,5 +156,9 @@ exports.ApirParamFindById = {
 exports.ApiResponseUpdate = {
     status: 200,
     description: 'Endpoint usando para editar o perfil do usuário candidato. Precisa estar autenticado com o token JWT',
+};
+exports.ApiResponseEmailConfirmation = {
+    status: 200,
+    description: 'Endpoint usado para confirmação do email do usuário candidato',
 };
 //# sourceMappingURL=success.response.js.map

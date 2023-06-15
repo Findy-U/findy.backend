@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CandidateProjectModule = void 0;
 const common_1 = require("@nestjs/common");
+const candidate_project_sqlite_repository_1 = require("../../common/repositories/candidate-project/candidate-project-sqlite.repository");
 const prisma_service_1 = require("../../config/database/prisma/prisma.service");
-const candidate_project_postgres_repository_1 = require("../../common/repositories/candidate-project/candidate-project-postgres.repository");
 const cadidate_project_controller_1 = require("./cadidate-project.controller");
 const candidate_project_service_1 = require("./candidate-project.service");
 const candidate_project_repository_1 = require("./repositories/candidate-project.repository");
@@ -23,7 +23,7 @@ CandidateProjectModule = __decorate([
             prisma_service_1.PrismaService,
             {
                 provide: candidate_project_repository_1.CandidateProjectRepository,
-                useClass: candidate_project_postgres_repository_1.CandidateProjectPostgresRepository,
+                useClass: candidate_project_sqlite_repository_1.CandidateProjectSqliteRepository,
             },
         ],
     })

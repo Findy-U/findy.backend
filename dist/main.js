@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const swagger_1 = require("@nestjs/swagger");
 const cookieParser = require("cookie-parser");
@@ -12,7 +11,7 @@ async function bootstrap() {
     app.enableCors();
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new common_1.ValidationPipe());
-    const configService = app.get(config_1.ConfigService);
+    const PORT = parseInt(process.env.PORT) || 3001;
     const config = new swagger_1.DocumentBuilder()
         .addBearerAuth()
         .setTitle('Findy API')
@@ -25,8 +24,10 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
-    await app.listen(configService.get('port'));
-    console.info(`Application is running on: http://localhost:${configService.get('port')}`);
+    await app.listen(PORT || 3001);
+    if (PORT === 3001) {
+        console.info(`Application is running on: http://localhost:${PORT}`);
+    }
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

@@ -17,8 +17,8 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const swagger_1 = require("@nestjs/swagger");
 const constants_1 = require("../../common/constants/constants");
-const google_oauth_guard_1 = require("../../common/guards/google-oauth.guard");
-const local_auth_guard_1 = require("../../common/guards/local-auth.guard");
+const google_oauth_guard_1 = require("./guards/google-oauth.guard");
+const local_auth_guard_1 = require("./guards/local-auth.guard");
 const recover_password_dto_1 = require("../candidate-user/dto/recover-password.dto");
 const auth_service_1 = require("./auth.service");
 const auth_success_response_1 = require("./swagger/auth-success.response");
@@ -38,6 +38,7 @@ let AuthController = class AuthController {
         res.cookie(constants_1.SESSION_COOKIE_KEY, token.access_token, {
             httpOnly: true,
             sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000,
         });
         return res.redirect(this.configService.get('urlRedirectAuthGoogle'));
     }

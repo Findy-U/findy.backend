@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
-import { AuthRequest } from '../../models/auth-request';
+import { AuthRequest } from '../../common/interfaces/authentication/auth-request';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { AuthService } from './auth.service';
 export declare class AuthController {

@@ -1,11 +1,13 @@
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 import { CandidateUserRepository } from './repositories/candidate-user.repository';
+import { MailService } from 'src/mails/mail.service';
 export declare class CandidateUserService {
     private readonly candidateRepository;
     private readonly candidateUserSerialize;
-    constructor(candidateRepository: CandidateUserRepository, candidateUserSerialize: CandidateUserSerialize);
+    private readonly mailService;
+    constructor(candidateRepository: CandidateUserRepository, candidateUserSerialize: CandidateUserSerialize, mailService: MailService);
     create(createCandidate: CreateCandidateUserDto): Promise<{
         id: any;
         name: any;
@@ -53,4 +55,5 @@ export declare class CandidateUserService {
     findByEmail(email: string): Promise<import("./entities/candidate-user.entity").CandidateUser>;
     update(id: number, updateCandidateUserDto: UpdateCandidateUserDto): Promise<void>;
     findByIdAndToken(id: number, token: string): Promise<any>;
+    confirmationEmail(id: number, token: string): Promise<any>;
 }

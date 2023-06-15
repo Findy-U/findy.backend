@@ -1,7 +1,7 @@
 import { CandidateProject, Roles, Stack } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../dto/update-candidate-project.dto';
-import { CandidateProjectResponse, CandidateUser } from '../../../models/candidate-project';
+import { CandidateProjectResponse, CandidateUser } from '../../../common/interfaces/candidate-projects/candidate-project';
 export declare abstract class CandidateProjectRepository {
     abstract create(project: CreateCandidateProjectDto, user: CandidateUser): Promise<CandidateProject>;
     abstract findAll(): Promise<CandidateProjectResponse[]>;

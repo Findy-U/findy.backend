@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CandidateUserController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
+const jwt_auth_guard_1 = require("../authentication/guards/jwt-auth.guard");
 const candidate_user_service_1 = require("./candidate-user.service");
 const create_candidate_user_dto_1 = require("./dto/create-candidate-user.dto");
-const update_cadidate_user_dto_1 = require("./dto/update-cadidate-user.dto");
+const update_candidate_user_dto_1 = require("./dto/update-candidate-user.dto");
 const success_response_1 = require("./swagger/success.response");
 let CandidateUserController = class CandidateUserController {
     constructor(candidateUserService) {
@@ -29,6 +29,7 @@ let CandidateUserController = class CandidateUserController {
             return await this.candidateUserService.create(createCandidateUserDto);
         }
         catch (error) {
+            console.log(error);
             throw new common_1.ConflictException(error.message);
         }
     }
@@ -45,7 +46,16 @@ let CandidateUserController = class CandidateUserController {
     }
     async update(id, updateCandidateUserDto) {
         await this.candidateUserService.update(+id, updateCandidateUserDto);
-        return { message: 'Uupdate successfully' };
+        return { message: 'Update successfully' };
+    }
+    async emailConfirmation(id, token) {
+        try {
+            await this.candidateUserService.confirmationEmail(+id, token);
+            return { message: 'Email confirmed successfully!' };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error.message);
+        }
     }
 };
 __decorate([
@@ -110,9 +120,19 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_cadidate_user_dto_1.UpdateCandidateUserDto]),
+    __metadata("design:paramtypes", [String, update_candidate_user_dto_1.UpdateCandidateUserDto]),
     __metadata("design:returntype", Promise)
 ], CandidateUserController.prototype, "update", null);
+__decorate([
+    (0, common_1.Patch)('email-confirmation/:id'),
+    (0, swagger_1.ApiResponse)(Object.assign(Object.assign({}, success_response_1.ApiResponseEmailConfirmation), { type: success_response_1.ConfirmEmailResponse })),
+    (0, swagger_1.ApiParam)(success_response_1.ApirParamFindById),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('token')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], CandidateUserController.prototype, "emailConfirmation", null);
 CandidateUserController = __decorate([
     (0, common_1.Controller)('candidate-users'),
     (0, swagger_1.ApiTags)('candidate_users'),

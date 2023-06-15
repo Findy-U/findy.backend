@@ -17,13 +17,13 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const has_roles_decorator_1 = require("../../common/decorators/has-roles.decorator");
 const not_found_error_1 = require("../../common/exceptions/not-found.error");
-const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
-const roles_guard_1 = require("../../common/guards/roles.guard");
-const roles_enum_1 = require("../../models/roles.enum");
+const jwt_auth_guard_1 = require("../authentication/guards/jwt-auth.guard");
+const roles_guard_1 = require("../authentication/guards/roles.guard");
 const candidate_project_service_1 = require("./candidate-project.service");
 const create_candidate_project_dto_1 = require("./dto/create-candidate-project.dto");
 const update_candidate_project_dto_1 = require("./dto/update-candidate-project.dto");
 const success_response_1 = require("./swagger/success.response");
+const roles_enum_1 = require("../../common/interfaces/authentication/roles.enum");
 let CandidateProjectController = class CandidateProjectController {
     constructor(candidateProjectService) {
         this.candidateProjectService = candidateProjectService;

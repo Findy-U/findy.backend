@@ -20,6 +20,9 @@ export declare class UpdateDTOSwagger {
 export declare class UpdateResponse {
     message: string;
 }
+export declare class ConfirmEmailResponse {
+    message: string;
+}
 export declare class ConflictExceptionError {
     statusCode: number;
     message: string;
@@ -62,6 +65,10 @@ export declare const ApirParamFindById: {
     };
 };
 export declare const ApiResponseUpdate: {
+    status: number;
+    description: string;
+};
+export declare const ApiResponseEmailConfirmation: {
     status: number;
     description: string;
 };

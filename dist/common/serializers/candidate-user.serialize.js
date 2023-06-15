@@ -10,6 +10,9 @@ class CandidateUserSerialize {
             roles: candidate.roles,
             provider: candidate.provider,
             providerId: candidate.providerId,
+            confirmationToken: candidate.confirmationToken,
+            expiredConfirmationToken: candidate.expiredConfirmationToken,
+            activated: candidate.activated,
         };
     }
     dbToResponseCreate(candidate) {

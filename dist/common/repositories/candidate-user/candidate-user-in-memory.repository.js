@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CandidateUserInMemoryRepository = void 0;
 const common_1 = require("@nestjs/common");
+const roles_enum_1 = require("../../interfaces/authentication/roles.enum");
 let CandidateUserInMemoryRepository = class CandidateUserInMemoryRepository {
     constructor() {
         this.candidate = [
@@ -20,6 +21,7 @@ let CandidateUserInMemoryRepository = class CandidateUserInMemoryRepository {
                 provider: null,
                 providerId: null,
                 recoverToken: null,
+                activated: false,
             },
             {
                 id: 2,
@@ -30,6 +32,7 @@ let CandidateUserInMemoryRepository = class CandidateUserInMemoryRepository {
                 provider: 'google',
                 providerId: '109937089733594757055',
                 recoverToken: null,
+                activated: false,
             },
             {
                 id: 3,
@@ -40,19 +43,23 @@ let CandidateUserInMemoryRepository = class CandidateUserInMemoryRepository {
                 provider: 'findy',
                 providerId: null,
                 recoverToken: null,
+                activated: false,
             },
         ];
     }
     async create(user) {
-        console.log('repositorio em memo', user);
+        if (!user.name || !user.email || !user.password) {
+            throw new Error('Invalid data');
+        }
         this.candidate.push({
             id: this.candidate.length + 1,
             name: user.name,
             email: user.email,
             password: user.password,
-            roles: user.roles,
+            roles: roles_enum_1.Role.Candidate,
             provider: user.provider,
             providerId: user.providerId,
+            activated: user.activated,
         });
         return this.findByEmail(user.email);
     }

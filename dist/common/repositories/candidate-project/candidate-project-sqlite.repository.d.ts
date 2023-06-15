@@ -3,7 +3,7 @@ import { CreateCandidateProjectDto } from '../../../application/candidate-projec
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { CandidateProjectResponse, CandidateUser } from '../../../models/candidate-project';
+import { CandidateProjectResponse, CandidateUser } from '../../interfaces/candidate-projects/candidate-project';
 export declare class CandidateProjectSqliteRepository implements CandidateProjectRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);

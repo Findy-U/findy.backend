@@ -8,12 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CandidateUserModule = void 0;
 const common_1 = require("@nestjs/common");
-const candidate_user_postgres_repository_1 = require("../../common/repositories/candidate-user/candidate-user-postgres.repository");
 const candidate_user_serialize_1 = require("../../common/serializers/candidate-user.serialize");
 const prisma_service_1 = require("../../config/database/prisma/prisma.service");
 const candidate_user_controller_1 = require("./candidate-user.controller");
 const candidate_user_service_1 = require("./candidate-user.service");
 const candidate_user_repository_1 = require("./repositories/candidate-user.repository");
+const candidate_user_sqlite_repository_1 = require("../../common/repositories/candidate-user/candidate-user-sqlite.repository");
+const mail_service_1 = require("../../mails/mail.service");
 let CandidateUserModule = class CandidateUserModule {
 };
 CandidateUserModule = __decorate([
@@ -24,9 +25,10 @@ CandidateUserModule = __decorate([
             candidate_user_service_1.CandidateUserService,
             candidate_user_serialize_1.CandidateUserSerialize,
             prisma_service_1.PrismaService,
+            mail_service_1.MailService,
             {
                 provide: candidate_user_repository_1.CandidateUserRepository,
-                useClass: candidate_user_postgres_repository_1.CandidateUserPostgresRepository,
+                useClass: candidate_user_sqlite_repository_1.CandidateUserSqliteRepository,
             },
         ],
     })

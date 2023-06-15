@@ -10,12 +10,14 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const auth_module_1 = require("./application/authentication/auth.module");
+const candidate_profile_module_1 = require("./application/candidate-profile/candidate-profile.module");
+const candidate_project_module_1 = require("./application/candidate-project/candidate-project.module");
+const candidate_user_details_module_1 = require("./application/candidate-user-details/candidate-user-details.module");
 const candidate_user_module_1 = require("./application/candidate-user/candidate-user.module");
 const app_config_1 = require("./config/app/app.config");
 const prisma_module_1 = require("./config/database/prisma/prisma.module");
 const mail_module_1 = require("./mails/mail.module");
-const candidate_profile_module_1 = require("./application/candidate-profile/candidate-profile.module");
-const candidate_project_module_1 = require("./application/candidate-project/candidate-project.module");
+const survey_market_information_module_1 = require("./application/survey-market-information/survey-market-information.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -29,8 +31,9 @@ AppModule = __decorate([
             candidate_user_module_1.CandidateUserModule,
             candidate_profile_module_1.CandidateProfileModule,
             candidate_project_module_1.CandidateProjectModule,
+            candidate_user_details_module_1.CandidateUserDetailsModule,
+            survey_market_information_module_1.SurveyMarketInformationModule,
         ],
-        controllers: [],
         providers: [],
     })
 ], AppModule);

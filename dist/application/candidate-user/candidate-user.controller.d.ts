@@ -1,6 +1,6 @@
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 export declare class CandidateUserController {
     private readonly candidateUserService;
     constructor(candidateUserService: CandidateUserService);
@@ -49,6 +49,9 @@ export declare class CandidateUserController {
         };
     }>;
     update(id: string, updateCandidateUserDto: UpdateCandidateUserDto): Promise<{
+        message: string;
+    }>;
+    emailConfirmation(id: string, token: string): Promise<{
         message: string;
     }>;
 }

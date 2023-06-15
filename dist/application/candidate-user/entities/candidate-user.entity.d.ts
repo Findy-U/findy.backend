@@ -7,4 +7,9 @@ export declare class CandidateUser {
     provider?: string;
     providerId?: string;
     recoverToken?: string;
+    confirmationToken?: string;
+    expiredConfirmationToken?: Date;
+    activated: boolean;
+    createdRecoverToken?: Date;
+    revoverTokenExpiresAt?: Date;
 }

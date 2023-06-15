@@ -1,16 +1,14 @@
 import { JwtService } from '@nestjs/jwt';
-import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
-import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
+import { GoogleUser } from '../../common/interfaces/authentication/google-user';
+import { CandidateUserInterface } from '../../common/interfaces/candidate-user/candidate-user.interface';
 import { MailService } from '../../mails/mail.service';
-import { GoogleUser } from '../../models/google-user';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 export declare class AuthService {
     private readonly candidateUserService;
-    private readonly candidateUserSerialize;
     private readonly jwtService;
     private readonly mailService;
-    constructor(candidateUserService: CandidateUserService, candidateUserSerialize: CandidateUserSerialize, jwtService: JwtService, mailService: MailService);
+    constructor(candidateUserService: CandidateUserService, jwtService: JwtService, mailService: MailService);
     login(user: CandidateUserInterface): Promise<{
         access_token: string;
     }>;

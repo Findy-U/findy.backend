@@ -12,7 +12,8 @@ const client_1 = require("@internal/prisma-postgres/client");
 let PrismaPostgresService = class PrismaPostgresService extends client_1.PrismaClient {
     async onModuleInit() {
         await this.$connect();
-        this.$on('error', (_e) => {
+        this.$on('error', (e) => {
+            console.error(e);
         });
     }
     async onModuleDestroy() {

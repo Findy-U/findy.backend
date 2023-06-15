@@ -6,7 +6,7 @@ export declare class CandidateProjectController {
     private readonly candidateProjectService;
     constructor(candidateProjectService: CandidateProjectService);
     create(req: Request, createProjectDto: CreateCandidateProjectDto): Promise<import(".prisma/client").CandidateProject>;
-    findAll(): Promise<import("../../models/candidate-project").CandidateProjectResponse[]>;
+    findAll(): Promise<import("../../common/interfaces/candidate-projects/candidate-project").CandidateProjectResponse[]>;
     findAllRolesProject(): Promise<import(".prisma/client").Roles[]>;
     findAllSkillsProject(): Promise<import(".prisma/client").Stack[]>;
     findOne(id: string): Promise<import(".prisma/client").CandidateProject>;

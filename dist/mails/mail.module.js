@@ -11,9 +11,8 @@ const mailer_1 = require("@nestjs-modules/mailer");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const email_confirmation_in_memory_repository_1 = require("../common/repositories/candidate-user/email-confirmation-in-memory.repository");
-const mail_service_1 = require("./mail.service");
 const path_1 = require("path");
+const mail_service_1 = require("./mail.service");
 let MailModule = class MailModule {
 };
 MailModule = __decorate([
@@ -43,7 +42,7 @@ MailModule = __decorate([
                 inject: [config_1.ConfigService],
             }),
         ],
-        providers: [mail_service_1.MailService, email_confirmation_in_memory_repository_1.EmailConfirmationInMemory],
+        providers: [mail_service_1.MailService],
         exports: [mail_service_1.MailService],
     })
 ], MailModule);

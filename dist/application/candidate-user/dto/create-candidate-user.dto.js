@@ -20,15 +20,11 @@ __decorate([
         description: 'Campo é obrigatório. Trata-se do nome completo do usuário candidato e deve conter no mínimo 3 caracteres.',
         example: 'John Doe',
     }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'O nome de usuário não pode estar vazio.' }),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(3, {
-        message: 'O nome de usuário deve ter no mínimo 3 caracteres.',
-    }),
-    (0, class_validator_1.MaxLength)(30, {
-        message: 'O nome de usuário deve ter no máximo 30 caracteres.',
-    }),
-    (0, class_validator_1.Matches)(/^[a-zA-Z]+(\s[a-zA-Z]+)*$/g, {
+    (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(30),
+    (0, class_validator_1.Matches)(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, {
         message: 'O nome de usuário deve conter apenas letras',
     }),
     __metadata("design:type", String)
@@ -38,8 +34,8 @@ __decorate([
         description: 'Campo é obrigatório. Trata-se do e-mail que será usado para realizar o login na aplicação.',
         example: 'johndoe@email.com',
     }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Este campo é obrigatório.' }),
-    (0, class_validator_1.IsEmail)({}, { message: 'O e-mail deve ser válido, no formato "usuario@email.com.br"' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], CreateCandidateUserDto.prototype, "email", void 0);
 __decorate([
@@ -49,11 +45,11 @@ __decorate([
         example: 'B12#&d@m',
     }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Este campo é obrigatório.' }),
-    (0, class_validator_1.MinLength)(8, { message: 'A senha deve ter no mínimo 8 caracteres.' }),
-    (0, class_validator_1.MaxLength)(20, { message: 'A senha deve ter no máximo 20 caracteres.' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(8),
+    (0, class_validator_1.MaxLength)(20),
     (0, class_validator_1.Matches)(/(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-        message: 'A senha escolhida é muito fraca. Por favor, escolha uma senha mais forte.',
+        message: 'password too weak',
     }),
     __metadata("design:type", String)
 ], CreateCandidateUserDto.prototype, "password", void 0);
@@ -62,11 +58,9 @@ __decorate([
         description: 'Campo é obrigatório, campo usado para confirmar a senha digitada.',
         example: 'B12#&d@m',
     }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'A confirmação de senha não pode estar vazia.' }),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, password_confirm_decorator_1.IsEqualTo)('password', {
-        message: 'As senhas não coincidem.',
-    }),
+    (0, password_confirm_decorator_1.IsEqualTo)('password'),
     __metadata("design:type", String)
 ], CreateCandidateUserDto.prototype, "confirmPassword", void 0);
 exports.CreateCandidateUserDto = CreateCandidateUserDto;

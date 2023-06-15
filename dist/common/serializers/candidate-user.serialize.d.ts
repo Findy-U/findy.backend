@@ -1,4 +1,4 @@
-import { CandidateUserInterface } from '../interfaces/candidate-user.interface';
+import { CandidateUserInterface } from '../interfaces/candidate-user/candidate-user.interface';
 export declare class CandidateUserSerialize {
     requestToDb(candidate: CandidateUserInterface): {
         name: string;
@@ -7,6 +7,9 @@ export declare class CandidateUserSerialize {
         roles: string;
         provider: string;
         providerId: string;
+        confirmationToken: string;
+        expiredConfirmationToken: Date;
+        activated: boolean;
     };
     dbToResponseCreate(candidate: any): {
         id: any;
