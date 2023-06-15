@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
 import { SALT_BCRYPT } from '../../common/constants/constants';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { UnauthorizedError } from '../../common/exceptions/unauthorized.error';
-import { CandidateUserInterface } from '../../common/interfaces/candidate-user.interface';
-import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
+import { generateTemporaryToken } from '../../common/helpers/generate-token';
+import { AuthProviderType } from '../../common/interfaces/authentication/auth-provider.enum';
+import { GoogleUser } from '../../common/interfaces/authentication/google-user';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
+import { UserPayload } from '../../common/interfaces/candidate-user/candidate-user-payload';
+import { CandidateUserInterface } from '../../common/interfaces/candidate-user/candidate-user.interface';
 import { MailService } from '../../mails/mail.service';
-import { AuthProviderType } from '../../models/auth-provider.enum';
-import { UserPayload } from '../../models/candidate-user-payload';
-import { GoogleUser } from '../../models/google-user';
-import { Role } from '../../models/roles.enum';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
+import { ForbiddenError } from '../../common/exceptions/forbidden.error';
+
 @Injectable()
 export class AuthService {
+  // private readonly EXPIRATION_TIME = 48 * 60 * 60 * 1000;
+
   constructor(
     private readonly candidateUserService: CandidateUserService,
-    private readonly candidateUserSerialize: CandidateUserSerialize,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
   ) {}
@@ -38,7 +40,12 @@ export class AuthService {
 
   async validateLocalAuth(email: string, password: string) {
     const candidate = await this.candidateUserService.findByEmail(email);
-    if (candidate) {
+
+    if (candidate && candidate.activated === false) {
+      throw new ForbiddenError('Account is not activated');
+    }
+
+    if (candidate && candidate.activated) {
       const isPasswordValid = await bcrypt.compare(
         password,
         candidate.password,
@@ -64,6 +71,7 @@ export class AuthService {
         roles: Role.Candidate,
         provider: AuthProviderType.google,
         providerId: googleUser.id,
+        activated: true,
       });
       return newCandidate;
     }
@@ -82,10 +90,12 @@ export class AuthService {
       throw new NotFoundError('There is no user registered with this email');
     }
 
-    const token = randomBytes(32).toString('hex');
+    const token = generateTemporaryToken.token;
+    const expiresAt = generateTemporaryToken.expiredAtRecoverToken;
 
     await this.candidateUserService.update(candidate.id, {
       recoverToken: token,
+      recoverTokenExpiresAt: expiresAt,
     });
 
     await this.mailService.sendPasswordRecover(candidate, token);
@@ -102,6 +112,7 @@ export class AuthService {
     await this.candidateUserService.update(id, {
       password: pwdHashed,
       recoverToken: null,
+      recoverTokenExpiresAt: null,
       updatedAt: new Date(),
     });
   }

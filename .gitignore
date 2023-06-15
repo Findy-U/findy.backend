@@ -42,3 +42,8 @@ lerna-debug.log*
 .env.local
 
 /prisma-*/migrations
+/prisma/migrations
+/prisma/*.db
+/prisma/dev.db
+/prisma/dev.db-*
+dev.db
