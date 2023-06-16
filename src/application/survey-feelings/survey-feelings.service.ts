@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSurveyFeelingsDto } from './dto/create-survey-feelings.dto';
-import { UpdateSurveyFeelingsDto } from './dto/update-survey-feelings.dto';
+import { SurveyFeelingsRepository } from 'src/application/survey-feelings/repositories/survey-feelings.repository';
+import { NotFoundError } from '../../common/exceptions/not-found.error';
+import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.serialize';
 
 @Injectable()
 export class SurveyFeelingsService {
-  create(createSurveyFeelingsDto: CreateSurveyFeelingsDto) {
-    return 'This action adds a new feeling';
+  constructor(
+    private readonly surveyFeelingsSerialize: SurveyFeelingsSerialize,
+    private readonly surveyFeelingsRepository: SurveyFeelingsRepository,
+  ) {}
+
+  async create(survey: CreateSurveyFeelingsDto) {
+    const candidateUserId = await this.surveyFeelingsRepository.findOne(
+      survey.candidateUserId,
+    );
+    if (candidateUserId) {
+      throw new Error('this user already has registered survey answers');
+    }
+    const userAnswers = await this.surveyFeelingsRepository.create(survey);
+    return this.surveyFeelingsSerialize.dbToResponseCreate(userAnswers);
   }
 
-  findAll() {
-    return `This action returns all feelings`;
+  async findAll() {
+    const userAnswers = await this.surveyFeelingsRepository.findAll();
+    return userAnswers.map((userAnswers) =>
+      this.surveyFeelingsSerialize.dbToResponseAll(userAnswers),
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} feeling`;
-  }
+  async findById(id: number) {
+    const userAnswers = await this.surveyFeelingsRepository.findById(id);
+    if (!userAnswers) {
+      throw new NotFoundError('Candidate not found');
+    }
 
-  update(id: number, updateSurveyFeelingsDto: UpdateSurveyFeelingsDto) {
-    return `This action updates a #${id} feeling`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} feeling`;
+    return this.surveyFeelingsSerialize.dbToResponseOne(userAnswers);
   }
 }
