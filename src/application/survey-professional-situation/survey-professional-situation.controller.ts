@@ -12,6 +12,18 @@ import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { CreateSurveyProfessionalSituationDto } from './dto/create-survey-professional-situation.dto';
 import { SurveyProfessionalSituationService } from './survey-professional-situation.service';
 import { Request } from 'express';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiExcludeEndpoint,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import {
+  ApiProfessionalSituationConflictResponseCreate,
+  ApiProfessionalSituationCreatedResponseCreate,
+  UnauthorizedExceptionError,
+} from './swagger/success.response';
 
 @Controller('survey-professional-situation')
 export class SurveyProfessionalSituationController {
@@ -19,6 +31,13 @@ export class SurveyProfessionalSituationController {
     private readonly surveyProfessionalSituationService: SurveyProfessionalSituationService,
   ) {}
 
+  @ApiCreatedResponse(ApiProfessionalSituationCreatedResponseCreate)
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized user',
+    type: UnauthorizedExceptionError,
+  })
+  @ApiConflictResponse(ApiProfessionalSituationConflictResponseCreate)
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
@@ -38,12 +57,14 @@ export class SurveyProfessionalSituationController {
     }
   }
 
+  @ApiExcludeEndpoint()
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.surveyProfessionalSituationService.findAll();
   }
 
+  @ApiExcludeEndpoint()
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Param('id') id: string) {

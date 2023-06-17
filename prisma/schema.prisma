@@ -8,25 +8,25 @@ datasource db {
 }
 
 model CandidateUser {
-  id                       Int                      @id @default(autoincrement())
-  name                     String
-  email                    String                   @unique
-  password                 String?
-  roles                    String?
-  provider                 String?
-  providerId               String?                  @map("provider_id")
-  createdAt                DateTime                 @default(now()) @map("created_at")
-  updatedAt                DateTime?                @map("updated_at")
-  recoverToken             String?                  @map("recover_token")
-  recoverTokenExpiresAt    DateTime?                @map("recover_token_expires_at")
-  confirmationToken        String?                  @unique @map("confirmation_token")
-  expiredConfirmationToken DateTime?                @map("expired_confirmation_token")
-  activated                Boolean                  @default(false)
-  CandidateProfile         CandidateProfile?
-  CandidateProject         CandidateProject[]
-  CandidateUserDetails     CandidateUserDetails?
-  SurveyMarketInformation  SurveyMarketInformation?
-  SurveyFeelings           SurveyFeelings?
+  id                          Int                          @id @default(autoincrement())
+  name                        String
+  email                       String                       @unique
+  password                    String?
+  roles                       String?
+  provider                    String?
+  providerId                  String?                      @map("provider_id")
+  createdAt                   DateTime                     @default(now()) @map("created_at")
+  updatedAt                   DateTime?                    @map("updated_at")
+  recoverToken                String?                      @map("recover_token")
+  recoverTokenExpiresAt       DateTime?                    @map("recover_token_expires_at")
+  confirmationToken           String?                      @map("confirmation_token")
+  expiredConfirmationToken    DateTime?                    @map("expired_confirmation_token")
+  activated                   Boolean                      @default(false)
+  CandidateProfile            CandidateProfile?
+  CandidateProject            CandidateProject[]
+  CandidateUserDetails        CandidateUserDetails?
+  SurveyMarketInformation     SurveyMarketInformation?
+  SurveyFeelings              SurveyFeelings?
   SurveyProfessionalSituation SurveyProfessionalSituation?
 
   @@map("tb_candidate_users")
@@ -146,25 +146,24 @@ model Leader {
 }
 
 model SurveyMarketInformation {
-  id              Int            @id @default(autoincrement())
-  metFindy        String         @map("met_findy")
-  candidateUserId Int?           @unique() @map("candidate_user_id")
-  friendName      String?        @map("friend_name")
-  friendEmail     String?        @map("friend_email")
-  createdAt DateTime @default(now()) @map("created_at")
+  id              Int      @id @default(autoincrement())
+  metFindy        String   @map("met_findy")
+  candidateUserId Int?     @unique() @map("candidate_user_id")
+  friendName      String?  @map("friend_name")
+  friendEmail     String?  @map("friend_email")
+  createdAt       DateTime @default(now()) @map("created_at")
 
-  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id])
 
   @@map("survey_market_information")
 }
 
-
 model SurveyFeelings {
-  id                      Int       @id @default(autoincrement())
-  candidateUserId         Int?      @unique @map("candidate_user_id")
-  professionalAchievement Int       @map("professional_achievement")
-  motivation              String    @map("motivation")
-  createdAt               DateTime  @default(now()) @map("created_at")
+  id                      Int      @id @default(autoincrement())
+  candidateUserId         Int?     @unique @map("candidate_user_id")
+  professionalAchievement Int      @map("professional_achievement")
+  motivation              String   @map("motivation")
+  createdAt               DateTime @default(now()) @map("created_at")
 
   CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
 
@@ -172,15 +171,14 @@ model SurveyFeelings {
 }
 
 model SurveyProfessionalSituation {
-  id              Int            @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   situation       String
-  ocupationArea   String?        @map("ocuppation_area")
-  objectives      String?       
-  candidateUserId Int?           @unique() @map("candidate_user_id")
+  ocupationArea   String?  @map("ocuppation_area")
+  objectives      String?
+  candidateUserId Int?     @unique() @map("candidate_user_id")
   createdAt       DateTime @default(now()) @map("created_at")
 
-  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
-  
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id])
+
   @@map("survey_professional_situation")
 }
-
