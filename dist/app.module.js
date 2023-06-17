@@ -18,6 +18,8 @@ const app_config_1 = require("./config/app/app.config");
 const prisma_module_1 = require("./config/database/prisma/prisma.module");
 const mail_module_1 = require("./mails/mail.module");
 const survey_market_information_module_1 = require("./application/survey-market-information/survey-market-information.module");
+const survey_feelings_module_1 = require("./application/survey-feelings/survey-feelings.module");
+const survey_professional_situation_module_1 = require("./application/survey-professional-situation/survey-professional-situation.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -33,6 +35,8 @@ AppModule = __decorate([
             candidate_project_module_1.CandidateProjectModule,
             candidate_user_details_module_1.CandidateUserDetailsModule,
             survey_market_information_module_1.SurveyMarketInformationModule,
+            survey_feelings_module_1.SurveyFeelingsModule,
+            survey_professional_situation_module_1.SurveyProfessionalSituationModule,
         ],
         providers: [],
     })

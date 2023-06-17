@@ -16,7 +16,6 @@ let LocalAuthGuard = class LocalAuthGuard extends (0, passport_1.AuthGuard)('loc
     }
     handleRequest(err, user) {
         if (err instanceof forbidden_error_1.ForbiddenError) {
-            console.log(err);
             throw new common_1.ForbiddenException(err === null || err === void 0 ? void 0 : err.message);
         }
         if (err || !user) {

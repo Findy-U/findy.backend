@@ -8,7 +8,7 @@ export declare class CandidateUserSqliteRepository implements CandidateUserRepos
     private readonly candidateUserSerialize;
     private readonly prisma;
     constructor(candidateUserSerialize: CandidateUserSerialize, prisma: PrismaService);
-    create(candidate: CreateCandidateUserDto, token: any, expiredAt: any): Promise<CandidateUser>;
+    create(candidate: CreateCandidateUserDto, token: string, expiredAt: any): Promise<CandidateUser>;
     findAll(): Promise<any[]>;
     findById(id: number): Promise<import(".prisma/client").CandidateUser & {
         CandidateProfile: import(".prisma/client").CandidateProfile;
