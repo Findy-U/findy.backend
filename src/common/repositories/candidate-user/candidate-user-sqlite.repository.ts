@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
@@ -18,13 +18,14 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
 
   async create(
     candidate: CreateCandidateUserDto,
-    token,
-    expiredAt,
+    token: string,
+    expiredAt: any,
   ): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
     }
+
     const data = this.candidateUserSerialize.requestToDb({
       ...candidate,
       password: pwdHashed,
