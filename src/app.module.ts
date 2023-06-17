@@ -9,6 +9,7 @@ import appConfig from './config/app/app.config';
 import { PrismaModule } from './config/database/prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
 import { SurveyMarketInformationModule } from './application/survey-market-information/survey-market-information.module';
+import { SurveyFeelingsModule } from './application/survey-feelings/survey-feelings.module';
 import { SurveyProfessionalSituationModule } from './application/survey-professional-situation/survey-professional-situation.module';
 
 @Module({
@@ -23,6 +24,7 @@ import { SurveyProfessionalSituationModule } from './application/survey-professi
     CandidateProjectModule,
     CandidateUserDetailsModule,
     SurveyMarketInformationModule,
+    SurveyFeelingsModule,
     SurveyProfessionalSituationModule,
   ],
   providers: [],
