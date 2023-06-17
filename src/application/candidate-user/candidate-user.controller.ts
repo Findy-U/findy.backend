@@ -4,7 +4,9 @@ import {
   Controller,
   Get,
   NotFoundException,
+  BadRequestException,
   Param,
+  Query,
   Patch,
   Post,
   UseGuards,
@@ -22,26 +24,29 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { HasRoles } from '../../common/decorators/has-roles.decorator';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Role } from '../../models/roles.enum';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
+import { RolesGuard } from '../authentication/guards/roles.guard';
 import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
-import { CreateCandidateUserDto } from './dto/create-cadidate-user.dto';
-import { UpdateCandidateUserDto } from './dto/update-cadidate-user.dto';
+import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
+import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
 import {
   ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
+  ApiResponseEmailConfirmation,
   ApiResponseFindAll,
   ApiResponseFindById,
   ApiResponseUpdate,
   ApirParamFindById,
+  ConfirmEmailResponse,
   NotFoundExceptionError,
   ResponseFind,
   UnauthorizedExceptionError,
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
+import { ConflictError } from '../../common/exceptions/conflict-error';
+import { Role } from '../../common/interfaces/authentication/roles.enum';
 
 @Controller('candidate-users')
 @ApiTags('candidate_users')
@@ -55,6 +60,7 @@ export class CandidateUserController {
     try {
       return await this.candidateUserService.create(createCandidateUserDto);
     } catch (error) {
+      console.log(error);
       throw new ConflictException(error.message);
     }
   }
@@ -77,6 +83,8 @@ export class CandidateUserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Candidate, Role.Project)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiBearerAuth()
   @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
@@ -120,6 +128,21 @@ export class CandidateUserController {
     @Body() updateCandidateUserDto: UpdateCandidateUserDto,
   ) {
     await this.candidateUserService.update(+id, updateCandidateUserDto);
-    return { message: 'Uupdate successfully' };
+    return { message: 'Update successfully' };
+  }
+
+  @Patch('email-confirmation/:id')
+  @ApiResponse({ ...ApiResponseEmailConfirmation, type: ConfirmEmailResponse })
+  @ApiParam(ApirParamFindById)
+  async emailConfirmation(
+    @Param('id') id: string,
+    @Query('token') token: string,
+  ) {
+    try {
+      await this.candidateUserService.confirmationEmail(+id, token);
+      return { message: 'Email confirmed successfully!' };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

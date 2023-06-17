@@ -10,7 +10,7 @@ import {
 
 export class CreateCandidateProjectDto {
   @ApiProperty({ example: 'Proffy' })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsString()
   name: string;
 
@@ -18,7 +18,7 @@ export class CreateCandidateProjectDto {
     example:
       'Projeto destinado ao cadastro de professores particulares que oferecem o serviço de aulas de reforço',
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsString()
   projectScope: string;
 
@@ -26,7 +26,7 @@ export class CreateCandidateProjectDto {
     example:
       'https://docs.google.com/forms/d/e/1FAIpQLSdn7MH9zB9a-50tjh7l__1SDOjVDHN_pkLwEnzGIZY3LR5b8g/viewform',
   })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsString()
   urlTeamSelection: string;
 
@@ -77,7 +77,7 @@ export class CreateCandidateProjectDto {
 
   @ApiProperty({
     description:
-      'Este campo recebe um array com IDs das linguagens/ferramentas',
+      'Este campo recebe um array com IDs das linguagens/ferramentas. Campo obrigatório',
     example: [1, 2, 4, 6, 7],
   })
   @ArrayNotEmpty()
@@ -85,7 +85,8 @@ export class CreateCandidateProjectDto {
   language?: number[];
 
   @ApiProperty({
-    description: 'Este campo recebe um array com nomes dos cargos/proficionais',
+    description:
+      'Este campo recebe um array com nomes dos cargos/proficionais. Campo obrigatório',
     example: ['Front-End', 'Back-End', 'QA', 'Product Manager', 'UX', 'UI'],
   })
   @ArrayNotEmpty()
@@ -103,7 +104,8 @@ export class CreateCandidateProjectDto {
   others?: string[];
 
   @ApiProperty({
-    example: 'Descreva como a Sou Junior pode apoiar seu projeto',
+    example:
+      'Descreva como a Sou Junior pode apoiar seu projeto. Campo opcional',
   })
   findyHelp?: string;
 

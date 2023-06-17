@@ -6,20 +6,23 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "npx prisma generate --schema=./prisma-postgres/schema.prisma",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/src/main.js",
+    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prod:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate dev --schema=./prisma-postgres/schema.prisma",
-    "prod:seed": "ts-node ./prisma-postgres/seeds.ts"
+    "prod:prisma": "npx prisma migrate deploy --schema=./prisma-postgres/schema.prisma",
+    "prod:seed": "ts-node ./prisma-postgres/seeds.ts",
+    "dev:prisma": "npx prisma generate --schema=./prisma-postgres/schema.prisma && npx prisma migrate dev --schema=./prisma-postgres/schema.prisma && npm run prod:seed",
+    "dev:seed": "ts-node ./prisma/seeds.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
@@ -50,6 +53,7 @@
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
     "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
     "@types/node": "18.11.18",
@@ -74,7 +78,24 @@
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4"
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
   "prisma": {
-    "seed": "ts-node ./prisma/seeds.ts"
+    "schema": "./prisma/schema.prisma"
   }
 }

@@ -43,28 +43,75 @@ const ROLES = [
   'Mentor',
 ];
 
-function seedSkills() {
-  Promise.all(
-    SKILLS.map((skill) => prisma.stack.create({ data: { title: skill } })),
-  )
-    .then(() => console.info('[SEED] Succussfully create stacks records'))
-    .catch((e) => console.error('[SEED] Failed to create stacks records', e));
+async function seedSkills() {
+  const skills = await Promise.all(
+    SKILLS.map(async (skill) => {
+      const skillExists = await prisma.stack.findMany({
+        where: { title: skill },
+      });
+      if (skillExists.length !== 0) {
+        return skillExists;
+      }
+
+      return false;
+    }),
+  );
+
+  if (skills.some((item) => item !== false)) {
+    return console.info('[SEED] Skills já cadastradas');
+  }
+
+  try {
+    await Promise.all(
+      SKILLS.map(
+        async (skill) => await prisma.stack.create({ data: { title: skill } }),
+      ),
+    );
+    console.info('[SEED] Successfully create skills records');
+  } catch (error) {
+    console.info('[SEED] Successfully create skills records', error);
+  }
 }
 
 seedSkills();
 
-function seedRoles() {
-  Promise.all(
-    ROLES.map((role) => prisma.roles.create({ data: { title: role } })),
-  )
-    .then(() => console.info('[SEED] Succussfully create roles records'))
-    .catch((e) => console.info('[SEED] Succussfully create roles records', e));
+async function seedRoles() {
+  const roles = await Promise.all(
+    ROLES.map(async (role) => {
+      const exists = await prisma.roles.findMany({ where: { title: role } });
+      if (exists.length !== 0) {
+        return exists;
+      }
+      return false;
+    }),
+  );
+
+  if (roles.some((item) => item !== false)) {
+    return console.info('[SEED] Cargos já cadastrados');
+  }
+
+  try {
+    await Promise.all(
+      ROLES.map(
+        async (role) => await prisma.roles.create({ data: { title: role } }),
+      ),
+    );
+    console.info('[SEED] Successfully create roles records');
+  } catch (error) {
+    console.info('[SEED] Successfully create roles records', error);
+  }
 }
 
 seedRoles();
 
-function seedUserAdmin() {
-  prisma.candidateUser
+async function seedUserAdmin() {
+  const userExists = await prisma.candidateUser.findFirst({
+    where: { email: 'findy.adm@gmail.com' },
+  });
+
+  if (userExists) return console.info('[SEED] Admin já cadastrado');
+
+  await prisma.candidateUser
     .create({
       data: {
         name: 'Administrador do APP',
@@ -73,15 +120,16 @@ function seedUserAdmin() {
           '$2a$10$O7PLuwjrj5moVvOkyVyIeuf3Fw5RICwuL/IPKL0js.sIDfeV7KDZK', // senha: VJ8I@l7zK%
         roles: 'admin',
         provider: 'findy',
+        activated: true,
         providerId: null,
         recoverToken: null,
         createdAt: new Date(),
         updatedAt: null,
       },
     })
-    .then(() => console.info('[SEED] Succussfully create user admin record'))
+    .then(() => console.info('[SEED] Successfully create user admin record'))
     .catch((e) =>
-      console.info('[SEED] Succussfully create user admin record', e),
+      console.info('[SEED] Successfully create user admin record', e),
     );
 }
 

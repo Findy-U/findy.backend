@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -25,9 +26,9 @@ import {
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { SESSION_COOKIE_KEY } from '../../common/constants/constants';
-import { GoogleOAuthGuard } from '../../common/guards/google-oauth.guard';
-import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
-import { AuthRequest } from '../../models/auth-request';
+import { GoogleOAuthGuard } from './guards/google-oauth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { AuthRequest } from '../../common/interfaces/authentication/auth-request';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { AuthService } from './auth.service';
 import {
@@ -40,6 +41,7 @@ import {
   SendRecoverPasswordEmailBodyProperty,
   SuccessResponse,
 } from './swagger/auth-success.response';
+import { ForbiddenError } from '../../common/exceptions/forbidden.error';
 
 @Controller()
 @ApiTags('authentication')
@@ -59,7 +61,7 @@ export class AuthController {
     type: LoginUnauthorizedExceptionError,
   })
   async login(@Req() req: AuthRequest) {
-    return this.authService.login(req.user);
+    return await this.authService.login(req.user);
   }
 
   @ApiExcludeEndpoint()
@@ -83,6 +85,7 @@ export class AuthController {
     res.cookie(SESSION_COOKIE_KEY, token.access_token, {
       httpOnly: true,
       sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.redirect(
@@ -125,7 +128,6 @@ export class AuthController {
     required: true,
     description: 'Um número inteiro para o id do usuário candidato',
     schema: { oneOf: [{ type: 'integer' }] },
-    example: 'reset-password/1',
   })
   @ApiBody({
     type: RecoverPasswordDto,

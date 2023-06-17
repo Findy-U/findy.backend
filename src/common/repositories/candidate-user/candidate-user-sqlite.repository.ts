@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-cadidate-user.dto';
-import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
+import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
+import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 import { PrismaService } from '../../../config/database/prisma/prisma.service';
-import { AuthProviderType } from '../../../models/auth-provider.enum';
-import { Role } from '../../../models/roles.enum';
+import { AuthProviderType } from '../../interfaces/authentication/auth-provider.enum';
 import { SALT_BCRYPT } from '../../constants/constants';
 import { CandidateUserSerialize } from '../../serializers/candidate-user.serialize';
+import { Role } from '../../interfaces/authentication/roles.enum';
 @Injectable()
 export class CandidateUserSqliteRepository implements CandidateUserRepository {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
+    private readonly prisma: PrismaService,
   ) {}
 
-  async create(candidate: CreateCandidateUserDto): Promise<CandidateUser> {
+  async create(
+    candidate: CreateCandidateUserDto,
+    token: string,
+    expiredAt: any,
+  ): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
     }
+
     const data = this.candidateUserSerialize.requestToDb({
       ...candidate,
       password: pwdHashed,
@@ -29,6 +34,8 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
         ? candidate.provider
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
+      confirmationToken: token,
+      expiredConfirmationToken: expiredAt,
     });
     return await this.prisma.candidateUser.create({ data });
   }

@@ -24,6 +24,21 @@ $ npm run prod:prisma
 $ npm run prod:seed
 ```
 
+```bash
+# development
+$ npx prisma generate
+```
+
+```bash
+# development
+$ npx prisma migrate dev
+```
+
+```bash
+# development
+$ npm run dev:seed
+```
+
 ## Running the app
 
 ````bash
@@ -60,23 +75,23 @@ $ npm run test:cov
 <table>
      <tr>
        <td align="center">
-         <a href="https://github.com/MarioLucas0"
+         <a href="https://github.com/ioott"
            ><img
              style="border-radius: 50%"
-             src="https://avatars.githubusercontent.com/u/100689099?v=4"
+             src="https://avatars.githubusercontent.com/u/98191041?v=4"
              width="100px;"
-             alt="Avatar Mario"
-           /><br /><sub><b>Mario Lucas</b></sub></a
+             alt="Avatar Vania"
+           /><br /><sub><b>Vania Ioott</b></sub></a
          >
        </td>
        <td align="center">
-         <a href="https://github.com/WilsonRU"
+         <a href="https://github.com/rafaelsantosmg"
            ><img
              style="border-radius: 50%"
-             src="https://avatars.githubusercontent.com/u/7707498?v=4"
+             src="https://avatars.githubusercontent.com/u/68519691?v=4"
              width="100px;"
              alt="Avatar Wilson"
-           /><br /><sub><b>Wilson Moura</b></sub></a
+           /><br /><sub><b>Rafael Santos</b></sub></a
          >
        </td>
        <td align="center">
@@ -88,17 +103,7 @@ $ npm run test:cov
              alt="Avatar Jessica"
            /><br /><sub><b>Jéssica Santana</b></sub></a
          >
-       </td>
-       <td align="center">
-         <a href="https://github.com/fernandodluccas"
-           ><img
-             style="border-radius: 50%"
-             src="https://avatars.githubusercontent.com/u/11843888?v=4"
-             width="100px;"
-             alt="Avatar Fernando"
-           /><br /><sub><b>Fernando D'luccas</b></sub></a
-         >
-       </td>
+       </td>    
      </tr>
      <tr>
        <td align="center">

@@ -13,7 +13,7 @@ import { CandidateProjectRepository } from './repositories/candidate-project.rep
     PrismaService,
     {
       provide: CandidateProjectRepository,
-      useClass: CandidateProjectPostgresRepository,
+      useClass: CandidateProjectSqliteRepository,
     },
   ],
 })

@@ -1,24 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-cadidate-user.dto';
-import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-cadidate-user.dto';
+import { CreateCandidateUserDto } from '../../../application/candidate-user/dto/create-candidate-user.dto';
+import { UpdateCandidateUserDto } from '../../../application/candidate-user/dto/update-candidate-user.dto';
 import { CandidateUser } from '../../../application/candidate-user/entities/candidate-user.entity';
 import { CandidateUserRepository } from '../../../application/candidate-user/repositories/candidate-user.repository';
 import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
-import { AuthProviderType } from '../../../models/auth-provider.enum';
-import { Role } from '../../../models/roles.enum';
+import { AuthProviderType } from '../../interfaces/authentication/auth-provider.enum';
 import { SALT_BCRYPT } from '../../constants/constants';
 import { CandidateUserSerialize } from '../../serializers/candidate-user.serialize';
+import { Role } from '../../interfaces/authentication/roles.enum';
 @Injectable()
 export class CandidateUserPostgresRepository
   implements CandidateUserRepository
 {
   constructor(
-    private readonly prisma: PrismaPostgresService,
     private readonly candidateUserSerialize: CandidateUserSerialize,
+    private readonly prisma: PrismaPostgresService,
   ) {}
 
-  async create(candidate: CreateCandidateUserDto): Promise<CandidateUser> {
+  async create(
+    candidate: CreateCandidateUserDto,
+    token,
+    expiredAt,
+  ): Promise<CandidateUser> {
     let pwdHashed = '';
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
@@ -31,6 +35,9 @@ export class CandidateUserPostgresRepository
         ? candidate.provider
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
+      confirmationToken: token,
+      expiredConfirmationToken: expiredAt,
+      activated: candidate.activated,
     });
     return await this.prisma.candidateUser.create({ data });
   }
