@@ -25,7 +25,7 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
     if (candidate.password) {
       pwdHashed = await bcrypt.hash(candidate.password, SALT_BCRYPT);
     }
-    console.log(token, expiredAt);
+
     const data = this.candidateUserSerialize.requestToDb({
       ...candidate,
       password: pwdHashed,

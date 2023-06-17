@@ -24,8 +24,6 @@ export class SurveyMarketInformationSqliteRepository
   }
 
   async findByIdUser(idUser: number): Promise<any> {
-    console.log('repository sqlite', idUser);
-
     return await this.prisma.surveyMarketInformation.findUnique({
       where: { candidateUserId: idUser },
     });

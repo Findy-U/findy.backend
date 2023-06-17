@@ -55,7 +55,6 @@ export class SurveyMarketInformationController {
   ) {
     try {
       body.candidateUserId = req.user['id'];
-      console.log(body);
 
       return await this.surveyMarketInformationService.create(body);
     } catch (error) {
