@@ -11,6 +11,7 @@ import { LoginRequestBody } from '../interfaces/authentication/login-request-bod
 export class LoginValidationMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
+    console.log(body);
 
     const loginRequestBody = new LoginRequestBody();
 

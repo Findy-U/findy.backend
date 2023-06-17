@@ -12,6 +12,8 @@ export class SurveyFeelingsService {
   ) {}
 
   async create(survey: CreateSurveyFeelingsDto) {
+    console.log(survey);
+
     const candidateUserId = await this.surveyFeelingsRepository.findOne(
       survey.candidateUserId,
     );
