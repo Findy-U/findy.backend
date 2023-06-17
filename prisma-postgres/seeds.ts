@@ -120,6 +120,7 @@ async function seedUserAdmin() {
           '$2a$10$O7PLuwjrj5moVvOkyVyIeuf3Fw5RICwuL/IPKL0js.sIDfeV7KDZK', // senha: VJ8I@l7zK%
         roles: 'admin',
         provider: 'findy',
+        activated: true,
         providerId: null,
         recoverToken: null,
         createdAt: new Date(),
