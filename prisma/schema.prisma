@@ -27,6 +27,7 @@ model CandidateUser {
   CandidateUserDetails     CandidateUserDetails?
   SurveyMarketInformation  SurveyMarketInformation?
   SurveyFeelings           SurveyFeelings?
+  SurveyProfessionalSituation SurveyProfessionalSituation?
 
   @@map("tb_candidate_users")
 }
@@ -150,12 +151,13 @@ model SurveyMarketInformation {
   candidateUserId Int?           @unique() @map("candidate_user_id")
   friendName      String?        @map("friend_name")
   friendEmail     String?        @map("friend_email")
-  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
-
   createdAt DateTime @default(now()) @map("created_at")
+
+  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
 
   @@map("survey_market_information")
 }
+
 
 model SurveyFeelings {
   id                      Int       @id @default(autoincrement())
@@ -168,3 +170,17 @@ model SurveyFeelings {
 
   @@map("tb_survey_feelings")
 }
+
+model SurveyProfessionalSituation {
+  id              Int            @id @default(autoincrement())
+  situation       String
+  ocupationArea   String?        @map("ocuppation_area")
+  objectives      String?       
+  candidateUserId Int?           @unique() @map("candidate_user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  CandidateUser   CandidateUser? @relation(fields: [candidateUserId], references: [id])
+  
+  @@map("survey_professional_situation")
+}
+

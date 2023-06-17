@@ -13,6 +13,7 @@ import { CandidateUserInterface } from '../../common/interfaces/candidate-user/c
 import { MailService } from '../../mails/mail.service';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
+import { ForbiddenError } from '../../common/exceptions/forbidden.error';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,12 @@ export class AuthService {
 
   async validateLocalAuth(email: string, password: string) {
     const candidate = await this.candidateUserService.findByEmail(email);
-    if (candidate) {
+
+    if (candidate && candidate.activated === false) {
+      throw new ForbiddenError('Account is not activated');
+    }
+
+    if (candidate && candidate.activated) {
       const isPasswordValid = await bcrypt.compare(
         password,
         candidate.password,
