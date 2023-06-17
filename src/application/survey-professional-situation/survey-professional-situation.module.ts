@@ -3,6 +3,7 @@ import { SurveyProfessionalSituationService } from './survey-professional-situat
 import { SurveyProfessionalSituationController } from './survey-professional-situation.controller';
 import { SurveyProfessionalSituationRepository } from './repositories/survey-professional-situation.repository';
 import { SurveyProfessionalSituationSqliteRepository } from '../../common/repositories/survey-professional-situation/survey-professional-situation-sqlite.repository';
+import { SurveyProfessionalSituationPostgresRepository } from '../../common/repositories/survey-professional-situation/survey-professional-situation-postgres.repository';
 
 @Module({
   controllers: [SurveyProfessionalSituationController],
@@ -10,7 +11,7 @@ import { SurveyProfessionalSituationSqliteRepository } from '../../common/reposi
     SurveyProfessionalSituationService,
     {
       provide: SurveyProfessionalSituationRepository,
-      useClass: SurveyProfessionalSituationSqliteRepository,
+      useClass: SurveyProfessionalSituationPostgresRepository,
     },
   ],
 })

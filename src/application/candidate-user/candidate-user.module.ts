@@ -18,7 +18,7 @@ import { MailService } from 'src/mails/mail.service';
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserPostgresRepository,
     },
   ],
 })

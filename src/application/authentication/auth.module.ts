@@ -43,7 +43,7 @@ import { CandidateUserSerialize } from '../../common/serializers/candidate-user.
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserPostgresRepository,
     },
   ],
 })
