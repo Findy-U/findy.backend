@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CandidateProfileRepository } from 'src/application/candidate-profile/repository/candidate-profile.repository';
 import { CandidateProfilePostgresRepository } from 'src/common/repositories/candidate-profile/candidate-profile-postgres-repository';
+import { CandidateProfileSQLiteRepository } from '../../common/repositories/candidate-profile/candidate-profile-sqlite-repository';
 import { CandidateProfileController } from './candidate-profile.controller';
 import { CandidateProfileService } from './candidate-profile.service';
 import { CandidateProfile } from './entities/candidate-profile.entity';
-
-import { CandidateProfilePostgresRepository } from '../../common/repositories/candidate-profile/candidate-profile-postgres-repository';
-import { CandidateProfileRepository } from '../../application/candidate-profile/repository/candidate-profile.repository';
-import { CandidateProfileSQLiteRepository } from '../../common/repositories/candidate-profile/candidate-profile-sqlite-repository';
 
 @Module({
   controllers: [CandidateProfileController],
@@ -20,4 +17,4 @@ import { CandidateProfileSQLiteRepository } from '../../common/repositories/cand
     CandidateProfile,
   ],
 })
-export class CandidateProfileModule { }
+export class CandidateProfileModule {}
