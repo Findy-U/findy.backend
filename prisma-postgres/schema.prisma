@@ -23,6 +23,7 @@ model CandidateUser {
   confirmationToken           String?                      @unique @map("confirmation_token")
   expiredConfirmationToken    DateTime?                    @map("expired_confirmation_token")
   activated                   Boolean                      @default(false)
+  completeSurvey              Boolean?                     @default(false) @map("complete_survey")
   CandidateProfile            CandidateProfile?
   CandidateProject            CandidateProject[]
   CandidateUserDetails        CandidateUserDetails?
