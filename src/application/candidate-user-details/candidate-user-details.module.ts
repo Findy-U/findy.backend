@@ -15,7 +15,7 @@ import { CandidateUserDetailsSerialize } from 'src/common/serializers/candidate-
     PrismaService,
     {
       provide: CandidateUserDetailsRepository,
-      useClass: CandidateUserDetailsSqliteRepository,
+      useClass: CandidateUserDetailsPostgresRepository,
     },
   ],
 })
