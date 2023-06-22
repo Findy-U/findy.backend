@@ -4,17 +4,19 @@ import { CreateCandidateProfileDto } from '../../../application/candidate-profil
 import { UpdateCandidateProfileDto } from '../../../application/candidate-profile/dto/update-candidate-profile.dto';
 import { CandidateProfile } from '../../../application/candidate-profile/entities/candidate-profile.entity';
 import { CandidateProfileRepository } from '../../../application/candidate-profile/repository/candidate-profile.repository';
-import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
+import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
 import { NotFoundError } from '../../exceptions/not-found.error';
 import { ConflictError } from '../../exceptions/conflict-error';
 
 @Injectable()
-export class CandidateProfilePostgresRepository
+export class CandidateProfileMySqlRepository
   implements CandidateProfileRepository
 {
-  constructor(private readonly prisma: PrismaPostgresService) {}
+  constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(profile: CreateCandidateProfileDto) {
+    console.log(profile);
+
     const areaArray = profile.others
       ? [...profile.occupationArea, ...profile.others]
       : [...profile.occupationArea];

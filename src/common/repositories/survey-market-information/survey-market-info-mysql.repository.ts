@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSurveyMarketInformationDto } from '../../../application/survey-market-information/dto/create-survey-market-information.dto';
 import { SurveyMarketInformationRepository } from '../../../application/survey-market-information/repositories/survey-market-information.repository';
-import { PrismaService } from '../../../config/database/prisma/prisma.service';
+import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
 
 @Injectable()
 export class SurveyMarketInformationPostgresRepository
   implements SurveyMarketInformationRepository
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(dataSurvey: CreateSurveyMarketInformationDto): Promise<any> {
     return this.prisma.surveyMarketInformation.create({ data: dataSurvey });
