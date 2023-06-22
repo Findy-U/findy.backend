@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@internal/prisma-postgres/client"
+  output   = "../node_modules/@internal/prisma-mysql/client"
 }
 
 datasource db {
@@ -40,7 +40,7 @@ model CandidateUserDetails {
   id              Int       @id @default(autoincrement())
   candidateUserId Int?      @unique @map("candidate_user_id")
   gender          String
-  birthDate       DateTime? @map("birth_date")
+  birthDate       DateTime? @map("birth_date") @db.Date
   residencePlace  String?   @map("residence_place")
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @map("updated_at")
