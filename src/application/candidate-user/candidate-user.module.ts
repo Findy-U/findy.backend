@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CandidateUserPostgresRepository } from 'src/common/repositories/candidate-user/candidate-user-postgres.repository';
+import { CandidateUserMySqlRepository } from 'src/common/repositories/candidate-user/candidate-user-mysql.repository';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { PrismaService } from '../../config/database/prisma/prisma.service';
 import { CandidateUserController } from './candidate-user.controller';
@@ -18,7 +18,7 @@ import { MailService } from 'src/mails/mail.service';
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserPostgresRepository,
+      useClass: CandidateUserMySqlRepository,
     },
   ],
 })
