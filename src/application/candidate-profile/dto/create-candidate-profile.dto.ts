@@ -78,9 +78,5 @@ export class CreateCandidateProfileDto {
   @IsString()
   availableTime: string;
 
-  @ApiProperty({ description: 'Campo numérico', example: 2 })
-  @IsNumber()
-  candidateUserId?: number | null;
-
-  candidateUser?: any;
+  candidateUserId?: number;
 }
