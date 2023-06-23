@@ -17,6 +17,9 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
 
+const configService = new ConfigService<AppConfig>();
+const modeProduction = configService.get<string>('modeProduction');
+
 @Module({
   imports: [
     PassportModule,
@@ -42,7 +45,7 @@ import { LocalStrategy } from './strategies/local.strategy.ts';
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserMySqlRepository,
+      useClass: CandidateUserSqliteRepository,
     },
   ],
 })

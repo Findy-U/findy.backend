@@ -6,7 +6,11 @@ import { SurveyFeelingsMySqlRepository } from '../../common/repositories/survey-
 import { SurveyFeelingsSqliteRepository } from 'src/common/repositories/survey-feelings/survey-feelings-sqlite.repository';
 import { SurveyFeelingsRepository } from './repositories/survey-feelings.repository';
 import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.serialize';
+import { AppConfig } from '../../common/interfaces/app-config';
+import { ConfigService } from '@nestjs/config';
 
+const configService = new ConfigService<AppConfig>();
+const modeProduction = configService.get<string>('modeProduction');
 @Module({
   controllers: [SurveyFeelingsController],
   providers: [
@@ -15,7 +19,7 @@ import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.
     PrismaService,
     {
       provide: SurveyFeelingsRepository,
-      useClass: SurveyFeelingsMySqlRepository,
+      useClass: SurveyFeelingsSqliteRepository,
     },
   ],
 })
