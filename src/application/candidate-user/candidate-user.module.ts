@@ -22,7 +22,7 @@ const modeProduction = configService.get<string>('modeProduction');
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserMySqlRepository,
     },
   ],
 })

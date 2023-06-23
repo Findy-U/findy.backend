@@ -17,7 +17,7 @@ const modeProduction = configService.get<string>('modeProduction');
     CandidateProfileService,
     {
       provide: CandidateProfileRepository,
-      useClass: CandidateProfileSQLiteRepository,
+      useClass: CandidateProfileMySqlRepository,
     },
     CandidateProfile,
   ],

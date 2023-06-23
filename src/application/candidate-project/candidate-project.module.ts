@@ -17,7 +17,7 @@ const modeProduction = configService.get<string>('modeProduction');
     PrismaService,
     {
       provide: CandidateProjectRepository,
-      useClass: CandidateProjectSqliteRepository,
+      useClass: CandidateProjectMySqlRepository,
     },
   ],
 })

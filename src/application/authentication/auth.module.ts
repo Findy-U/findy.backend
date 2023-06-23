@@ -17,9 +17,8 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
 
-const configService = new ConfigService<AppConfig>();
-const modeProduction = configService.get<string>('modeProduction');
-
+const modeProduction = process.env.MODE_PRODUCTION;
+console.log('modeProduction', modeProduction);
 @Module({
   imports: [
     PassportModule,
@@ -45,7 +44,7 @@ const modeProduction = configService.get<string>('modeProduction');
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserSqliteRepository,
+      useClass: CandidateUserMySqlRepository,
     },
   ],
 })

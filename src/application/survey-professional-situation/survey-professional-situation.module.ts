@@ -15,7 +15,7 @@ const modeProduction = configService.get<string>('modeProduction');
     SurveyProfessionalSituationService,
     {
       provide: SurveyProfessionalSituationRepository,
-      useClass: SurveyProfessionalSituationSqliteRepository,
+      useClass: SurveyProfessionalSituationMySqlRepository,
     },
   ],
 })
