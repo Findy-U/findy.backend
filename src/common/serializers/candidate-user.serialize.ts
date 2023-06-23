@@ -33,7 +33,6 @@ export class CandidateUserSerialize {
       provider: candidate.provider,
       completeSurvey: candidate.completeSurvey,
       providerId: candidate.providerId,
-      completeSurvey: candidate.completeSurvey,
       createdAt: candidate.createdAt,
       updatedAt: candidate.updatedAt,
       profile: {
