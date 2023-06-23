@@ -31,13 +31,13 @@ import {
   ApiProfileParamFindById,
   ApiProfileResponseFindAll,
   CandidateUserNotFoundExceptionError,
-  ProfileConflictExceptionError,
   ProfileNotFoundExceptionError,
   UnauthorizedExceptionError,
 } from './swagger/success.response';
 import { ProfileResponseFind } from './swagger/success.response';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { ConflictError } from '../../common/exceptions/conflict-error';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @Controller('candidate-profile')
 @ApiTags('candidate_profile')
@@ -54,9 +54,7 @@ export class CandidateProfileController {
     type: UnauthorizedExceptionError,
   })
   @ApiBearerAuth()
-  @ApiConflictResponse({
-    type: ProfileConflictExceptionError,
-  })
+  @ApiConflictResponse(ApiConflictResponseCreate)
   @ApiNotFoundResponse({
     type: CandidateUserNotFoundExceptionError,
   })

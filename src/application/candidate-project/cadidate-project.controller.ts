@@ -34,7 +34,6 @@ import { CandidateProjectService } from './candidate-project.service';
 import { CreateCandidateProjectDto } from './dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from './dto/update-candidate-project.dto';
 import {
-  ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
   ApiResponseDelete,
   ApiResponseFindAll,
@@ -59,6 +58,7 @@ import {
   UpdateResponse,
 } from './swagger/success.response';
 import { Role } from '../../common/interfaces/authentication/roles.enum';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 @Controller('candidate-projects')
 @ApiTags('candidate_projects')
 export class CandidateProjectController {

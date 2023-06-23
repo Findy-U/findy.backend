@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatesuccessResponse {
+export class CreatesuccessProjectsResponse {
   @ApiProperty({ example: 1 })
   id: number;
 
@@ -171,15 +171,6 @@ export class UpdateResponse {
   @ApiProperty({ example: 'Update successfully' })
   message: string;
 }
-export class ConflictExceptionError {
-  @ApiProperty({ example: 409 })
-  statusCode: number;
-  @ApiProperty({ example: 'Candidate user already exists' })
-  message: string;
-  @ApiProperty({ example: 'Conflict' })
-  error: string;
-}
-
 export class NotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;
@@ -252,12 +243,7 @@ export class NotFoundExceptionErrorStacks {
 export const ApiCreatedResponseCreate = {
   description:
     'Endpoint responsável por criar novo projeto pelo candidato. O ID do usuário candidato é passado automaticamente pelo token',
-  type: CreatesuccessResponse,
-};
-
-export const ApiConflictResponseCreate = {
-  description: 'Project name already exists',
-  type: ConflictExceptionError,
+  type: CreatesuccessProjectsResponse,
 };
 
 export const ApiResponseFindAll = {

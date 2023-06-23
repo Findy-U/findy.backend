@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatesuccessResponse {
+export class CreatesuccessDetailsResponse {
   @ApiProperty({ example: 1 })
   detailsId: number;
   @ApiProperty({ example: 1 })
@@ -13,7 +13,7 @@ export class CreatesuccessResponse {
   residencePlace: string;
 }
 
-export class ResponseFind {
+export class ResponseDetailsFind {
   @ApiProperty({ example: 1 })
   detailsId: number;
   @ApiProperty({ example: 1 })
@@ -30,12 +30,12 @@ export class ResponseFind {
   updatedAt: string | null;
 }
 
-export class UpdateDTOSwagger {
+export class UpdateDetailsDTOSwagger {
   @ApiProperty({ example: 'Female' })
   gender: string;
 }
 
-export class UpdateResponse {
+export class UpdateDetailsResponse {
   @ApiProperty({ example: 'Updated successfully' })
   message: string;
   @ApiProperty({ example: 1 })
@@ -83,30 +83,25 @@ export class UnauthorizedExceptionError {
 }
 
 // Informações que vão nos decorators do Swagger no controller
-export const ApiCreatedResponseCreate = {
+export const ApiCreatedDetailsResponseCreate = {
   description:
     'Endpoint responsável por criar novo registro de detalhes do usuário.',
-  type: CreatesuccessResponse,
+  type: CreatesuccessDetailsResponse,
 };
 
-export const ApiConflictResponseCreate = {
-  description: "Candidate user doesn't exist",
-  type: ConflictExceptionError,
-};
-
-export const ApiResponseFindAll = {
+export const ApiResponseDetailsFindAll = {
   status: 200,
   description:
     'Endpoint que retorna os detalhes de todos os usuários candidatos. Precisa estar autenticado com o token JWT',
 };
 
-export const ApiResponseFindById = {
+export const ApiResponseDetailsFindById = {
   status: 200,
   description:
     'Endpoint que retorna os detalhes de um usuário candidato conforme id informado. Precisa estar autenticado com o token JWT',
 };
 
-export const ApiParamFindById = {
+export const ApiParamDetailsFindById = {
   name: 'id',
   required: true,
   description:
@@ -114,7 +109,7 @@ export const ApiParamFindById = {
   schema: { oneOf: [{ type: 'integer' }] },
 };
 
-export const ApiResponseUpdate = {
+export const ApiResponseDetailsUpdate = {
   status: 200,
   description:
     'Endpoint usando para editar os detalhes do usuário candidato. Precisa estar autenticado com o token JWT',

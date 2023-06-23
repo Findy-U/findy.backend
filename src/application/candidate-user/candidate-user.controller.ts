@@ -1,14 +1,14 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
   Get,
   NotFoundException,
-  BadRequestException,
   Param,
-  Query,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -16,17 +16,13 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { HasRoles } from '../../common/decorators/has-roles.decorator';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
-import { RolesGuard } from '../authentication/guards/roles.guard';
-import { ForbidenExceptiomError } from '../candidate-project/swagger/success.response';
 import { CandidateUserService } from './candidate-user.service';
 import { CreateCandidateUserDto } from './dto/create-candidate-user.dto';
 import { UpdateCandidateUserDto } from './dto/update-candidate-user.dto';
@@ -40,13 +36,11 @@ import {
   ApirParamFindById,
   ConfirmEmailResponse,
   NotFoundExceptionError,
-  ResponseFind,
+  ResponseCandidateUserFind,
   UnauthorizedExceptionError,
   UpdateDTOSwagger,
   UpdateResponse,
 } from './swagger/success.response';
-import { ConflictError } from '../../common/exceptions/conflict-error';
-import { Role } from '../../common/interfaces/authentication/roles.enum';
 
 @Controller('candidate-users')
 @ApiTags('candidate_users')
@@ -69,7 +63,7 @@ export class CandidateUserController {
   // @HasRoles(Role.Project, Role.Admin)
   @Get()
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseFindAll, type: [ResponseFind] })
+  @ApiResponse({ ...ApiResponseFindAll, type: [ResponseCandidateUserFind] })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
@@ -87,7 +81,7 @@ export class CandidateUserController {
   // @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
+  @ApiResponse({ ...ApiResponseFindById, type: ResponseCandidateUserFind })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o usuário no BD',
     type: NotFoundExceptionError,
