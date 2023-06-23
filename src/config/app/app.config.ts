@@ -10,6 +10,7 @@ export default (): AppConfig => ({
   urlRedirectAuthGoogle: process.env.URL_REDIRECT_AUTHGOOGLE,
   urlRecoverPassword: process.env.URL_RECOVER_PASSWORD,
   urlEmailConfirmation: process.env.URL_EMAIL_CONFIRMATION,
+  modeProduction: process.env.MODE_PRODUCTION,
   auth: {
     jwt: {
       secret: process.env.JWT_SECRET,

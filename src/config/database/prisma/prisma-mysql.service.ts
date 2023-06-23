@@ -1,8 +1,8 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@internal/prisma-postgres/client';
+import { Prisma, PrismaClient } from '@internal/prisma-mysql/client';
 
 @Injectable()
-export class PrismaPostgresService
+export class PrismaMySqlService
   extends PrismaClient<Prisma.PrismaClientOptions, 'error' | 'query'>
   implements OnModuleInit, OnModuleDestroy
 {

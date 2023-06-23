@@ -3,7 +3,7 @@ import { CandidateProject, Roles, Stack } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
-import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
+import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
 import {
   CandidateProjectResponse,
   CandidateUser,
@@ -11,10 +11,10 @@ import {
 import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()
-export class CandidateProjectPostgresRepository
+export class CandidateProjectMySqlRepository
   implements CandidateProjectRepository
 {
-  constructor(private readonly prisma: PrismaPostgresService) {}
+  constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(
     project: CreateCandidateProjectDto,
