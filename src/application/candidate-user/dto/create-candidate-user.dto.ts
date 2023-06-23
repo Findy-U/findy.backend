@@ -67,6 +67,9 @@ export class CreateCandidateUserDto {
   confirmationToken?: string;
   expiredConfirmationToken?: Date;
   activated?: boolean;
+  generalTerms?: boolean;
+  privacyPolicy?: boolean;
+  completeSurvey?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

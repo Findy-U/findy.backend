@@ -47,3 +47,4 @@ lerna-debug.log*
 /prisma/dev.db
 /prisma/dev.db-*
 dev.db
+/ssl

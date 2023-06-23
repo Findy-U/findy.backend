@@ -31,6 +31,7 @@ export class CandidateUserSerialize {
       email: candidate.email,
       roles: candidate.roles,
       provider: candidate.provider,
+      completeSurvey: candidate.completeSurvey,
       providerId: candidate.providerId,
       createdAt: candidate.createdAt,
       updatedAt: candidate.updatedAt,
