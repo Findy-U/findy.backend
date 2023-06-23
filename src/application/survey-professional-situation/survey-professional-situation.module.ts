@@ -11,7 +11,7 @@ import { SurveyProfessionalSituationPostgresRepository } from '../../common/repo
     SurveyProfessionalSituationService,
     {
       provide: SurveyProfessionalSituationRepository,
-      useClass: SurveyProfessionalSituationPostgresRepository,
+      useClass: SurveyProfessionalSituationSqliteRepository,
     },
   ],
 })

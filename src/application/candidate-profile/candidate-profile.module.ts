@@ -12,7 +12,7 @@ import { CandidateProfile } from './entities/candidate-profile.entity';
     CandidateProfileService,
     {
       provide: CandidateProfileRepository,
-      useClass: CandidateProfilePostgresRepository,
+      useClass: CandidateProfileSQLiteRepository,
     },
     CandidateProfile,
   ],

@@ -11,7 +11,7 @@ import { SurveyMarketInformationPostgresRepository } from '../../common/reposito
     SurveyMarketInformationService,
     {
       provide: SurveyMarketInformationRepository,
-      useClass: SurveyMarketInformationPostgresRepository,
+      useClass: SurveyMarketInformationSqliteRepository,
     },
   ],
 })

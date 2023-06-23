@@ -15,7 +15,7 @@ import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.
     PrismaService,
     {
       provide: SurveyFeelingsRepository,
-      useClass: SurveyFeelingsPostgresRepository,
+      useClass: SurveyFeelingsSqliteRepository,
     },
   ],
 })
