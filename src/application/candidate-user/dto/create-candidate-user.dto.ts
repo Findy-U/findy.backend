@@ -17,8 +17,12 @@ export class CreateCandidateUserDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
-  @MaxLength(30)
+  @MinLength(3, {
+    message: 'O nome de usuário deve conter no mínimo 3 caracteres.',
+  })
+  @MaxLength(70, {
+    message: 'O nome de usuário deve conter no máximo 70 caracteres.',
+  })
   // créditos https://pt.stackoverflow.com/a/135784 da regex
   @Matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, {
     message: 'O nome de usuário deve conter apenas letras',
