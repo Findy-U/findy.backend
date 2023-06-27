@@ -29,6 +29,7 @@ model CandidateUser {
   CandidateUserDetails        CandidateUserDetails?
   SurveyMarketInformation     SurveyMarketInformation?
   SurveyFeelings              SurveyFeelings?
+  SurveyNeeds                 SurveyNeeds?
   SurveyProfessionalSituation SurveyProfessionalSituation?
 
   CandidateProject CandidateProject[]
@@ -172,6 +173,19 @@ model SurveyFeelings {
   CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
 
   @@map("tb_survey_feelings")
+}
+
+model SurveyNeeds {
+  id                    Int      @id @default(autoincrement())
+  candidateUserId       Int?     @unique @map("candidate_user_id")
+  professionalSituation Int      @map("professional_situation")
+  professionalArea      String   @map("professional_area")
+  goal                  String
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+
+  @@map("tb_survey_needs")
 }
 
 model SurveyProfessionalSituation {
