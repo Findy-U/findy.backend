@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatesuccessResponse {
+export class CreatesuccessSurveyFeelingsResponse {
   @ApiProperty({ example: 1 })
   id: number;
   @ApiProperty({ example: 1 })
   candidateUserId: number;
   @ApiProperty({ example: 10 })
   professionalAchievement: number;
-  @ApiProperty({ example: 'Realização profissional' })
+  @ApiProperty({ example: 'Retorno financeiro' })
   motivation: string;
 }
 
@@ -18,21 +18,10 @@ export class ResponseFind {
   candidateUserId: number;
   @ApiProperty({ example: 10 })
   professionalAchievement: number;
-  @ApiProperty({ example: 'Realização profissional' })
+  @ApiProperty({ example: 'Retorno financeiro' })
   motivation: string;
   @ApiProperty({ example: '01/01/2001' })
   createdAt: string;
-}
-
-export class ConflictExceptionError {
-  @ApiProperty({ example: 409 })
-  statusCode: number;
-  @ApiProperty({
-    example: 'This candidate user already has registered your answers',
-  })
-  message: string;
-  @ApiProperty({ example: 'Conflict' })
-  error: string;
 }
 
 export class NotFoundExceptionError {
@@ -56,12 +45,7 @@ export class UnauthorizedExceptionError {
 export const ApiCreatedResponseCreate = {
   description:
     'Endpoint responsável por criar novo registropara análise de sentimentos',
-  type: CreatesuccessResponse,
-};
-
-export const ApiConflictResponseCreate = {
-  description: "Candidate user doesn't exist",
-  type: ConflictExceptionError,
+  type: CreatesuccessSurveyFeelingsResponse,
 };
 
 export const ApiResponseFindAll = {

@@ -25,21 +25,21 @@ import {
 import { Request } from 'express';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
-  ApiConflictResponseCreate,
-  ApiCreatedResponseCreate,
+  ApiCreatedDetailsResponseCreate,
   UnauthorizedExceptionError,
-  ApiResponseFindAll,
-  ResponseFind,
-  ApiResponseFindById,
-  ApiParamFindById,
+  ApiResponseDetailsFindAll,
+  ResponseDetailsFind,
+  ApiResponseDetailsFindById,
+  ApiParamDetailsFindById,
   NotFoundExceptionError,
-  ApiResponseUpdate,
-  UpdateDTOSwagger,
-  UpdateResponse,
+  ApiResponseDetailsUpdate,
+  UpdateDetailsDTOSwagger,
+  UpdateDetailsResponse,
 } from '../candidate-user-details/swagger/swagger.responses';
 import { CandidateUserDetailsService } from './candidate-user-details.service';
 import { CreateCandidateUserDetailsDto } from './dto/create-candidate-user-details.dto';
 import { UpdateCandidateUserDetailsDto } from './dto/update-candidate-user-details.dto';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @Controller('candidate-users-details')
 @ApiTags('candidate_users-details')
@@ -50,7 +50,7 @@ export class CandidateUserDetailsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiCreatedResponse(ApiCreatedResponseCreate)
+  @ApiCreatedResponse(ApiCreatedDetailsResponseCreate)
   @ApiConflictResponse(ApiConflictResponseCreate)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
@@ -77,7 +77,7 @@ export class CandidateUserDetailsController {
   @Get()
   @ApiExcludeEndpoint()
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseFindAll, type: [ResponseFind] })
+  @ApiResponse({ ...ApiResponseDetailsFindAll, type: [ResponseDetailsFind] })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
@@ -90,7 +90,7 @@ export class CandidateUserDetailsController {
   @Get(':id')
   @ApiExcludeEndpoint()
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseFindById, type: ResponseFind })
+  @ApiResponse({ ...ApiResponseDetailsFindById, type: ResponseDetailsFind })
   @ApiNotFoundResponse({
     description: 'Erro quando não encontra o registro no BD',
     type: NotFoundExceptionError,
@@ -99,7 +99,7 @@ export class CandidateUserDetailsController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
-  @ApiParam(ApiParamFindById)
+  @ApiParam(ApiParamDetailsFindById)
   async findOne(@Param('id') id: string) {
     try {
       return await this.candidateUserDetailsService.findOne(+id);
@@ -112,7 +112,7 @@ export class CandidateUserDetailsController {
   @Patch(':id')
   @ApiExcludeEndpoint()
   @ApiBearerAuth()
-  @ApiResponse({ ...ApiResponseUpdate, type: UpdateResponse })
+  @ApiResponse({ ...ApiResponseDetailsUpdate, type: UpdateDetailsResponse })
   @ApiNotFoundResponse({
     description: 'Usuário não encontrado',
     type: NotFoundExceptionError,
@@ -121,9 +121,9 @@ export class CandidateUserDetailsController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
-  @ApiParam(ApiParamFindById)
+  @ApiParam(ApiParamDetailsFindById)
   @ApiBody({
-    type: UpdateDTOSwagger,
+    type: UpdateDetailsDTOSwagger,
     description:
       'O body do update pode receber todos os atributos ou parte dos atributos.',
   })

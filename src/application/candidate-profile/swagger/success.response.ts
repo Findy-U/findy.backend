@@ -117,18 +117,6 @@ export class ProfileUpdateResponse {
   message: string;
 }
 
-export class ProfileConflictExceptionError {
-  @ApiProperty({ example: 409 })
-  statusCode: number;
-  @ApiProperty({
-    example:
-      'There is already a profile registered for this user user already exists',
-  })
-  message: string;
-  @ApiProperty({ example: 'Conflict' })
-  error: string;
-}
-
 export class CandidateUserNotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;

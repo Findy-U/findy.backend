@@ -20,10 +20,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
-  ApiProfessionalSituationConflictResponseCreate,
   ApiProfessionalSituationCreatedResponseCreate,
   UnauthorizedExceptionError,
 } from './swagger/success.response';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @Controller('survey-professional-situation')
 export class SurveyProfessionalSituationController {
@@ -36,7 +36,7 @@ export class SurveyProfessionalSituationController {
     description: 'Unauthorized user',
     type: UnauthorizedExceptionError,
   })
-  @ApiConflictResponse(ApiProfessionalSituationConflictResponseCreate)
+  @ApiConflictResponse(ApiConflictResponseCreate)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()

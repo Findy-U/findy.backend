@@ -25,7 +25,6 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
-  ApiConflictResponseCreate,
   ApiCreatedResponseCreate,
   ApiParamFindById,
   ApiResponseFindAll,
@@ -34,6 +33,7 @@ import {
   ResponseFind,
   UnauthorizedExceptionError,
 } from './swagger/swagger.responses';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @Controller('survey-feelings')
 @ApiTags('survey-feelings')
