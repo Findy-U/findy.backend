@@ -1,7 +1,7 @@
 export class SurveyNeeds {
   id?: number;
   candidateUserId?: number;
-  professionalSituation: number;
+  professionalSituation: string;
   professionalArea: string;
   goal: string;
 }

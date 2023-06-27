@@ -178,7 +178,7 @@ model SurveyFeelings {
 model SurveyNeeds {
   id                    Int      @id @default(autoincrement())
   candidateUserId       Int?     @unique @map("candidate_user_id")
-  professionalSituation Int      @map("professional_situation")
+  professionalSituation String      @map("professional_situation")
   professionalArea      String   @map("professional_area")
   goal                  String
   createdAt             DateTime @default(now()) @map("created_at")
