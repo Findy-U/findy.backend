@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@internal/prisma-postgres/client"
+  output   = "../node_modules/@internal/prisma-mysql/client"
 }
 
 datasource db {
@@ -29,6 +29,7 @@ model CandidateUser {
   CandidateUserDetails        CandidateUserDetails?
   SurveyMarketInformation     SurveyMarketInformation?
   SurveyFeelings              SurveyFeelings?
+  SurveyNeeds                 SurveyNeeds?
   SurveyProfessionalSituation SurveyProfessionalSituation?
 
   CandidateProject CandidateProject[]
@@ -40,7 +41,7 @@ model CandidateUserDetails {
   id              Int       @id @default(autoincrement())
   candidateUserId Int?      @unique @map("candidate_user_id")
   gender          String
-  birthDate       DateTime? @map("birth_date")
+  birthDate       DateTime? @map("birth_date") @db.Date
   residencePlace  String?   @map("residence_place")
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @map("updated_at")
@@ -172,6 +173,19 @@ model SurveyFeelings {
   CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
 
   @@map("tb_survey_feelings")
+}
+
+model SurveyNeeds {
+  id                    Int      @id @default(autoincrement())
+  candidateUserId       Int?     @unique @map("candidate_user_id")
+  professionalSituation String      @map("professional_situation")
+  professionalArea      String   @map("professional_area")
+  goal                  String
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+
+  @@map("tb_survey_needs")
 }
 
 model SurveyProfessionalSituation {

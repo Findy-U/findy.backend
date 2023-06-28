@@ -3,13 +3,13 @@ import { CreateCandidateUserDetailsDto } from '../../../application/candidate-us
 import { UpdateCandidateUserDetailsDto } from '../../../application/candidate-user-details/dto/update-candidate-user-details.dto';
 import { CandidateUserDetailsEntity } from '../../../application/candidate-user-details/entities/candidate-user-details.entity';
 import { CandidateUserDetailsRepository } from '../../../application/candidate-user-details/repositories/candidate-user-details.repository';
-import { PrismaPostgresService } from '../../../config/database/prisma/prisma-postgres.service';
+import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
 
 @Injectable()
-export class CandidateUserDetailsPostgresRepository
+export class CandidateUserDetailsMySqlRepository
   implements CandidateUserDetailsRepository
 {
-  constructor(private readonly prisma: PrismaPostgresService) {}
+  constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(
     candidate: CreateCandidateUserDetailsDto,
@@ -17,7 +17,7 @@ export class CandidateUserDetailsPostgresRepository
     const data = {
       ...candidate,
       gender: candidate.gender,
-      birthDate: candidate.birthDate,
+      birthDate: new Date(candidate.birthDate),
       residencePlace: candidate.residencePlace,
     };
     return await this.prisma.candidateUserDetails.create({ data });

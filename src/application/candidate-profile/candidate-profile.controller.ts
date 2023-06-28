@@ -9,6 +9,7 @@ import {
   NotFoundException,
   UseGuards,
   ConflictException,
+  Req,
 } from '@nestjs/common';
 import { InternalServerErrorException } from '@nestjs/common';
 import {
@@ -37,6 +38,7 @@ import {
 import { ProfileResponseFind } from './swagger/success.response';
 import { NotFoundError } from '../../common/exceptions/not-found.error';
 import { ConflictError } from '../../common/exceptions/conflict-error';
+import { Request } from 'express';
 import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @Controller('candidate-profile')
@@ -58,11 +60,16 @@ export class CandidateProfileController {
   @ApiNotFoundResponse({
     type: CandidateUserNotFoundExceptionError,
   })
-  async create(@Body() createCandidateProfileDto: CreateCandidateProfileDto) {
+  async create(
+    @Body() createCandidateProfileDto: CreateCandidateProfileDto,
+    @Req() req: Request,
+  ) {
+    const dataCreate = {
+      ...createCandidateProfileDto,
+      candidateUserId: req.user.id,
+    };
     try {
-      return await this.candidateProfileService.create(
-        createCandidateProfileDto,
-      );
+      return await this.candidateProfileService.create(dataCreate);
     } catch (error) {
       if (error instanceof NotFoundError) {
         throw new NotFoundException(error.message);
