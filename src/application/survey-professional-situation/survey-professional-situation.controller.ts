@@ -17,6 +17,7 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiExcludeEndpoint,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
@@ -25,6 +26,7 @@ import {
 } from './swagger/success.response';
 import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
+@ApiTags('survey-professional-situation')
 @Controller('survey-professional-situation')
 export class SurveyProfessionalSituationController {
   constructor(

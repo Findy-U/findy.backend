@@ -35,8 +35,8 @@ import {
   UnauthorizedExceptionError,
 } from './swagger/swagger.responses';
 
-@Controller('survey-needs')
 @ApiTags('survey-needs')
+@Controller('survey-needs')
 export class SurveyNeedsController {
   constructor(private readonly surveyNeedsService: SurveyNeedsService) {}
 
