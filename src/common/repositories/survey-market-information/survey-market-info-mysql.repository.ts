@@ -4,7 +4,7 @@ import { SurveyMarketInformationRepository } from '../../../application/survey-m
 import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
 
 @Injectable()
-export class SurveyMarketInformationPostgresRepository
+export class SurveyMarketInformationMySqlRepository
   implements SurveyMarketInformationRepository
 {
   constructor(private readonly prisma: PrismaMySqlService) {}

@@ -8,8 +8,36 @@ import { PrismaService } from '../../../config/database/prisma/prisma.service';
 export class SurveyNeedsSqliteRepository implements SurveyNeedsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dataSurvey: CreateSurveyNeedsDto): Promise<SurveyNeeds> {
-    return await this.prisma.surveyNeeds.create({ data: dataSurvey });
+  async create(dataSurvey: CreateSurveyNeedsDto): Promise<any> {
+    try {
+      const survey = await this.prisma.surveyNeeds.create({
+        data: {
+          candidateUserId: dataSurvey.candidateUserId,
+        },
+      });
+
+      await Promise.all(
+        dataSurvey.principalDifficulties.map(async (item) => {
+          await this.prisma.principalDifficulties.create({
+            data: {
+              principalDifficulties: item,
+              surveyNeedsId: survey.id,
+            },
+          });
+        }),
+      );
+
+      await Promise.all(
+        dataSurvey.findyHelp.map(async (item) => {
+          await this.prisma.findyHelp.create({
+            data: { findyHelp: item, surveyNeedsId: survey.id },
+          });
+        }),
+      );
+      return survey;
+    } catch (error) {
+      console.log(error);
+    }
   }
   async findAll(): Promise<any> {
     return await this.prisma.surveyNeeds.findMany();
@@ -22,7 +50,7 @@ export class SurveyNeedsSqliteRepository implements SurveyNeedsRepository {
       },
     });
   }
-  async findOne(candidateUserId: number): Promise<SurveyNeeds> {
+  async findOne(candidateUserId: number): Promise<any> {
     return await this.prisma.surveyNeeds.findUnique({
       where: { candidateUserId },
     });

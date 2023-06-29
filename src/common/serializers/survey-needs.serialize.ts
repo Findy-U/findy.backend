@@ -5,9 +5,6 @@ export class SurveyNeedsSerialize {
     return {
       detailsId: details.id,
       candidateUserId: details.candidateUserId,
-      professionalSituation: details.professionalSituation,
-      professionalArea: details.professionalArea,
-      goal: details.goal,
       createdAt: details.createdAt.toLocaleDateString('pt-BR'),
     };
   }

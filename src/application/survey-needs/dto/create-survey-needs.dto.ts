@@ -7,29 +7,23 @@ export class CreateSurveyNeedsDto {
   @ApiProperty({
     description:
       'Campo obrigatório. Trata-se de um campo onde o usuário vai informar sua situação profissional atual.',
-    example: 'Empregado',
+    example: [
+      'Conexões com profissionais da área',
+      'Networking e eventos da área',
+    ],
   })
-  @IsString()
+  @IsString({ each: true })
   @IsNotEmpty()
-  professionalSituation: string;
+  findyHelp: string[];
 
   @ApiProperty({
     description:
       'Campo obrigatório. Trata-se de um campo onde o usuário deverá informar sua área de atuação profissional',
-    example: 'Tecnologia',
+    example: ['Falta de experiência prática', 'Falta de networking'],
   })
   @IsNotEmpty()
-  @IsString()
-  professionalArea: string;
-
-  @ApiProperty({
-    description:
-      'Campo obrigatório. Trata-se de um campo onde o usuário deverá informar seu objetivo junto a Findy',
-    example: 'Conseguir um emprego',
-  })
-  @IsNotEmpty()
-  @IsString()
-  goal: string;
+  @IsString({ each: true })
+  principalDifficulties: string[];
 
   createdAt?: Date;
 }
