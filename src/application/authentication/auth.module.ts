@@ -18,7 +18,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
 
 const modeProduction = process.env.MODE_PRODUCTION;
-console.log('modeProduction', modeProduction);
+
 @Module({
   imports: [
     PassportModule,
@@ -44,7 +44,9 @@ console.log('modeProduction', modeProduction);
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: CandidateUserMySqlRepository,
+      useClass: modeProduction
+        ? CandidateUserMySqlRepository
+        : CandidateUserSqliteRepository,
     },
   ],
 })

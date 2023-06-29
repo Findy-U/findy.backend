@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
-import { SurveyFeelingsService } from './survey-feelings.service';
-import { SurveyFeelingsController } from './survey-feelings.controller';
+import { SurveyFeelingsSqliteRepository } from 'src/common/repositories/survey-feelings/survey-feelings-sqlite.repository';
+import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.serialize';
 import { PrismaService } from 'src/config/database/prisma/prisma.service';
 import { SurveyFeelingsMySqlRepository } from '../../common/repositories/survey-feelings/survey-feelings-mysql.repository';
-import { SurveyFeelingsSqliteRepository } from 'src/common/repositories/survey-feelings/survey-feelings-sqlite.repository';
 import { SurveyFeelingsRepository } from './repositories/survey-feelings.repository';
-import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.serialize';
-import { AppConfig } from '../../common/interfaces/app-config';
-import { ConfigService } from '@nestjs/config';
+import { SurveyFeelingsController } from './survey-feelings.controller';
+import { SurveyFeelingsService } from './survey-feelings.service';
 
-const configService = new ConfigService<AppConfig>();
-const modeProduction = configService.get<string>('modeProduction');
+const modeProduction = process.env.MODE_PRODUCTION;
 @Module({
   controllers: [SurveyFeelingsController],
   providers: [
@@ -19,7 +16,9 @@ const modeProduction = configService.get<string>('modeProduction');
     PrismaService,
     {
       provide: SurveyFeelingsRepository,
-      useClass: SurveyFeelingsMySqlRepository,
+      useClass: modeProduction
+        ? SurveyFeelingsMySqlRepository
+        : SurveyFeelingsSqliteRepository,
     },
   ],
 })

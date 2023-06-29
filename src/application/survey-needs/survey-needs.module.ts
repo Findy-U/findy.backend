@@ -5,7 +5,9 @@ import { PrismaService } from 'src/config/database/prisma/prisma.service';
 import { SurveyNeedsMySqlRepository } from '../../common/repositories/survey-needs/survey-needs-mysql.repository';
 import { SurveyNeedsRepository } from './repositories/survey-needs.repository';
 import { SurveyNeedsSerialize } from 'src/common/serializers/survey-needs.serialize';
+import { SurveyNeedsSqliteRepository } from '../../common/repositories/survey-needs/survey-needs-sqlite.repository';
 
+const modeProduction = process.env.MODE_PRODUCTION;
 @Module({
   controllers: [SurveyNeedsController],
   providers: [
@@ -14,7 +16,9 @@ import { SurveyNeedsSerialize } from 'src/common/serializers/survey-needs.serial
     PrismaService,
     {
       provide: SurveyNeedsRepository,
-      useClass: SurveyNeedsMySqlRepository,
+      useClass: modeProduction
+        ? SurveyNeedsMySqlRepository
+        : SurveyNeedsSqliteRepository,
     },
   ],
 })

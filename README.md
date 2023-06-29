@@ -31,7 +31,7 @@ $ npx prisma generate
 
 ```bash
 # development
-$ npx prisma migrate dev
+$ npx prisma migrate dev --name init
 ```
 
 ```bash
@@ -55,6 +55,10 @@ $ npm run start:dev
 
 $ http://localhost:3001/api
 ````
+
+Se ainda não ficou muito claro segue um link onde encontra o guia com mais detalhes:
+
+[Notion](https://grove-lighter-c1f.notion.site/Deploy-Development-QA-9a28fbe0559e4181afb56d4ed36fd0ef)
 
 ## Test
 
