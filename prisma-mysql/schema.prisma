@@ -176,16 +176,35 @@ model SurveyFeelings {
 }
 
 model SurveyNeeds {
-  id                    Int      @id @default(autoincrement())
-  candidateUserId       Int?     @unique @map("candidate_user_id")
-  professionalSituation String      @map("professional_situation")
-  professionalArea      String   @map("professional_area")
-  goal                  String
-  createdAt             DateTime @default(now()) @map("created_at")
+  id                    Int                     @id @default(autoincrement())
+  candidateUserId       Int?                    @unique @map("candidate_user_id")
+  PrincipalDifficulties PrincipalDifficulties[]
+  FindyHelp             FindyHelp[]
+  createdAt             DateTime                @default(now()) @map("created_at")
 
   CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
 
   @@map("tb_survey_needs")
+}
+
+model PrincipalDifficulties {
+  id                    Int    @id @default(autoincrement())
+  principalDifficulties String @map("principal_difficulties")
+  surveyNeedsId         Int?
+
+  SurveyNeeds SurveyNeeds? @relation(fields: [surveyNeedsId], references: [id])
+
+  @@map("tb_principal_difficulties")
+}
+
+model FindyHelp {
+  id            Int    @id @default(autoincrement())
+  findyHelp     String @map("findy_help")
+  surveyNeedsId Int?
+
+  SurveyNeeds SurveyNeeds? @relation(fields: [surveyNeedsId], references: [id])
+
+  @@map("tb_findy_help")
 }
 
 model SurveyProfessionalSituation {

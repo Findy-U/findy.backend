@@ -9,20 +9,53 @@ export class SurveyNeedsMySqlRepository implements SurveyNeedsRepository {
   constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(dataSurvey: CreateSurveyNeedsDto): Promise<SurveyNeeds> {
-    return await this.prisma.surveyNeeds.create({ data: dataSurvey });
+    console.log(dataSurvey);
+    try {
+      const survey = await this.prisma.surveyNeeds.create({
+        data: {
+          candidateUserId: dataSurvey.candidateUserId,
+        },
+      });
+
+      await Promise.all(
+        dataSurvey.principalDifficulties.map(async (item) => {
+          await this.prisma.principalDifficulties.create({
+            data: {
+              principalDifficulties: item,
+              surveyNeedsId: survey.id,
+            },
+          });
+        }),
+      );
+
+      await Promise.all(
+        dataSurvey.findyHelp.map(async (item) => {
+          await this.prisma.findyHelp.create({
+            data: { findyHelp: item, surveyNeedsId: survey.id },
+          });
+        }),
+      );
+      return survey;
+    } catch (error) {
+      console.log(error);
+    }
   }
   async findAll(): Promise<any> {
     return await this.prisma.surveyNeeds.findMany();
   }
+
   async findById(id: number) {
     return await this.prisma.surveyNeeds.findUnique({
       where: { id },
       include: {
         CandidateUser: true,
+        PrincipalDifficulties: true,
+        FindyHelp: true,
       },
     });
   }
-  async findOne(candidateUserId: number): Promise<SurveyNeeds> {
+
+  async findOne(candidateUserId: number): Promise<any> {
     return await this.prisma.surveyNeeds.findUnique({
       where: { candidateUserId },
     });

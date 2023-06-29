@@ -25,15 +25,17 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
-  ApiConflictResponseCreate,
-  ApiCreatedResponseCreate,
+  ApiCreatedNeedsResponseCreate,
   ApiParamFindById,
   ApiResponseFindAll,
   ApiResponseFindById,
   NotFoundExceptionError,
   ResponseFind,
-  UnauthorizedExceptionError,
 } from './swagger/swagger.responses';
+import {
+  ApiConflictResponseCreate,
+  UnauthorizedExceptionError,
+} from '../candidate-user/swagger/success.response';
 
 @ApiTags('survey-needs')
 @Controller('survey-needs')
@@ -42,7 +44,7 @@ export class SurveyNeedsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiCreatedResponse(ApiCreatedResponseCreate)
+  @ApiCreatedResponse(ApiCreatedNeedsResponseCreate)
   @ApiConflictResponse(ApiConflictResponseCreate)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({

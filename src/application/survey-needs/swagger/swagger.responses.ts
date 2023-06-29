@@ -1,20 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatesuccessResponse {
+export class CreateNeedsSuccessResponse {
   @ApiProperty({ example: 1 })
-  id: number;
+  detailsId: number;
 
-  @ApiProperty({ example: 1 })
+  @ApiProperty({ example: 2 })
   candidateUserId: number;
-
-  @ApiProperty({ example: 'Desempregado' })
-  professionalSituation: string;
-
-  @ApiProperty({ example: 'Tecnologia' })
-  professionalArea: string;
-
-  @ApiProperty({ example: 'Conseguir um emprego' })
-  goal: string;
 }
 
 export class ResponseFind {
@@ -36,18 +27,6 @@ export class ResponseFind {
   @ApiProperty({ example: '01/01/2001' })
   createdAt: string;
 }
-
-export class ConflictExceptionError {
-  @ApiProperty({ example: 409 })
-  statusCode: number;
-  @ApiProperty({
-    example: 'This candidate user already has registered your answers',
-  })
-  message: string;
-  @ApiProperty({ example: 'Conflict' })
-  error: string;
-}
-
 export class NotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;
@@ -56,25 +35,12 @@ export class NotFoundExceptionError {
   @ApiProperty({ example: 'Not Found' })
   error: string;
 }
-export class UnauthorizedExceptionError {
-  @ApiProperty({ example: 401 })
-  statusCode: number;
-  @ApiProperty({ example: 'Unauthorized user' })
-  message: string;
-  @ApiProperty({ example: 'Unauthorized' })
-  error: string;
-}
 
 // Informações que vão nos decorators do Swagger no controller
-export const ApiCreatedResponseCreate = {
+export const ApiCreatedNeedsResponseCreate = {
   description:
     'Endpoint responsável por criar novo registro para identificação das necessidades',
-  type: CreatesuccessResponse,
-};
-
-export const ApiConflictResponseCreate = {
-  description: "Candidate user doesn't exist",
-  type: ConflictExceptionError,
+  type: CreateNeedsSuccessResponse,
 };
 
 export const ApiResponseFindAll = {
