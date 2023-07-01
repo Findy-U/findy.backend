@@ -10,5 +10,6 @@ export interface CandidateUserInterface {
   expiredConfirmationToken?: Date;
   activated?: boolean;
   recoverToken?: string;
+  completeSurvey?: boolean;
   recoverTokenExpiresAt?: Date;
 }

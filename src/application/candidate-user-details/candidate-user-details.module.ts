@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CandidateUserDetailsSerialize } from 'src/common/serializers/candidate-user-details.serialize';
-import { CandidateUserDetailsMySqlRepository } from '../../common/repositories/candidate-user-details/candidate-user-details-nysql.repository';
+import { CandidateUserDetailsMySqlRepository } from '../../common/repositories/candidate-user-details/candidate-user-details-mysql.repository';
 import { CandidateUserDetailsSqliteRepository } from '../../common/repositories/candidate-user-details/candidate-user-details-sqlite.repository';
 import { PrismaService } from '../../config/database/prisma/prisma.service';
 import { CandidateUserDetailsController } from './candidate-user-details.controller';

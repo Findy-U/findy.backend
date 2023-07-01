@@ -11,6 +11,10 @@ export class CreatesuccessDetailsResponse {
   birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
+  @ApiProperty({ example: 'Rio de Janeiro' })
+  state: string;
+  @ApiProperty({ example: 'Brazil' })
+  country: string;
 }
 
 export class ResponseDetailsFind {
@@ -24,6 +28,10 @@ export class ResponseDetailsFind {
   birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
+  @ApiProperty({ example: 'Rio de Janeiro' })
+  state: string;
+  @ApiProperty({ example: 'Brazil' })
+  country: string;
   @ApiProperty({ example: '01/01/2001' })
   createdAt: string;
   @ApiProperty({ example: '01/01/2001' })
@@ -48,6 +56,10 @@ export class UpdateDetailsResponse {
   birthDate: string;
   @ApiProperty({ example: 'Rio de Janeiro' })
   residencePlace: string;
+  @ApiProperty({ example: 'Rio de Janeiro' })
+  state: string;
+  @ApiProperty({ example: 'Brazil' })
+  country: string;
   @ApiProperty({ example: '01/01/2001' })
   createdAt: string;
   @ApiProperty({ example: '01/01/2001' })
