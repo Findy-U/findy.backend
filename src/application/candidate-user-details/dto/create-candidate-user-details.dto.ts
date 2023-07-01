@@ -30,6 +30,22 @@ export class CreateCandidateUserDetailsDto {
   @IsNotEmpty()
   residencePlace: string;
 
+  @ApiProperty({
+    description:
+      'Campo é obrigatório. Trata-se do estado de residência do usuário, a ser selecionado dentre as opções fornecidas.',
+    example: 'Rio de Janeiro',
+  })
+  @IsString()
+  @IsNotEmpty()
+  state: string;
+
+  @ApiProperty({
+    description:
+      'Campo é obrigatório. Trata-se do país de residência do usuário, a ser selecionado dentre as opções fornecidas.',
+    example: 'Brasil',
+  })
+  country: string;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

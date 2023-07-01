@@ -42,6 +42,8 @@ model CandidateUserDetails {
   gender          String
   birthDate       DateTime? @map("birth_date")
   residencePlace  String?   @map("residence_place")
+  state           String?
+  country         String?
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @map("updated_at")
 

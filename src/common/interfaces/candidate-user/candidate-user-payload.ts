@@ -3,6 +3,7 @@ export interface UserPayload {
   email: string;
   name: string;
   roles: string;
+  completeSurvey?: boolean;
   iat?: number;
   exp?: number;
 }
