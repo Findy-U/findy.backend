@@ -9,11 +9,12 @@ export abstract class CandidateUserRepository {
     expiredAt: Date,
   ): Promise<CandidateUser>;
   abstract findAll(): Promise<CandidateUser[]>;
-  abstract findById(id: number);
+  abstract findById(id: number): Promise<any>;
   abstract findByEmail(email: string): Promise<CandidateUser>;
   abstract update(
     id: number,
     cadidate: UpdateCandidateUserDto,
   ): Promise<CandidateUser>;
+  abstract findSurveyById(id: number): Promise<any>;
   abstract remove(id: number): Promise<void>;
 }

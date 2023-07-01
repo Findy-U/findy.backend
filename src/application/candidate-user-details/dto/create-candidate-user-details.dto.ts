@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCandidateUserDetailsDto {
   candidateUserId?: number;
@@ -36,15 +36,17 @@ export class CreateCandidateUserDetailsDto {
     example: 'Rio de Janeiro',
   })
   @IsString()
-  @IsNotEmpty()
-  state: string;
+  @IsOptional()
+  state?: string;
 
   @ApiProperty({
     description:
       'Campo é obrigatório. Trata-se do país de residência do usuário, a ser selecionado dentre as opções fornecidas.',
     example: 'Brasil',
   })
-  country: string;
+  @IsString()
+  @IsOptional()
+  country?: string;
 
   createdAt?: Date;
   updatedAt?: Date;

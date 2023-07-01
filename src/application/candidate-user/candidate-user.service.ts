@@ -83,6 +83,14 @@ export class CandidateUserService {
     return candidate;
   }
 
+  async findSurveyByUserId(id: number) {
+    const result = await this.candidateRepository.findSurveyById(id);
+    if (!result) {
+      throw new NotFoundError('Candidate not found');
+    }
+    return this.candidateUserSerialize.dbToResponseSurveyByUserId(result);
+  }
+
   async confirmationEmail(id: number, token: string) {
     const candidate = await this.candidateRepository.findById(id);
     const now = new Date();
