@@ -20,6 +20,8 @@ export class CandidateUserDetailsSerialize {
       gender: details.gender,
       birthDate: details.birthDate.toLocaleDateString('pt-BR'),
       residencePlace: details.residencePlace,
+      state: details.state,
+      country: details.country,
     };
   }
 
