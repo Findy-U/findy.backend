@@ -9,6 +9,9 @@ import { Role } from '../../interfaces/authentication/roles.enum';
 export class CandidateUserInMemoryRepository
   implements CandidateUserRepository
 {
+  findSurveyById(id: number): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   private candidate: CandidateUser[] = [
     {
       id: 1,

@@ -98,6 +98,17 @@ export class CandidateUserController {
       throw new NotFoundException(error.message);
     }
   }
+  @UseGuards(JwtAuthGuard)
+  // @HasRoles(Role.Candidate, Role.Project)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get(':id/survey')
+  async findSuveyById(@Param('id') id: string) {
+    try {
+      return await this.candidateUserService.findSurveyByUserId(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
