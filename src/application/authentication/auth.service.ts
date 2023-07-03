@@ -30,6 +30,7 @@ export class AuthService {
       sub: user.id,
       name: user.name,
       email: user.email,
+      completeSurvey: user.completeSurvey,
       roles: user.roles,
     };
 

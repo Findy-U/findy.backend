@@ -19,6 +19,8 @@ export class CandidateUserDetailsMySqlRepository
       gender: candidate.gender,
       birthDate: new Date(candidate.birthDate),
       residencePlace: candidate.residencePlace,
+      state: candidate.state,
+      country: candidate.country,
     };
     return await this.prisma.candidateUserDetails.create({ data });
   }

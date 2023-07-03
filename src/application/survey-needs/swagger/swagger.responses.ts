@@ -1,29 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatesuccessSurveyFeelingsResponse {
+export class CreateNeedsSuccessResponse {
   @ApiProperty({ example: 1 })
-  id: number;
-  @ApiProperty({ example: 1 })
+  detailsId: number;
+
+  @ApiProperty({ example: 2 })
   candidateUserId: number;
-  @ApiProperty({ example: 10 })
-  professionalAchievement: number;
-  @ApiProperty({ example: 'Retorno financeiro' })
-  motivation: string;
 }
 
 export class ResponseFind {
   @ApiProperty({ example: 1 })
   id: number;
+
   @ApiProperty({ example: 1 })
   candidateUserId: number;
-  @ApiProperty({ example: 10 })
-  professionalAchievement: number;
-  @ApiProperty({ example: 'Retorno financeiro' })
-  motivation: string;
+
+  @ApiProperty({ example: 'Desempregado' })
+  professionalSituation: string;
+
+  @ApiProperty({ example: 'Tecnologia' })
+  professionalArea: string;
+
+  @ApiProperty({ example: 'Conseguir um emprego' })
+  goal: string;
+
   @ApiProperty({ example: '01/01/2001' })
   createdAt: string;
 }
-
 export class NotFoundExceptionError {
   @ApiProperty({ example: 404 })
   statusCode: number;
@@ -32,20 +35,12 @@ export class NotFoundExceptionError {
   @ApiProperty({ example: 'Not Found' })
   error: string;
 }
-export class UnauthorizedExceptionError {
-  @ApiProperty({ example: 401 })
-  statusCode: number;
-  @ApiProperty({ example: 'Unauthorized user' })
-  message: string;
-  @ApiProperty({ example: 'Unauthorized' })
-  error: string;
-}
 
 // Informações que vão nos decorators do Swagger no controller
-export const ApiCreatedResponseCreate = {
+export const ApiCreatedNeedsResponseCreate = {
   description:
-    'Endpoint responsável por criar novo registropara análise de sentimentos',
-  type: CreatesuccessSurveyFeelingsResponse,
+    'Endpoint responsável por criar novo registro para identificação das necessidades',
+  type: CreateNeedsSuccessResponse,
 };
 
 export const ApiResponseFindAll = {
@@ -64,6 +59,6 @@ export const ApiParamFindById = {
   name: 'id',
   required: true,
   description:
-    'Um número inteiro para o id do registro das respostas para análise de sentimentos',
+    'Um número inteiro para o id do registro das respostas para identificação das necessidades',
   schema: { oneOf: [{ type: 'integer' }] },
 };

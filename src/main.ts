@@ -2,6 +2,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as appInsights from 'applicationinsights';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
@@ -12,9 +13,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  // const configService = app.get(ConfigService);
+  appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING).start();
 
   const PORT = parseInt(process.env.PORT) || 3001;
+
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Findy API')
@@ -36,4 +38,5 @@ async function bootstrap() {
     console.info(`Application is running on: http://localhost:${PORT}`);
   }
 }
+
 bootstrap();

@@ -19,6 +19,8 @@ export class CandidateUserDetailsSqliteRepository
         gender: candidate.gender,
         birthDate: new Date(candidate.birthDate),
         residencePlace: candidate.residencePlace,
+        state: candidate.state,
+        country: candidate.country,
         candidateUserId: candidate.candidateUserId,
       },
     });

@@ -11,20 +11,10 @@ export class CreateSurveyMarketInformationDto {
   @IsString()
   metFindy: string;
 
-  @ApiProperty({
-    description:
-      'Campo para receber a informação se caso foi indicado por uma amigo. O mesmo não é obrigatório, somente em caso de ouver indicação!',
-    example: 'Jonh Doe',
-  })
   @IsOptional()
   @IsString()
   friendName?: string;
 
-  @ApiProperty({
-    description:
-      'Campo para receber a informação se caso foi indicado por uma amigo. O mesmo não é obrigatório, somente em caso de ouver indicação!',
-    example: 'jonhdoe@email.com',
-  })
   @IsOptional()
   @IsString()
   friendEmail?: string;

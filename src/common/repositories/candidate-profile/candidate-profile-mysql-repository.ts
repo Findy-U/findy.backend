@@ -15,8 +15,6 @@ export class CandidateProfileMySqlRepository
   constructor(private readonly prisma: PrismaMySqlService) {}
 
   async create(profile: CreateCandidateProfileDto) {
-    console.log(profile);
-
     const areaArray = profile.others
       ? [...profile.occupationArea, ...profile.others]
       : [...profile.occupationArea];

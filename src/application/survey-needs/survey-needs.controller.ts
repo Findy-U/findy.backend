@@ -10,8 +10,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { SurveyFeelingsService } from './survey-feelings.service';
-import { CreateSurveyFeelingsDto } from './dto/create-survey-feelings.dto';
+import { SurveyNeedsService } from './survey-needs.service';
+import { CreateSurveyNeedsDto } from './dto/create-survey-needs.dto';
 import {
   ApiBearerAuth,
   ApiConflictResponse,
@@ -25,24 +25,26 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import {
-  ApiCreatedResponseCreate,
+  ApiCreatedNeedsResponseCreate,
   ApiParamFindById,
   ApiResponseFindAll,
   ApiResponseFindById,
   NotFoundExceptionError,
   ResponseFind,
-  UnauthorizedExceptionError,
 } from './swagger/swagger.responses';
-import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
+import {
+  ApiConflictResponseCreate,
+  UnauthorizedExceptionError,
+} from '../candidate-user/swagger/success.response';
 
-@Controller('survey-feelings')
-@ApiTags('survey-feelings')
-export class SurveyFeelingsController {
-  constructor(private readonly surveyFeelingsService: SurveyFeelingsService) {}
+@ApiTags('survey-needs')
+@Controller('survey-needs')
+export class SurveyNeedsController {
+  constructor(private readonly surveyNeedsService: SurveyNeedsService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiCreatedResponse(ApiCreatedResponseCreate)
+  @ApiCreatedResponse(ApiCreatedNeedsResponseCreate)
   @ApiConflictResponse(ApiConflictResponseCreate)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({
@@ -50,15 +52,15 @@ export class SurveyFeelingsController {
     type: UnauthorizedExceptionError,
   })
   async create(
-    @Body() createSurveyFeelingsDto: CreateSurveyFeelingsDto,
+    @Body() createSurveyNeedsDto: CreateSurveyNeedsDto,
     @Req() req: Request,
   ) {
     try {
       const userAnswers = {
-        ...createSurveyFeelingsDto,
+        ...createSurveyNeedsDto,
         candidateUserId: req.user.id,
       };
-      return await this.surveyFeelingsService.create(userAnswers);
+      return await this.surveyNeedsService.create(userAnswers);
     } catch (error) {
       console.log(error);
       throw new ConflictException(error.message);
@@ -75,7 +77,7 @@ export class SurveyFeelingsController {
     type: UnauthorizedExceptionError,
   })
   async findAll() {
-    return await this.surveyFeelingsService.findAll();
+    return await this.surveyNeedsService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -94,7 +96,7 @@ export class SurveyFeelingsController {
   @ApiParam(ApiParamFindById)
   async findById(@Param('id') id: string) {
     try {
-      return await this.surveyFeelingsService.findById(+id);
+      return await this.surveyNeedsService.findById(+id);
     } catch (error) {
       throw new NotFoundException(error.message);
     }

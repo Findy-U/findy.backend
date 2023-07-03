@@ -11,6 +11,7 @@ import { MailModule } from './mails/mail.module';
 import { SurveyMarketInformationModule } from './application/survey-market-information/survey-market-information.module';
 import { SurveyFeelingsModule } from './application/survey-feelings/survey-feelings.module';
 import { SurveyProfessionalSituationModule } from './application/survey-professional-situation/survey-professional-situation.module';
+import { SurveyNeedsModule } from './application/survey-needs/survey-needs.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SurveyProfessionalSituationModule } from './application/survey-professi
     SurveyMarketInformationModule,
     SurveyFeelingsModule,
     SurveyProfessionalSituationModule,
+    SurveyNeedsModule,
   ],
   providers: [],
 })

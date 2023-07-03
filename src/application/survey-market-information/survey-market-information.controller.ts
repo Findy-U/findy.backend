@@ -28,10 +28,10 @@ import { CreateSurveyMarketInformationDto } from './dto/create-survey-market-inf
 import { UpdateSurveyMarketInformationDto } from './dto/update-survey-market-information.dto';
 import { SurveyMarketInformationService } from './survey-market-information.service';
 import {
-  ApiMarketInformationConflictResponseCreate,
   ApiMarketInformationCreatedResponseCreate,
   UnauthorizedExceptionError,
 } from './swagger/success.response';
+import { ApiConflictResponseCreate } from '../candidate-user/swagger/success.response';
 
 @ApiTags('survey-market-information')
 @Controller('survey-market-information')
@@ -46,7 +46,7 @@ export class SurveyMarketInformationController {
     type: UnauthorizedExceptionError,
   })
   @ApiBearerAuth()
-  @ApiConflictResponse(ApiMarketInformationConflictResponseCreate)
+  @ApiConflictResponse(ApiConflictResponseCreate)
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async create(

@@ -11,7 +11,7 @@ export class CreatesuccessResponse {
   roles: string;
 }
 
-export class ResponseFind {
+export class ResponseCandidateUserFind {
   @ApiProperty({ example: 1 })
   id: number;
 
@@ -23,6 +23,9 @@ export class ResponseFind {
 
   @ApiProperty({ example: 'candidate' })
   roles: string;
+
+  @ApiProperty({ example: false })
+  completeSurvey: boolean;
 
   @ApiProperty({ example: 'findy' })
   provider: string;
