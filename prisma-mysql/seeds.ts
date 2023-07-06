@@ -1,4 +1,4 @@
-import { PrismaClient } from '@internal/prisma-postgres/client';
+import { PrismaClient } from '@internal/prisma-mysql/client';
 const prisma = new PrismaClient();
 
 const SKILLS = [

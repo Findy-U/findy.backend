@@ -19,9 +19,10 @@ const modeProduction = process.env.MODE_PRODUCTION;
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass: modeProduction
-        ? CandidateUserMySqlRepository
-        : CandidateUserSqliteRepository,
+      useClass:
+        modeProduction === 'true'
+          ? CandidateUserMySqlRepository
+          : CandidateUserSqliteRepository,
     },
   ],
 })

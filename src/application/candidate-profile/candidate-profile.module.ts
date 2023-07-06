@@ -14,9 +14,10 @@ const modeProduction = process.env.MODE_PRODUCTION;
     CandidateProfileService,
     {
       provide: CandidateProfileRepository,
-      useClass: modeProduction
-        ? CandidateProfileMySqlRepository
-        : CandidateProfileSQLiteRepository,
+      useClass:
+        modeProduction === 'true'
+          ? CandidateProfileMySqlRepository
+          : CandidateProfileSQLiteRepository,
     },
     CandidateProfile,
   ],
