@@ -1,5 +1,4 @@
 import { CandidateUserInterface } from '../interfaces/candidate-user/candidate-user.interface';
-
 export class CandidateUserSerialize {
   requestToDb(candidate: CandidateUserInterface) {
     return {
@@ -49,62 +48,54 @@ export class CandidateUserSerialize {
 
   dbToResponseSurveyByUserId(data: any) {
     return {
-      id: 4,
+      id: data.id,
       name: data.name,
       email: data.email,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
       roles: data.roles,
       CandidateUserDetails: {
-        id: 6,
-        gender: 'Masculino',
-        birthDate: '2000-10-10T02:00:00.000Z',
-        residencePlace: 'Anápolis',
-        state: null,
-        country: null,
+        id: data?.CandidateUserDetails?.id,
+        candidateUserId: data.CandidateUserDetails?.candidateUserId,
+        gender: data?.CandidateUserDetails?.gender,
+        birthDate: data?.CandidateUserDetails?.birthDate,
+        residencePlace: data?.CandidateUserDetails?.residencePlace,
+        state: data?.CandidateUserDetails?.state,
+        country: data?.CandidateUserDetails?.country,
+        createdAt: data?.CandidateUserDetails?.createdAt,
+        updatedAt: data?.CandidateUserDetails?.updatedAt,
       },
       SurveyMarketInformation: {
-        id: 3,
-        metFindy: 'Facebook',
-        friendName: null,
-        friendEmail: null,
+        id: data?.SurveyMarketInformation?.id,
+        metFindy: data?.SurveyMarketInformation?.metFindy,
+        candidateUserId: data?.SurveyMarketInformation?.candidateUserId,
+        friendName: data?.SurveyMarketInformation?.friendName,
+        friendEmail: data?.SurveyMarketInformation?.friendEmail,
+        createdAt: data?.SurveyMarketInformation?.createdAt,
       },
       SurveyProfessionalSituation: {
-        id: 4,
-        situation: 'Desenvolvimento Fullstack',
-        ocupationArea:
-          'Desempregado buscando oportunidades na área de tecnologia',
-        objectives: 'Transição de carreira dentro da área de TI',
+        id: data?.SurveyProfessionalSituation?.id,
+        situation: data?.SurveyProfessionalSituation?.situation,
+        ocupationArea: data?.SurveyProfessionalSituation?.ocupationArea,
+        objectives: data?.SurveyProfessionalSituation?.objectives,
+        candidateUserId: data?.SurveyProfessionalSituation?.candidateUserId,
+        createdAt: data?.SurveyProfessionalSituation?.createdAt,
       },
       SurveyFeelings: {
-        id: 4,
-        professionalAchievement: 5,
-        motivation: 'dddddddddddddddddddd',
+        id: data?.SurveyFeelings?.id,
+        candidateUserId: data?.SurveyFeelings?.candidateUserId,
+        professionalAchievement: data?.SurveyFeelings?.professionalAchievement,
+        motivation: data?.SurveyFeelings?.motivation,
+        createdAt: data?.SurveyFeelings?.createdAt,
       },
       SurveyNeeds: {
-        id: 5,
-        FindyHelp: [
-          {
-            id: 7,
-            findyHelp: 'Mentoria e orientação personalizada',
-            surveyNeedsId: 5,
-          },
-          {
-            id: 8,
-            findyHelp: 'Acesso a oportunidades de trabalho relevantes',
-            surveyNeedsId: 5,
-          },
-        ],
-        PrincipalDifficulties: [
-          {
-            id: 7,
-            principalDifficulties: 'Falta de experiência prática',
-            surveyNeedsId: 5,
-          },
-          {
-            id: 8,
-            principalDifficulties: 'Falta de orientação e mentoria',
-            surveyNeedsId: 5,
-          },
-        ],
+        id: data?.SurveyNeeds?.id,
+        candidateUserId: data?.SurveyNeeds?.candidateUserId,
+        createdAt: data?.SurveyNeeds?.createdAt,
+        PrincipalDifficulties: data?.SurveyNeeds?.PrincipalDifficulties.map(
+          (item: any) => item,
+        ),
+        FindyHelp: data?.SurveyNeeds?.FindyHelp.map((item: any) => item),
       },
     };
   }

@@ -61,8 +61,26 @@ export class CandidateUserMySqlRepository implements CandidateUserRepository {
   }
 
   async findSurveyById(id: number): Promise<any> {
-    throw new Error('Method not implemented.');
+    const result = await this.prisma.candidateUser.findUnique({
+      where: { id },
+      include: {
+        CandidateProfile: true,
+        CandidateUserDetails: true,
+        SurveyMarketInformation: true,
+        SurveyProfessionalSituation: true,
+        SurveyFeelings: true,
+        SurveyNeeds: {
+          include: {
+            PrincipalDifficulties: true,
+            FindyHelp: true,
+          },
+        },
+      },
+    });
+
+    return result;
   }
+
   async update(
     id: number,
     cadidate: UpdateCandidateUserDto,
