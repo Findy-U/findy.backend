@@ -16,9 +16,10 @@ const modeProduction = process.env.MODE_PRODUCTION;
     PrismaService,
     {
       provide: CandidateUserDetailsRepository,
-      useClass: modeProduction
-        ? CandidateUserDetailsMySqlRepository
-        : CandidateUserDetailsSqliteRepository,
+      useClass:
+        modeProduction === 'true'
+          ? CandidateUserDetailsMySqlRepository
+          : CandidateUserDetailsSqliteRepository,
     },
   ],
 })

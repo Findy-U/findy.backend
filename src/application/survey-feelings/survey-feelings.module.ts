@@ -16,9 +16,10 @@ const modeProduction = process.env.MODE_PRODUCTION;
     PrismaService,
     {
       provide: SurveyFeelingsRepository,
-      useClass: modeProduction
-        ? SurveyFeelingsMySqlRepository
-        : SurveyFeelingsSqliteRepository,
+      useClass:
+        modeProduction === 'true'
+          ? SurveyFeelingsMySqlRepository
+          : SurveyFeelingsSqliteRepository,
     },
   ],
 })

@@ -13,9 +13,10 @@ const modeProduction = process.env.MODE_PRODUCTION;
     SurveyMarketInformationService,
     {
       provide: SurveyMarketInformationRepository,
-      useClass: modeProduction
-        ? SurveyMarketInformationMySqlRepository
-        : SurveyMarketInformationSqliteRepository,
+      useClass:
+        modeProduction === 'true'
+          ? SurveyMarketInformationMySqlRepository
+          : SurveyMarketInformationSqliteRepository,
     },
   ],
 })
