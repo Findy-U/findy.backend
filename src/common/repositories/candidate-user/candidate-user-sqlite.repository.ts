@@ -59,18 +59,24 @@ export class CandidateUserSqliteRepository implements CandidateUserRepository {
   }
 
   async findSurveyById(id: number) {
-    return await this.prisma.candidateUser.findUnique({
+    const result = await this.prisma.candidateUser.findUnique({
       where: { id },
       include: {
+        CandidateProfile: true,
         CandidateUserDetails: true,
         SurveyMarketInformation: true,
         SurveyProfessionalSituation: true,
         SurveyFeelings: true,
         SurveyNeeds: {
-          include: { FindyHelp: true, PrincipalDifficulties: true },
+          include: {
+            PrincipalDifficulties: true,
+            FindyHelp: true,
+          },
         },
       },
     });
+
+    return result;
   }
 
   async update(
