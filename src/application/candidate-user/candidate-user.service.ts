@@ -10,6 +10,10 @@ import { BadRequestError } from '../../common/exceptions/bad-request.error';
 
 @Injectable()
 export class CandidateUserService {
+  private hoursToExpireToken = 2;
+  private readonly temporaryToken = new generateTemporaryToken(
+    this.hoursToExpireToken,
+  );
   constructor(
     private readonly candidateRepository: CandidateUserRepository,
     private readonly candidateUserSerialize: CandidateUserSerialize,
@@ -18,8 +22,8 @@ export class CandidateUserService {
 
   async create(createCandidate: CreateCandidateUserDto) {
     const candidateExists = await this.findByEmail(createCandidate.email);
-    const token = generateTemporaryToken.token;
-    const expiredAt = generateTemporaryToken.expiredAtConfirmationToken();
+    const token = this.temporaryToken.getToken();
+    const expiredAt = this.temporaryToken.getExpirationDate();
 
     if (candidateExists && !createCandidate.provider) {
       throw new Error('Candidate user already exists');
@@ -30,7 +34,7 @@ export class CandidateUserService {
       token,
       expiredAt,
     );
-
+    console.log(newCandidate);
     await this.mailService.sendActivationEmail(newCandidate, token);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
