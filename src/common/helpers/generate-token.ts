@@ -1,13 +1,30 @@
 import { randomBytes } from 'crypto';
+export class generateTemporaryToken {
+  private token: string;
+  private expirationDate: Date;
 
-const EXPIRATION_TIME = 48 * 60 * 60 * 1000;
+  constructor(expirationHours: number) {
+    this.token = this.generateRandomToken();
+    this.setExpiration(expirationHours);
+  }
 
-export const generateTemporaryToken = {
-  token: randomBytes(32).toString('hex'),
-  expiredAtConfirmationToken: () => {
-    const expiredAt = new Date();
-    expiredAt.setHours(expiredAt.getHours() + 2);
-    return expiredAt;
-  },
-  expiredAtRecoverToken: new Date(Date.now() + EXPIRATION_TIME),
-};
+  private generateRandomToken(): string {
+    const tokenBytes = randomBytes(32);
+    return tokenBytes.toString('hex');
+  }
+
+  private setExpiration(expirationHours: number): void {
+    const now = new Date();
+    this.expirationDate = new Date(
+      now.getTime() + expirationHours * 60 * 60 * 1000,
+    );
+  }
+
+  getToken(): string {
+    return this.token;
+  }
+
+  getExpirationDate(): Date {
+    return this.expirationDate;
+  }
+}

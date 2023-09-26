@@ -14,11 +14,14 @@ import { MailService } from '../../mails/mail.service';
 import { CandidateUserService } from '../candidate-user/candidate-user.service';
 import { RecoverPasswordDto } from '../candidate-user/dto/recover-password.dto';
 import { ForbiddenError } from '../../common/exceptions/forbidden.error';
+import { ExpireTokenValidationService } from '../../common/helpers/token-send-recover-email';
 
 @Injectable()
 export class AuthService {
-  // private readonly EXPIRATION_TIME = 48 * 60 * 60 * 1000;
-
+  private readonly EXPIRATION_TIME: number = 48;
+  private readonly temporaryToken = new generateTemporaryToken(
+    this.EXPIRATION_TIME,
+  );
   constructor(
     private readonly candidateUserService: CandidateUserService,
     private readonly jwtService: JwtService,
@@ -91,8 +94,9 @@ export class AuthService {
       throw new NotFoundError('There is no user registered with this email');
     }
 
-    const token = generateTemporaryToken.token;
-    const expiresAt = generateTemporaryToken.expiredAtRecoverToken;
+    const token = this.temporaryToken.getToken();
+
+    const expiresAt = this.temporaryToken.getExpirationDate();
 
     await this.candidateUserService.update(candidate.id, {
       recoverToken: token,
