@@ -3,38 +3,40 @@ import { CreateCandidateUserDetailsDto } from '../../../application/candidate-us
 import { UpdateCandidateUserDetailsDto } from '../../../application/candidate-user-details/dto/update-candidate-user-details.dto';
 import { CandidateUserDetailsEntity } from '../../../application/candidate-user-details/entities/candidate-user-details.entity';
 import { CandidateUserDetailsRepository } from '../../../application/candidate-user-details/repositories/candidate-user-details.repository';
-import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
+import { PrismaService } from '../../../config/database/prisma/prisma.service';
 
 @Injectable()
-export class CandidateUserDetailsMySqlRepository
+export class CandidateUserDetailRepositoryMySQL
   implements CandidateUserDetailsRepository
 {
-  constructor(private readonly prisma: PrismaMySqlService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     candidate: CreateCandidateUserDetailsDto,
   ): Promise<CandidateUserDetailsEntity> {
-    const data = {
-      ...candidate,
-      gender: candidate.gender,
-      birthDate: new Date(candidate.birthDate),
-      residencePlace: candidate.residencePlace,
-      state: candidate.state,
-      country: candidate.country,
-    };
-    return await this.prisma.candidateUserDetails.create({ data });
-  }
-
-  async findAll(): Promise<CandidateUserDetailsEntity[]> {
-    return await this.prisma.candidateUserDetails.findMany();
-  }
-
-  async findById(id: number) {
-    return await this.prisma.candidateUserDetails.findUnique({
-      where: { id },
+    return await this.prisma.candidateUserDetails.create({
+      data: {
+        gender: candidate.gender,
+        birthDate: new Date(candidate.birthDate),
+        residencePlace: candidate.residencePlace,
+        state: candidate.state,
+        country: candidate.country,
+        candidateUserId: candidate.candidateUserId,
+      },
     });
   }
 
+  async findAll(): Promise<any[]> {
+    return await this.prisma.candidateUserDetails.findMany();
+  }
+  async findById(id: number) {
+    return await this.prisma.candidateUserDetails.findUnique({
+      where: { id },
+      include: {
+        CandidateUser: true,
+      },
+    });
+  }
   async findUnique(
     candidateUserId: number,
   ): Promise<CandidateUserDetailsEntity> {

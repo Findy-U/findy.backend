@@ -1,4 +1,4 @@
-import { CandidateProject, Roles, Stack } from '@prisma/client';
+import { CandidateProject, Roles } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../dto/update-candidate-project.dto';
 import {
@@ -21,6 +21,6 @@ export abstract class CandidateProjectRepository {
   abstract remove(id: number): Promise<{ message: string }>;
   abstract findAllRolesProject(): Promise<Roles[]>;
   abstract findByIdRoleProject(id: number): Promise<Roles>;
-  abstract findAllSkillsProject(): Promise<Stack[]>;
-  abstract findByIdSkillProject(id: number): Promise<Stack>;
+  abstract findAllSkillsProject(): Promise<any[]>;
+  abstract findByIdSkillProject(id: number): Promise<any>;
 }

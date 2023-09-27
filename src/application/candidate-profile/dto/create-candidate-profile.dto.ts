@@ -8,6 +8,15 @@ import {
   IsString,
 } from 'class-validator';
 
+enum SkillType {
+  LANGUAGE,
+  FRAMEWORK,
+  DATABASE,
+  DESIGNER_TOOL,
+  CLOUD_SERVICE,
+  DEVOPS_TOOL,
+  TESTING_TOOL,
+}
 export class CreateCandidateProfileDto {
   @ApiProperty({
     description: 'Campo é obrigatório',
@@ -39,11 +48,11 @@ export class CreateCandidateProfileDto {
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: [8, 9, 11, 19, 20, 23, 26, 27],
+    example: [{ type: 'language', name: 'javascript' }],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
-  @IsNumber({}, { each: true })
-  profileSkills?: number[];
+  // @IsNumber({}, { each: true })
+  profileSkills?: [{ type: SkillType; name: string }];
 
   @ApiProperty({
     description: 'Campo é obrigatório',

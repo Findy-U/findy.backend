@@ -4,38 +4,19 @@ import { CreateCandidateProfileDto } from '../../../application/candidate-profil
 import { UpdateCandidateProfileDto } from '../../../application/candidate-profile/dto/update-candidate-profile.dto';
 import { CandidateProfile } from '../../../application/candidate-profile/entities/candidate-profile.entity';
 import { CandidateProfileRepository } from '../../../application/candidate-profile/repository/candidate-profile.repository';
-import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
-import { NotFoundError } from '../../exceptions/not-found.error';
-import { ConflictError } from '../../exceptions/conflict-error';
+import { PrismaService } from '../../../config/database/prisma/prisma.service';
+import { capitalizeFirstLetter } from '../../helpers/capitalize-first-letter';
 
 @Injectable()
-export class CandidateProfileMySqlRepository
+export class CandidateProfileRepositoryMySQL
   implements CandidateProfileRepository
 {
-  constructor(private readonly prisma: PrismaMySqlService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(profile: CreateCandidateProfileDto) {
     const areaArray = profile.others
       ? [...profile.occupationArea, ...profile.others]
       : [...profile.occupationArea];
-
-    const userExists = await this.prisma.candidateUser.findUnique({
-      where: { id: profile.candidateUserId },
-    });
-
-    if (!userExists) {
-      throw new NotFoundError('Candidate user not found');
-    }
-
-    const profileExists = await this.prisma.candidateProfile.findFirst({
-      where: { candidateUserId: profile.candidateUserId },
-    });
-    console.info(profileExists);
-    if (profileExists) {
-      throw new ConflictError(
-        'There is already a profile registered for this user',
-      );
-    }
 
     try {
       const newProfile = await this.prisma.candidateProfile.create({
@@ -64,10 +45,13 @@ export class CandidateProfileMySqlRepository
 
       await Promise.all(
         profile.profileSkills.map(async (skill) => {
-          await this.prisma.profileSkills.create({
+          await this.prisma.skill.create({
             data: {
-              stackId: skill,
-              profileId: newProfile.id,
+              type: skill.type as any,
+              name: capitalizeFirstLetter(skill.name),
+              candidateProfile: {
+                connect: { id: newProfile.id },
+              },
             },
           });
         }),
@@ -97,13 +81,13 @@ export class CandidateProfileMySqlRepository
           },
         },
         occupationArea: true,
-        profileSkills: true,
+        Skill: true,
       },
     });
   }
 
   async findById(id: number): Promise<CandidateProfile> {
-    const profile = await this.prisma.candidateProfile.findUnique({
+    return await this.prisma.candidateProfile.findUnique({
       where: { id },
       include: {
         candidateUser: {
@@ -121,11 +105,9 @@ export class CandidateProfileMySqlRepository
           },
         },
         occupationArea: true,
-        profileSkills: true,
+        Skill: true,
       },
     });
-
-    return profile;
   }
 
   async update(id: number, profile: UpdateCandidateProfileDto): Promise<void> {
