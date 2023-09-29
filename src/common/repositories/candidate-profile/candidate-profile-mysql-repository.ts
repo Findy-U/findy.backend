@@ -14,9 +14,7 @@ export class CandidateProfileRepositoryMySQL
   constructor(private readonly prisma: PrismaService) {}
 
   async create(profile: CreateCandidateProfileDto) {
-    const areaArray = profile.others
-      ? [...profile.occupationArea, ...profile.others]
-      : [...profile.occupationArea];
+    const areaArray = [...profile.occupationArea];
 
     try {
       const newProfile = await this.prisma.candidateProfile.create({
@@ -35,9 +33,8 @@ export class CandidateProfileRepositoryMySQL
         areaArray.map(async (area) => {
           await this.prisma.occupationArea.create({
             data: {
-              title: area,
+              title: area.title,
               profileId: newProfile.id,
-              userId: newProfile.candidateUserId,
             },
           });
         }),
@@ -60,6 +57,7 @@ export class CandidateProfileRepositoryMySQL
       return newProfile;
     } catch (error) {
       console.error(error);
+      throw new Error('O perfil já foi criado!');
     }
   }
 
@@ -110,8 +108,85 @@ export class CandidateProfileRepositoryMySQL
     });
   }
 
-  async update(id: number, profile: UpdateCandidateProfileDto): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(id: number, profile: UpdateCandidateProfileDto): Promise<any> {
+    try {
+      const profileUpdated = await this.prisma.candidateProfile.update({
+        where: { id },
+        data: {
+          description: profile.description,
+          phone: profile.phone,
+          urlGithub: profile.urlGithub,
+          urlLinkedin: profile.urlLinkedin,
+          availableTime: profile.availableTime,
+          areaOfInterest: profile.areaOfInterest,
+        },
+      });
+      if (profile.profileSkills) {
+        Promise.all(
+          profile.profileSkills.map(async (skill) => {
+            if (skill.name === null) {
+              await this.prisma.skill.delete({ where: { id: skill.id } });
+            } else {
+              const skillExists = await this.prisma.skill.findUnique({
+                where: { id: skill.id },
+              });
+
+              if (!skillExists) {
+                await this.prisma.skill.create({
+                  data: {
+                    type: skill.type as any,
+                    name: capitalizeFirstLetter(skill.name),
+                    candidateProfile: {
+                      connect: { id: profileUpdated.id },
+                    },
+                  },
+                });
+              } else {
+                await this.prisma.skill.update({
+                  where: { id: skill.id },
+                  data: {
+                    name: capitalizeFirstLetter(skill.name),
+                    candidateProfile: {
+                      connect: { id: profileUpdated.id },
+                    },
+                  },
+                });
+              }
+            }
+          }),
+        );
+      }
+      if (profile.occupationArea) {
+        Promise.all(
+          profile.occupationArea.map(async (area) => {
+            const areaExists = await this.prisma.occupationArea.findUnique({
+              where: { id: area.id },
+            });
+            console.log(areaExists);
+
+            if (!areaExists) {
+              await this.prisma.occupationArea.create({
+                data: {
+                  title: area.title,
+                  profileId: profileUpdated.id,
+                },
+              });
+            } else {
+              await this.prisma.occupationArea.update({
+                where: { id: area.id },
+                data: {
+                  title: area.title,
+                  CandidateProfile: {
+                    connect: { id: profileUpdated.id },
+                  },
+                },
+              });
+            }
+          }),
+        );
+      }
+      return profileUpdated;
+    } catch (error) {}
   }
 
   async remove(id: number): Promise<void> {

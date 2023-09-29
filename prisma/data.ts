@@ -584,22 +584,3 @@ export const toolsTesting = [
     title: 'Visual Studio Test Professional',
   },
 ];
-
-// [
-//   {
-//     "type": "language",
-//     "name": '"avascr"ip',
-//   },
-//   {
-//     "type": "language",
-//     "name": '"ypescr"ip',
-//   },
-//   {
-//     "type": "language",
-//     "name": "react",
-//   },
-//   {
-//     "type": "database",
-//     "name": "mysql",
-//   },
-// ];

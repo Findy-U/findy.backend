@@ -52,25 +52,25 @@ export class CreateCandidateProfileDto {
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
   // @IsNumber({}, { each: true })
-  profileSkills?: [{ type: SkillType; name: string }];
+  profileSkills?: [{ id?: number; type: SkillType; name: string }];
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: ['Front-End', 'UX', 'UI'],
+    example: [{ title: 'Front-End' }, { title: 'UX' }, { title: 'UI' }],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsArray()
-  @IsString({ each: true })
-  occupationArea?: string[];
+  // @IsString({ each: true })
+  occupationArea?: [{ id: number; title: string }];
 
-  @ApiProperty({
-    description: 'Campo não é obrigatório',
-    example: ['Tech Lead'],
-  })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  others?: string[];
+  // @ApiProperty({
+  //   description: 'Campo não é obrigatório',
+  //   example: [{ title: 'Tech Lead' }],
+  // })
+  // @IsOptional()
+  // @IsArray()
+  // @IsString({ each: true })
+  // others?: [{ title: string }];
 
   @ApiProperty({
     description: 'Campo é obrigatório',

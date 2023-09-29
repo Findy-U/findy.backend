@@ -46,22 +46,6 @@ model CandidateUser {
   @@map("tb_candidate_users")
 }
 
-model CandidateUserDetails {
-  id              Int       @id @default(autoincrement())
-  candidateUserId Int?      @unique @map("candidate_user_id")
-  gender          String
-  birthDate       DateTime? @map("birth_date")
-  residencePlace  String?   @map("residence_place")
-  state           String?
-  country         String?
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime? @map("updated_at")
-
-  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
-
-  @@map("tb_candidate_users_details")
-}
-
 model CandidateProfile {
   id              Int              @id @default(autoincrement())
   description     String
@@ -73,9 +57,7 @@ model CandidateProfile {
   candidateUserId Int?             @unique
   candidateUser   CandidateUser?   @relation(fields: [candidateUserId], references: [id])
   occupationArea  OccupationArea[]
-  stacks          Stacks[]
-
-  Skill Skill[]
+  Skill           Skill[]
 
   @@map("tb_candidate-profile")
 }
@@ -83,8 +65,7 @@ model CandidateProfile {
 model OccupationArea {
   id               Int               @id @default(autoincrement())
   title            String?
-  userId           Int?              @map("user_id")
-  profileId        Int?
+  profileId        Int?              @map("profile_id")
   CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id])
 
   @@map("tb_occupation_area")
@@ -94,9 +75,10 @@ model Skill {
   id                 Int               @id @default(autoincrement())
   type               SkillType
   name               String
+  candidateProfileId Int?              @map("candidate_profile_id")
   candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId Int?
-  Stacks             Stacks[]
+
+  @@map("tb_skill")
 }
 
 model CandidateProject {
@@ -148,12 +130,10 @@ model ProjectStack {
 
 model Stacks {
   id                 Int               @id @default(autoincrement())
-  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
-  candidateProfileId Int?
-  skill              Skill             @relation(fields: [skillId], references: [id])
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
-  skillId            Int
+
+  @@map("tb_stacks")
 }
 
 model ProjectRoles {
@@ -164,13 +144,6 @@ model ProjectRoles {
 
   @@map("tb_project_roles")
 }
-
-// model Stack {
-//   id    Int    @id @default(autoincrement())
-//   title String
-
-//   @@map("tb_stacks")
-// }
 
 model ProgrammingLanguages {
   id    Int    @id @default(autoincrement())
@@ -244,6 +217,22 @@ model Roles {
 }
 
 // as tabelas abaixo são referentes a Survey
+model CandidateUserDetails {
+  id              Int       @id @default(autoincrement())
+  candidateUserId Int?      @unique @map("candidate_user_id")
+  gender          String
+  birthDate       DateTime? @map("birth_date")
+  residencePlace  String?   @map("residence_place")
+  state           String?
+  country         String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
+
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+
+  @@map("tb_candidate_users_details")
+}
+
 model SurveyMarketInformation {
   id              Int      @id @default(autoincrement())
   metFindy        String   @map("met_findy")

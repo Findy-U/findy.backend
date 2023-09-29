@@ -8,22 +8,20 @@ import { CandidateProfileRepository } from './repository/candidate-profile.repos
 @Injectable()
 export class CandidateProfileService {
   private candidate: CandidateProfile;
-  constructor(
-    private readonly candidateUserRepository: CandidateProfileRepository,
-  ) {}
+  constructor(private readonly profileRepository: CandidateProfileRepository) {}
 
   async create(
     createCandidateProfileDto: CreateCandidateProfileDto,
   ): Promise<CandidateProfile> {
-    return await this.candidateUserRepository.create(createCandidateProfileDto);
+    return await this.profileRepository.create(createCandidateProfileDto);
   }
 
   async findAll(): Promise<CandidateProfile[]> {
-    return await this.candidateUserRepository.findAll();
+    return await this.profileRepository.findAll();
   }
 
   async findOne(id: number): Promise<CandidateProfile> {
-    this.candidate = await this.candidateUserRepository.findById(id);
+    this.candidate = await this.profileRepository.findById(id);
     if (!this.candidate) {
       throw new NotFoundError('Profile not found');
     }
@@ -34,10 +32,14 @@ export class CandidateProfileService {
     id: number,
     updateCandidateProfileDto: UpdateCandidateProfileDto,
   ) {
-    return `This action updates a #${id} candidateProfile`;
+    const profile = await this.profileRepository.findById(id);
+    if (!profile) {
+      throw new NotFoundError('Profile not found');
+    }
+    return await this.profileRepository.update(id, updateCandidateProfileDto);
   }
 
   async remove(id: number) {
-    await this.candidateUserRepository.remove(id);
+    await this.profileRepository.remove(id);
   }
 }

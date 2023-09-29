@@ -35,6 +35,7 @@ export class CandidateUserRepositoryMySQL implements CandidateUserRepository {
         : AuthProviderType.findy,
       providerId: candidate.providerId ? candidate.providerId : null,
       confirmationToken: token,
+      activated: true,
       expiredConfirmationToken: expiredAt,
     });
     return await this.prisma.candidateUser.create({ data });
@@ -46,12 +47,34 @@ export class CandidateUserRepositoryMySQL implements CandidateUserRepository {
     });
   }
   async findById(id: number) {
-    return await this.prisma.candidateUser.findUnique({
+    const user = await this.prisma.candidateUser.findUnique({
       where: { id },
-      include: {
-        CandidateProfile: true,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        roles: true,
+        provider: true,
+        providerId: true,
+        createdAt: true,
+        updatedAt: true,
+        CandidateProfile: {
+          select: {
+            id: true,
+            description: true,
+            urlGithub: true,
+            urlLinkedin: true,
+            phone: true,
+            availableTime: true,
+            areaOfInterest: true,
+            Skill: true,
+            occupationArea: true,
+          },
+        },
       },
     });
+
+    return user;
   }
 
   async findByEmail(email: string): Promise<CandidateUser> {
