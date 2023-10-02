@@ -8,7 +8,6 @@ import { CandidateProjectRepository } from './repositories/candidate-project.rep
   controllers: [CandidateProjectController],
   providers: [
     CandidateProjectService,
-    PrismaService,
     {
       provide: CandidateProjectRepository,
       useClass: CandidateProjectRepositoryMySQL,

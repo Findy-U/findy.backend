@@ -5,13 +5,13 @@ import { CandidateProfileModule } from './application/candidate-profile/candidat
 import { CandidateProjectModule } from './application/candidate-project/candidate-project.module';
 import { CandidateUserDetailsModule } from './application/candidate-user-details/candidate-user-details.module';
 import { CandidateUserModule } from './application/candidate-user/candidate-user.module';
+import { SurveyFeelingsModule } from './application/survey-feelings/survey-feelings.module';
+import { SurveyMarketInformationModule } from './application/survey-market-information/survey-market-information.module';
+import { SurveyNeedsModule } from './application/survey-needs/survey-needs.module';
+import { SurveyProfessionalSituationModule } from './application/survey-professional-situation/survey-professional-situation.module';
 import appConfig from './config/app/app.config';
 import { PrismaModule } from './config/database/prisma/prisma.module';
 import { MailModule } from './mails/mail.module';
-import { SurveyMarketInformationModule } from './application/survey-market-information/survey-market-information.module';
-import { SurveyFeelingsModule } from './application/survey-feelings/survey-feelings.module';
-import { SurveyProfessionalSituationModule } from './application/survey-professional-situation/survey-professional-situation.module';
-import { SurveyNeedsModule } from './application/survey-needs/survey-needs.module';
 
 @Module({
   imports: [

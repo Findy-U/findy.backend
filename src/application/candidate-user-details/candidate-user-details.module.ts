@@ -11,7 +11,6 @@ import { CandidateUserDetailsRepository } from './repositories/candidate-user-de
   providers: [
     CandidateUserDetailsService,
     CandidateUserDetailsSerialize,
-    PrismaService,
     {
       provide: CandidateUserDetailsRepository,
       useClass: CandidateUserDetailRepositoryMySQL,

@@ -11,7 +11,6 @@ import { SurveyFeelingsService } from './survey-feelings.service';
   providers: [
     SurveyFeelingsService,
     SurveyFeelingsSerialize,
-    PrismaService,
     {
       provide: SurveyFeelingsRepository,
       useClass: SurveyFeelingsRepositoryMySQL,
