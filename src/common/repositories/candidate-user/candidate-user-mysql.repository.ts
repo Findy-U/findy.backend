@@ -43,7 +43,29 @@ export class CandidateUserRepositoryMySQL implements CandidateUserRepository {
 
   async findAll(): Promise<any[]> {
     return await this.prisma.candidateUser.findMany({
-      include: { CandidateProfile: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        roles: true,
+        provider: true,
+        providerId: true,
+        createdAt: true,
+        updatedAt: true,
+        CandidateProfile: {
+          select: {
+            id: true,
+            description: true,
+            urlGithub: true,
+            urlLinkedin: true,
+            phone: true,
+            availableTime: true,
+            areaOfInterest: true,
+            Skill: true,
+            occupationArea: true,
+          },
+        },
+      },
     });
   }
   async findById(id: number) {

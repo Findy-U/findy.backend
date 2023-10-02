@@ -15,6 +15,28 @@ export class CandidateProfileRepositoryMySQL
 
   async create(profile: CreateCandidateProfileDto) {
     const areaArray = [...profile.occupationArea];
+    for (const skl of profile.profileSkills) {
+      if (
+        !Object.keys(skl).includes('type') ||
+        !Object.keys(skl).includes('name')
+      ) {
+        throw new Error(
+          `A propriedade "type"  e/ou "name" ${JSON.stringify(
+            skl,
+          )} é obrigatório ou esta escrito errado!}`,
+        );
+      }
+    }
+
+    for (const oca of areaArray) {
+      if (!Object.keys(oca).includes('title')) {
+        throw new Error(
+          `A propriedade "title" ${JSON.stringify(
+            oca,
+          )} é obrigatório ou esta escrito errado!`,
+        );
+      }
+    }
 
     try {
       const newProfile = await this.prisma.candidateProfile.create({
@@ -33,7 +55,7 @@ export class CandidateProfileRepositoryMySQL
         areaArray.map(async (area) => {
           await this.prisma.occupationArea.create({
             data: {
-              title: area.title,
+              title: area.title.toUpperCase(),
               profileId: newProfile.id,
             },
           });
@@ -44,7 +66,7 @@ export class CandidateProfileRepositoryMySQL
         profile.profileSkills.map(async (skill) => {
           await this.prisma.skill.create({
             data: {
-              type: skill.type as any,
+              type: (skill.type as any).toUpperCase(),
               name: capitalizeFirstLetter(skill.name),
               candidateProfile: {
                 connect: { id: newProfile.id },
@@ -134,7 +156,7 @@ export class CandidateProfileRepositoryMySQL
               if (!skillExists) {
                 await this.prisma.skill.create({
                   data: {
-                    type: skill.type as any,
+                    type: (skill.type as any).toUpperCase(),
                     name: capitalizeFirstLetter(skill.name),
                     candidateProfile: {
                       connect: { id: profileUpdated.id },
@@ -162,12 +184,11 @@ export class CandidateProfileRepositoryMySQL
             const areaExists = await this.prisma.occupationArea.findUnique({
               where: { id: area.id },
             });
-            console.log(areaExists);
 
             if (!areaExists) {
               await this.prisma.occupationArea.create({
                 data: {
-                  title: area.title,
+                  title: area.title.toUpperCase(),
                   profileId: profileUpdated.id,
                 },
               });
@@ -175,7 +196,7 @@ export class CandidateProfileRepositoryMySQL
               await this.prisma.occupationArea.update({
                 where: { id: area.id },
                 data: {
-                  title: area.title,
+                  title: area.title.toUpperCase(),
                   CandidateProfile: {
                     connect: { id: profileUpdated.id },
                   },

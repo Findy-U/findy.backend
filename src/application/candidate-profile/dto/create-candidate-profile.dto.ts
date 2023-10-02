@@ -1,12 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  ArrayMinSize,
   ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
+
+class FieldSkills {
+  id?: number;
+  type: SkillType;
+  name: string;
+}
 
 enum SkillType {
   LANGUAGE,
@@ -48,15 +54,20 @@ export class CreateCandidateProfileDto {
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: [{ type: 'language', name: 'javascript' }],
+    example: [
+      { type: 'LANGUAGE', name: 'JavaScript' },
+      { type: 'FRAMEWORK', name: 'React' },
+      { type: 'DATABASE', name: 'MySQL' },
+    ],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
-  // @IsNumber({}, { each: true })
-  profileSkills?: [{ id?: number; type: SkillType; name: string }];
+  @IsArray()
+  @ArrayMinSize(1, { message: 'Este campo deve ter no mínimo 1 objecto.' })
+  profileSkills?: FieldSkills[];
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: [{ title: 'Front-End' }, { title: 'UX' }, { title: 'UI' }],
+    example: [{ title: 'Front-end' }, { title: 'UX' }, { title: 'UI' }],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsArray()
