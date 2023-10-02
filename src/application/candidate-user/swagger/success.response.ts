@@ -24,8 +24,70 @@ export class ResponseCandidateUserFind {
   @ApiProperty({ example: 'candidate' })
   roles: string;
 
-  @ApiProperty({ example: false })
-  completeSurvey: boolean;
+  @ApiProperty({
+    example: {
+      profile: {
+        id: 1,
+        description: 'Texto da descrição do perfil do usuário',
+        urlGithub: 'https://www.github.com/usuario',
+        urlLinkedin: 'https://www.linkedin.com/in/nomedousuario',
+        phone: '9999999999',
+        availableTime:
+          'Tenho 2 horas por dia, nose dias segunda, terça e sexta',
+        areaOfInterest:
+          'Qeuro atuar como desenvolvedor Front-end e Tech lead no projeto',
+        siklls: [
+          {
+            id: 1,
+            type: 'DESIGNER_TOOL',
+            name: 'Figma',
+          },
+          {
+            id: 2,
+            type: 'DESIGNER_TOOL',
+            name: 'Canva',
+          },
+          {
+            id: 3,
+            type: 'DESIGNER_TOOL',
+            name: 'Sketch',
+          },
+        ],
+        occupationArea: [
+          {
+            id: 1,
+            title: 'UI',
+          },
+          {
+            id: 2,
+            title: 'UX',
+          },
+        ],
+      },
+    },
+  })
+  profile: {
+    id: number;
+    description: string;
+    urlGithub: string;
+    urlLinkedin: string;
+    phone: string;
+    availableTime: string;
+    areaOfInterest: string;
+    siklls: [
+      {
+        id: number;
+        type: string;
+        name: string;
+      },
+    ];
+    occupationArea: [
+      {
+        id: number;
+        title: string;
+      },
+    ];
+  };
 
   @ApiProperty({ example: 'findy' })
   provider: string;
