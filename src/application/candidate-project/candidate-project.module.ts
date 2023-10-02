@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CandidateProjectRepositoryMySQL } from '../../common/repositories/candidate-project/candidate-project-mysql.repository';
-import { PrismaService } from '../../config/database/prisma/prisma.service';
 import { CandidateProjectController } from './cadidate-project.controller';
 import { CandidateProjectService } from './candidate-project.service';
 import { CandidateProjectRepository } from './repositories/candidate-project.repository';
