@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { SurveyFeelingsSqliteRepository } from 'src/common/repositories/survey-feelings/survey-feelings-sqlite.repository';
+import { SurveyFeelingsRepositoryMySQL } from 'src/common/repositories/survey-feelings/survey-feelings-mysql.repository';
 import { SurveyFeelingsSerialize } from 'src/common/serializers/survey-feelings.serialize';
-import { SurveyFeelingsMySqlRepository } from '../../common/repositories/survey-feelings/survey-feelings-mysql.repository';
+import { PrismaService } from 'src/config/database/prisma/prisma.service';
 import { SurveyFeelingsRepository } from './repositories/survey-feelings.repository';
 import { SurveyFeelingsController } from './survey-feelings.controller';
 import { SurveyFeelingsService } from './survey-feelings.service';
 
-const modeProduction = process.env.MODE_PRODUCTION;
 @Module({
   controllers: [SurveyFeelingsController],
   providers: [
@@ -14,10 +13,7 @@ const modeProduction = process.env.MODE_PRODUCTION;
     SurveyFeelingsSerialize,
     {
       provide: SurveyFeelingsRepository,
-      useClass:
-        modeProduction === 'true'
-          ? SurveyFeelingsMySqlRepository
-          : SurveyFeelingsSqliteRepository,
+      useClass: SurveyFeelingsRepositoryMySQL,
     },
   ],
 })

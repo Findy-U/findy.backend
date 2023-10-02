@@ -63,18 +63,6 @@ export class CreateCandidateProjectDto {
     example:
       'João Paulo, joaop@email.com, (99)9999-9999, linkedin / Maria Laura, mairaL@email.com, (99)9999-9999, linkedin',
   })
-  @IsOptional()
-  @IsString()
-  contactLeaders?: string;
-  // @ApiProperty({
-  //   description:
-  //     'Este campo recebe um array com IDs dos usuários que serão lideres no projeto',
-  //   example: [1, 4, 10],
-  // })
-  // @ArrayNotEmpty()
-  // @IsNumber({}, { each: true })
-  // leaders: number[];
-
   @ApiProperty({
     description:
       'Este campo recebe um array com IDs das linguagens/ferramentas. Campo obrigatório',

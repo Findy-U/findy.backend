@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateProject, Roles, Stack } from '@prisma/client';
+import { CandidateProject, Roles } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
-import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
+import { PrismaService } from '../../../config/database/prisma/prisma.service';
+import { NotFoundError } from '../../exceptions/not-found.error';
 import {
   CandidateProjectResponse,
   CandidateUser,
 } from '../../interfaces/candidate-projects/candidate-project';
-import { NotFoundError } from '../../exceptions/not-found.error';
 
 @Injectable()
-export class CandidateProjectMySqlRepository
+export class CandidateProjectRepositoryMySQL
   implements CandidateProjectRepository
 {
-  constructor(private readonly prisma: PrismaMySqlService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     project: CreateCandidateProjectDto,
@@ -35,7 +35,6 @@ export class CandidateProjectMySqlRepository
           projectScope: project.projectScope,
           candidateUserId: user.id,
           findyHelp: project.findyHelp,
-          contactLeaders: project.contactLeaders,
         },
       });
 
@@ -44,7 +43,7 @@ export class CandidateProjectMySqlRepository
           await this.prisma.projectStack.create({
             data: {
               projectId: newProject.id,
-              stackId: item,
+              languagesId: item,
             },
           });
         }),
@@ -79,7 +78,7 @@ export class CandidateProjectMySqlRepository
     }
   }
 
-  async findAll(): Promise<CandidateProjectResponse[]> {
+  async findAll(): Promise<any[]> {
     return await this.prisma.candidateProject.findMany({
       select: {
         id: true,
@@ -96,16 +95,16 @@ export class CandidateProjectMySqlRepository
         createdAt: true,
         updatedAt: true,
         professional: true,
-        language: true,
+        tools: true,
       },
     });
   }
 
-  async findById(id: number): Promise<CandidateProjectResponse> {
+  async findById(id: number): Promise<any> {
     const project = await this.prisma.candidateProject.findUnique({
       where: { id },
       include: {
-        language: true,
+        tools: true,
         professional: true,
       },
     });
@@ -131,12 +130,12 @@ export class CandidateProjectMySqlRepository
     return role;
   }
 
-  async findAllSkillsProject(): Promise<Stack[]> {
-    return await this.prisma.stack.findMany();
+  async findAllSkillsProject(): Promise<any[]> {
+    return await this.prisma.skill.findMany();
   }
 
-  async findByIdSkillProject(id: number): Promise<Stack> {
-    const skill = await this.prisma.stack.findUnique({ where: { id } });
+  async findByIdSkillProject(id: number): Promise<any> {
+    const skill = await this.prisma.skill.findUnique({ where: { id } });
     if (!skill) {
       throw new NotFoundError('Not found Skill');
     }

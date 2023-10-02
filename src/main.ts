@@ -11,7 +11,12 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors();
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Habilita a funcionalidade de whitelist
+      forbidNonWhitelisted: true, // Impede que propriedades não permitidas sejam enviadas
+    }),
+  );
 
   appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING).start();
 

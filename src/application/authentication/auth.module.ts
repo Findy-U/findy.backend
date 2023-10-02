@@ -4,8 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AppConfig } from '../../common/interfaces/app-config';
 import { LoginValidationMiddleware } from '../../common/middlewares/login-validation.middleware';
-import { CandidateUserMySqlRepository } from '../../common/repositories/candidate-user/candidate-user-mysql.repository';
-import { CandidateUserSqliteRepository } from '../../common/repositories/candidate-user/candidate-user-sqlite.repository';
+import { CandidateUserRepositoryMySQL } from '../../common/repositories/candidate-user/candidate-user-mysql.repository';
 import { CandidateUserSerialize } from '../../common/serializers/candidate-user.serialize';
 import { MailService } from '../../mails/mail.service';
 import { CandidateUserModule } from '../candidate-user/candidate-user.module';
@@ -16,8 +15,6 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy.ts';
-
-const modeProduction = process.env.MODE_PRODUCTION;
 
 @Module({
   imports: [
@@ -44,10 +41,7 @@ const modeProduction = process.env.MODE_PRODUCTION;
     MailService,
     {
       provide: CandidateUserRepository,
-      useClass:
-        modeProduction === 'true'
-          ? CandidateUserMySqlRepository
-          : CandidateUserSqliteRepository,
+      useClass: CandidateUserRepositoryMySQL,
     },
   ],
 })

@@ -4,37 +4,38 @@ import { CreateCandidateProfileDto } from '../../../application/candidate-profil
 import { UpdateCandidateProfileDto } from '../../../application/candidate-profile/dto/update-candidate-profile.dto';
 import { CandidateProfile } from '../../../application/candidate-profile/entities/candidate-profile.entity';
 import { CandidateProfileRepository } from '../../../application/candidate-profile/repository/candidate-profile.repository';
-import { PrismaMySqlService } from '../../../config/database/prisma/prisma-mysql.service';
-import { NotFoundError } from '../../exceptions/not-found.error';
-import { ConflictError } from '../../exceptions/conflict-error';
+import { PrismaService } from '../../../config/database/prisma/prisma.service';
+import { capitalizeFirstLetter } from '../../helpers/capitalize-first-letter';
 
 @Injectable()
-export class CandidateProfileMySqlRepository
+export class CandidateProfileRepositoryMySQL
   implements CandidateProfileRepository
 {
-  constructor(private readonly prisma: PrismaMySqlService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(profile: CreateCandidateProfileDto) {
-    const areaArray = profile.others
-      ? [...profile.occupationArea, ...profile.others]
-      : [...profile.occupationArea];
-
-    const userExists = await this.prisma.candidateUser.findUnique({
-      where: { id: profile.candidateUserId },
-    });
-
-    if (!userExists) {
-      throw new NotFoundError('Candidate user not found');
+    const areaArray = [...profile.occupationArea];
+    for (const skl of profile.profileSkills) {
+      if (
+        !Object.keys(skl).includes('type') ||
+        !Object.keys(skl).includes('name')
+      ) {
+        throw new Error(
+          `A propriedade "type"  e/ou "name" ${JSON.stringify(
+            skl,
+          )} é obrigatório ou esta escrito errado!}`,
+        );
+      }
     }
 
-    const profileExists = await this.prisma.candidateProfile.findFirst({
-      where: { candidateUserId: profile.candidateUserId },
-    });
-    console.info(profileExists);
-    if (profileExists) {
-      throw new ConflictError(
-        'There is already a profile registered for this user',
-      );
+    for (const oca of areaArray) {
+      if (!Object.keys(oca).includes('title')) {
+        throw new Error(
+          `A propriedade "title" ${JSON.stringify(
+            oca,
+          )} é obrigatório ou esta escrito errado!`,
+        );
+      }
     }
 
     try {
@@ -54,9 +55,8 @@ export class CandidateProfileMySqlRepository
         areaArray.map(async (area) => {
           await this.prisma.occupationArea.create({
             data: {
-              title: area,
+              title: area.title.toUpperCase(),
               profileId: newProfile.id,
-              userId: newProfile.candidateUserId,
             },
           });
         }),
@@ -64,10 +64,13 @@ export class CandidateProfileMySqlRepository
 
       await Promise.all(
         profile.profileSkills.map(async (skill) => {
-          await this.prisma.profileSkills.create({
+          await this.prisma.skill.create({
             data: {
-              stackId: skill,
-              profileId: newProfile.id,
+              type: (skill.type as any).toUpperCase(),
+              name: capitalizeFirstLetter(skill.name),
+              candidateProfile: {
+                connect: { id: newProfile.id },
+              },
             },
           });
         }),
@@ -76,6 +79,7 @@ export class CandidateProfileMySqlRepository
       return newProfile;
     } catch (error) {
       console.error(error);
+      throw new Error('O perfil já foi criado!');
     }
   }
 
@@ -97,13 +101,13 @@ export class CandidateProfileMySqlRepository
           },
         },
         occupationArea: true,
-        profileSkills: true,
+        Skill: true,
       },
     });
   }
 
   async findById(id: number): Promise<CandidateProfile> {
-    const profile = await this.prisma.candidateProfile.findUnique({
+    return await this.prisma.candidateProfile.findUnique({
       where: { id },
       include: {
         candidateUser: {
@@ -121,15 +125,89 @@ export class CandidateProfileMySqlRepository
           },
         },
         occupationArea: true,
-        profileSkills: true,
+        Skill: true,
       },
     });
-
-    return profile;
   }
 
-  async update(id: number, profile: UpdateCandidateProfileDto): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(id: number, profile: UpdateCandidateProfileDto): Promise<any> {
+    try {
+      const profileUpdated = await this.prisma.candidateProfile.update({
+        where: { id },
+        data: {
+          description: profile.description,
+          phone: profile.phone,
+          urlGithub: profile.urlGithub,
+          urlLinkedin: profile.urlLinkedin,
+          availableTime: profile.availableTime,
+          areaOfInterest: profile.areaOfInterest,
+        },
+      });
+      if (profile.profileSkills) {
+        Promise.all(
+          profile.profileSkills.map(async (skill) => {
+            if (skill.name === null) {
+              await this.prisma.skill.delete({ where: { id: skill.id } });
+            } else {
+              const skillExists = await this.prisma.skill.findUnique({
+                where: { id: skill.id },
+              });
+
+              if (!skillExists) {
+                await this.prisma.skill.create({
+                  data: {
+                    type: (skill.type as any).toUpperCase(),
+                    name: capitalizeFirstLetter(skill.name),
+                    candidateProfile: {
+                      connect: { id: profileUpdated.id },
+                    },
+                  },
+                });
+              } else {
+                await this.prisma.skill.update({
+                  where: { id: skill.id },
+                  data: {
+                    name: capitalizeFirstLetter(skill.name),
+                    candidateProfile: {
+                      connect: { id: profileUpdated.id },
+                    },
+                  },
+                });
+              }
+            }
+          }),
+        );
+      }
+      if (profile.occupationArea) {
+        Promise.all(
+          profile.occupationArea.map(async (area) => {
+            const areaExists = await this.prisma.occupationArea.findUnique({
+              where: { id: area.id },
+            });
+
+            if (!areaExists) {
+              await this.prisma.occupationArea.create({
+                data: {
+                  title: area.title.toUpperCase(),
+                  profileId: profileUpdated.id,
+                },
+              });
+            } else {
+              await this.prisma.occupationArea.update({
+                where: { id: area.id },
+                data: {
+                  title: area.title.toUpperCase(),
+                  CandidateProfile: {
+                    connect: { id: profileUpdated.id },
+                  },
+                },
+              });
+            }
+          }),
+        );
+      }
+      return profileUpdated;
+    } catch (error) {}
   }
 
   async remove(id: number): Promise<void> {

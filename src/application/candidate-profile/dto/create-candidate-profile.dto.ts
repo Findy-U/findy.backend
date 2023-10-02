@@ -1,13 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  ArrayMinSize,
   ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 
+class FieldSkills {
+  id?: number;
+  type: SkillType;
+  name: string;
+}
+
+enum SkillType {
+  LANGUAGE,
+  FRAMEWORK,
+  DATABASE,
+  DESIGNER_TOOL,
+  CLOUD_SERVICE,
+  DEVOPS_TOOL,
+  TESTING_TOOL,
+}
 export class CreateCandidateProfileDto {
   @ApiProperty({
     description: 'Campo é obrigatório',
@@ -39,29 +54,34 @@ export class CreateCandidateProfileDto {
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: [8, 9, 11, 19, 20, 23, 26, 27],
+    example: [
+      { type: 'LANGUAGE', name: 'JavaScript' },
+      { type: 'FRAMEWORK', name: 'React' },
+      { type: 'DATABASE', name: 'MySQL' },
+    ],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
-  @IsNumber({}, { each: true })
-  profileSkills?: number[];
+  @IsArray()
+  @ArrayMinSize(1, { message: 'Este campo deve ter no mínimo 1 objecto.' })
+  profileSkills?: FieldSkills[];
 
   @ApiProperty({
     description: 'Campo é obrigatório',
-    example: ['Front-End', 'UX', 'UI'],
+    example: [{ title: 'Front-end' }, { title: 'UX' }, { title: 'UI' }],
   })
   @ArrayNotEmpty({ message: 'Este campo é obrigatório.' })
   @IsArray()
-  @IsString({ each: true })
-  occupationArea?: string[];
+  // @IsString({ each: true })
+  occupationArea?: [{ id: number; title: string }];
 
-  @ApiProperty({
-    description: 'Campo não é obrigatório',
-    example: ['Tech Lead'],
-  })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  others?: string[];
+  // @ApiProperty({
+  //   description: 'Campo não é obrigatório',
+  //   example: [{ title: 'Tech Lead' }],
+  // })
+  // @IsOptional()
+  // @IsArray()
+  // @IsString({ each: true })
+  // others?: [{ title: string }];
 
   @ApiProperty({
     description: 'Campo é obrigatório',

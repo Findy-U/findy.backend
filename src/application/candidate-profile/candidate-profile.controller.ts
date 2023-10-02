@@ -77,6 +77,10 @@ export class CandidateProfileController {
       if (error instanceof ConflictError) {
         throw new ConflictException(error.message);
       }
+
+      if (error instanceof Error) {
+        throw new ConflictException(error.message);
+      }
       throw new InternalServerErrorException('Server error please try again');
     }
   }

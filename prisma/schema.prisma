@@ -3,8 +3,18 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL_DEV")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum SkillType {
+  LANGUAGE
+  FRAMEWORK
+  DATABASE
+  DESIGNER_TOOL
+  CLOUD_SERVICE
+  DEVOPS_TOOL
+  TESTING_TOOL
 }
 
 model CandidateUser {
@@ -36,22 +46,6 @@ model CandidateUser {
   @@map("tb_candidate_users")
 }
 
-model CandidateUserDetails {
-  id              Int       @id @default(autoincrement())
-  candidateUserId Int?      @unique @map("candidate_user_id")
-  gender          String
-  birthDate       DateTime? @map("birth_date")
-  residencePlace  String?   @map("residence_place")
-  state           String?
-  country         String?
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime? @map("updated_at")
-
-  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
-
-  @@map("tb_candidate_users_details")
-}
-
 model CandidateProfile {
   id              Int              @id @default(autoincrement())
   description     String
@@ -63,8 +57,7 @@ model CandidateProfile {
   candidateUserId Int?             @unique
   candidateUser   CandidateUser?   @relation(fields: [candidateUserId], references: [id])
   occupationArea  OccupationArea[]
-  profileSkills   ProfileSkills[]
-  // professionalExperience String           @map("professional_experience")
+  Skill           Skill[]
 
   @@map("tb_candidate-profile")
 }
@@ -72,21 +65,20 @@ model CandidateProfile {
 model OccupationArea {
   id               Int               @id @default(autoincrement())
   title            String?
-  userId           Int?              @map("user_id")
-  profileId        Int?
+  profileId        Int?              @map("profile_id")
   CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id])
 
   @@map("tb_occupation_area")
 }
 
-model ProfileSkills {
-  id               Int               @id @default(autoincrement())
-  profileId        Int?              @map("profile_id")
-  stackId          Int?              @map("stack_id")
-  Skill            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade)
-  CandidateProfile CandidateProfile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+model Skill {
+  id                 Int               @id @default(autoincrement())
+  type               SkillType
+  name               String
+  candidateProfileId Int?              @map("candidate_profile_id")
+  candidateProfile   CandidateProfile? @relation(fields: [candidateProfileId], references: [id])
 
-  @@map("profile_skills")
+  @@map("tb_skill")
 }
 
 model CandidateProject {
@@ -105,19 +97,43 @@ model CandidateProject {
   contactLeaders        String?        @map("contact_leaders")
   CandidateUser         CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
   professional          ProjectRoles[]
-  language              ProjectStack[]
+  tools                 ProjectStack[]
+  Stacks                Stacks[]
 
   @@map("tb_candidate_projects")
 }
 
 model ProjectStack {
-  id               Int               @id @default(autoincrement())
-  projectId        Int?              @map("project_id")
-  stackId          Int?              @map("stack_id")
-  Stack            Stack?            @relation(fields: [stackId], references: [id], onDelete: Cascade)
+  id        Int  @id @default(autoincrement())
+  projectId Int? @map("project_id")
+
+  languagesId     Int? @map("languages_id")
+  fameworkId      Int? @map("framework_id")
+  dataBaseId      Int? @map("data_base_id")
+  DesignerToolsId Int? @map("designer_tools_id")
+  CloudServicesId Int? @map("cloud_services_id")
+  DevOpsToolsId   Int? @map("dev_ops_tools_id")
+  TestingToolsId  Int? @map("testing_tools_id")
+
+  ProgrammingLanguages ProgrammingLanguages? @relation(fields: [languagesId], references: [id], onDelete: Cascade)
+  FrameworksLibraries  FrameworksLibraries?  @relation(fields: [fameworkId], references: [id], onDelete: Cascade)
+  DataBases            DataBases?            @relation(fields: [dataBaseId], references: [id], onDelete: Cascade)
+  DesignerTools        DesignerTools?        @relation(fields: [DesignerToolsId], references: [id], onDelete: Cascade)
+  CloudServices        CloudServices?        @relation(fields: [CloudServicesId], references: [id], onDelete: Cascade)
+  DevOpsTools          DevOpsTools?          @relation(fields: [DevOpsToolsId], references: [id], onDelete: Cascade)
+  TestingTools         TestingTools?         @relation(fields: [TestingToolsId], references: [id], onDelete: Cascade)
+
   CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("tb_project_stack")
+}
+
+model Stacks {
+  id                 Int               @id @default(autoincrement())
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_stacks")
 }
 
 model ProjectRoles {
@@ -129,13 +145,68 @@ model ProjectRoles {
   @@map("tb_project_roles")
 }
 
-model Stack {
-  id            Int             @id @default(autoincrement())
-  title         String
-  tools         ProjectStack[]
-  ProfileSkills ProfileSkills[]
+model ProgrammingLanguages {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  title String
 
-  @@map("tb_stacks")
+  ProjectStack ProjectStack[]
+
+  @@map("tb_programming_languages")
+}
+
+model FrameworksLibraries {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_frameworks_libraries")
+}
+
+model DataBases {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_data_bases")
+}
+
+model DesignerTools {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_designer_tools")
+}
+
+model CloudServices {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_cloud_services")
+}
+
+model DevOpsTools {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_dev_ops_tools")
+}
+
+model TestingTools {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  title        String
+  ProjectStack ProjectStack[]
+
+  @@map("tb_testing_tools")
 }
 
 model Roles {
@@ -145,10 +216,21 @@ model Roles {
   @@map("tb_roles")
 }
 
-model Leader {
-  id Int @id @default(autoincrement())
+// as tabelas abaixo são referentes a Survey
+model CandidateUserDetails {
+  id              Int       @id @default(autoincrement())
+  candidateUserId Int?      @unique @map("candidate_user_id")
+  gender          String
+  birthDate       DateTime? @map("birth_date")
+  residencePlace  String?   @map("residence_place")
+  state           String?
+  country         String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
 
-  @@map("tb_leaders")
+  CandidateUser CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+
+  @@map("tb_candidate_users_details")
 }
 
 model SurveyMarketInformation {

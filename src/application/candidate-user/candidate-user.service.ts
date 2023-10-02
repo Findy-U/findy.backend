@@ -34,7 +34,6 @@ export class CandidateUserService {
       token,
       expiredAt,
     );
-    console.log(newCandidate);
     await this.mailService.sendActivationEmail(newCandidate, token);
     return this.candidateUserSerialize.dbToResponseCreate(newCandidate);
   }
