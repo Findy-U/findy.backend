@@ -4,24 +4,39 @@
 
 ## Descrição
 
-API responsável por prover os dados que serão consumidos pela aplicação fornt-end da Findy.
+API responsável por prover os dados que serão consumidos pela aplicação front-end da Findy.
 
-## Instalação
+## Intrução para rodar localmente:
 
-- Clone o repositŕoio, entre na pasta do projeto `findy.backend`
+- O back-end da aplicação utiliza o banco de dados MySQL. É essencial que você tenha em sua máquina o MySQL instalado ou tenha um container (Docker) com a instância do MySQL configurado, ou ainda um banco de dados MySQL em nuvem configurado. Dentro da pasta `findy.backend` existe um arquivo `.env.example` que deve ser renomeado para `.env` e na variável de nome "DATABASE_URL" deve ser inserido o endereço (URL) do banco, seja local ou na nuvem.
+- Ex. de URL local: "mysql://root:12345678@localhost:3306/findy_db"
+
+  - root => trata-se do usuário, nesse caso, o usuário é o "root", usuário raiz do MySQL. Se você não criou um usuário, provavelmente é o root que está configurado.
+  - 12345678 => senha do banco. Use a senha que você registrou para o banco.
+  - localhost => IP de acesso. Localmente, esse é o IP padrão que se usa.
+  - 3306 => porta; Se não mapear outra porta, essa é a padrão.
+  - findy_db => nome do banco. É bom manter esse nome mesmo.
+
+- Para facilitar, existe um "Docker compose criado dentro do diretório do back-end" que cria o container (Docker) do MySQL com as configurações padrão, que a URL de exemplo utiliza.
+
+- Para rodar o compose:
+
+```bash
+npm run compose:up
+```
+
+- Para parar o compose:
+
+```bash
+npm run compose:down
+```
+
+- Clone o repositório, entre na pasta do projeto `findy.backend`.
+- Depois de clonar o repositório, você precisa das variáveis de ambientes que configuram vários acessos da aplicação. Seguem abaixo as orientações:
+- Você deve acessar a documentação de como configurar as variáveis de ambientes que o projeto utiliza neste <a href="https://github.com/orgs/Findy-U/projects/1/views/1">link Doc</a>, na coluna "Orientações para Equipes" e o card "Deploy / Development / QA".
 
 ```bash
 $ npm install
-```
-
-```bash
-# production
-$ npm run prod:prisma
-```
-
-```bash
-# production
-$ npm run prod:seed
 ```
 
 ```bash
