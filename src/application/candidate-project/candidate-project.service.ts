@@ -14,7 +14,7 @@ export class CandidateProjectService {
 
   async create(createProject: CreateCandidateProjectDto, user: CandidateUser) {
     const projectExists = await this.candidateProjectRepository.findByName(
-      createProject.name,
+      createProject.projectName,
     );
 
     if (projectExists) {
@@ -29,22 +29,6 @@ export class CandidateProjectService {
 
   findOne(id: number) {
     return this.candidateProjectRepository.findById(id);
-  }
-
-  async findAllRolesProject() {
-    return await this.candidateProjectRepository.findAllRolesProject();
-  }
-
-  async findByIdRoleProject(id: number) {
-    return await this.candidateProjectRepository.findByIdRoleProject(id);
-  }
-
-  async findAllSkillsProject() {
-    return await this.candidateProjectRepository.findAllSkillsProject();
-  }
-
-  async findByIdSkillProject(id: number) {
-    return this.candidateProjectRepository.findByIdSkillProject(id);
   }
 
   async updateProjectData(

@@ -82,138 +82,165 @@ model Skill {
 }
 
 model CandidateProject {
-  id                    Int            @id @default(autoincrement())
-  name                  String         @unique
-  projectScope          String         @map("project_scope")
-  urlTeamSelection      String         @map("url_team_selection")
-  responsible           String?
-  contactResponsible    String?        @map("contact_responsible")
-  urlLinkediResponsible String?        @map("url_linkedin_responsible")
-  candidateUserId       Int?           @map("candidate_user_id")
-  findyHelp             String?        @map("findy_help")
-  isActive              Boolean?       @default(false) @map("is_active")
-  createdAt             DateTime       @default(now()) @map("created_at")
-  updatedAt             DateTime?      @map("updated_at")
-  contactLeaders        String?        @map("contact_leaders")
-  CandidateUser         CandidateUser? @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
-  professional          ProjectRoles[]
-  tools                 ProjectStack[]
-  Stacks                Stacks[]
+  id                  Int       @id @default(autoincrement())
+  projectName         String    @unique @map("project_name")
+  shortDescription    String    @map("short_description")
+  detailedDescription String    @map("detailed_description")
+  startDate           DateTime  @map("start_date")
+  expectedDuration    String    @map("expected_duration")
+  commitmentTime      String    @map("commitment_time") // tempo de dedicação ao projeco pelo candidato
+  teamSize            String?   @map("team_size")
+  projectTheme        String    @map("project_theme")
+  responsible         String?
+  responsibleEmail    String?   @map("responsible_email")
+  urlTeamSelection    String?   @map("url_team_selection")
+  isActive            Boolean?  @default(false) @map("is_active")
+  candidateUserId     Int?      @map("candidate_user_id")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime? @map("updated_at")
+
+  CandidateUser        CandidateUser?         @relation(fields: [candidateUserId], references: [id], onDelete: Cascade)
+  ProgrammingLanguages ProgrammingLanguages[]
+  FrameworksLibraries  FrameworksLibraries[]
+  DataBases            DataBases[]
+  DesignerTools        DesignerTools[]
+  CloudServices        CloudServices[]
+  DevOpsTools          DevOpsTools[]
+  TestingTools         TestingTools[]
+
+  DeveloperRoles DevelperRoles[]
+  ProductRoles   ProductRoles[]
+  DesignerRoles  DesignerRoles[]
+  DataRoles      DataRoles[]
+  AgileRoles     AgileRoles[]
+  QARoles        QARoles[]
 
   @@map("tb_candidate_projects")
 }
 
-model ProjectStack {
-  id        Int  @id @default(autoincrement())
-  projectId Int? @map("project_id")
-
-  languagesId     Int? @map("languages_id")
-  fameworkId      Int? @map("framework_id")
-  dataBaseId      Int? @map("data_base_id")
-  DesignerToolsId Int? @map("designer_tools_id")
-  CloudServicesId Int? @map("cloud_services_id")
-  DevOpsToolsId   Int? @map("dev_ops_tools_id")
-  TestingToolsId  Int? @map("testing_tools_id")
-
-  ProgrammingLanguages ProgrammingLanguages? @relation(fields: [languagesId], references: [id], onDelete: Cascade)
-  FrameworksLibraries  FrameworksLibraries?  @relation(fields: [fameworkId], references: [id], onDelete: Cascade)
-  DataBases            DataBases?            @relation(fields: [dataBaseId], references: [id], onDelete: Cascade)
-  DesignerTools        DesignerTools?        @relation(fields: [DesignerToolsId], references: [id], onDelete: Cascade)
-  CloudServices        CloudServices?        @relation(fields: [CloudServicesId], references: [id], onDelete: Cascade)
-  DevOpsTools          DevOpsTools?          @relation(fields: [DevOpsToolsId], references: [id], onDelete: Cascade)
-  TestingTools         TestingTools?         @relation(fields: [TestingToolsId], references: [id], onDelete: Cascade)
-
-  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("tb_project_stack")
-}
-
-model Stacks {
+// as tabelas abaixo são para a linguagens e ferramentas utilizadas no projeto
+model ProgrammingLanguages {
   id                 Int               @id @default(autoincrement())
+  name               String            @unique
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
-
-  @@map("tb_stacks")
-}
-
-model ProjectRoles {
-  id               Int               @id @default(autoincrement())
-  projectId        Int?              @map("project_id")
-  title            String?
-  CandidateProject CandidateProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("tb_project_roles")
-}
-
-model ProgrammingLanguages {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  title String
-
-  ProjectStack ProjectStack[]
 
   @@map("tb_programming_languages")
 }
 
 model FrameworksLibraries {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_frameworks_libraries")
 }
 
 model DataBases {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_data_bases")
 }
 
 model DesignerTools {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_designer_tools")
 }
 
 model CloudServices {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_cloud_services")
 }
 
 model DevOpsTools {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_dev_ops_tools")
 }
 
 model TestingTools {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  title        String
-  ProjectStack ProjectStack[]
+  id                 Int               @id @default(autoincrement())
+  name               String            @unique
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
   @@map("tb_testing_tools")
 }
 
-model Roles {
-  id    Int    @id @default(autoincrement())
-  title String
+// modelos da tabelas de cargos/funções dentro do projeto
+model DevelperRoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
 
-  @@map("tb_roles")
+  @@map("tb_develper_roles")
+}
+
+model ProductRoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_product_roles")
+}
+
+model DesignerRoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_designer_roles")
+}
+
+model DataRoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_data_roles")
+}
+
+model AgileRoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_agile_roles")
+}
+
+model QARoles {
+  id                 Int               @id @default(autoincrement())
+  title              String
+  quantity           Int
+  CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
+  candidateProjectId Int?
+
+  @@map("tb_qa_roles")
 }
 
 // as tabelas abaixo são referentes a Survey
