@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateProject, Roles } from '@prisma/client';
+import { CandidateProject } from '@prisma/client';
 import { CreateCandidateProjectDto } from '../../../application/candidate-project/dto/create-candidate-project.dto';
 import { UpdateCandidateProjectDto } from '../../../application/candidate-project/dto/update-candidate-project.dto';
 import { CandidateProjectRepository } from '../../../application/candidate-project/repositories/candidate-project.repository';
@@ -20,58 +20,140 @@ export class CandidateProjectRepositoryMySQL
     project: CreateCandidateProjectDto,
     user: CandidateUser,
   ): Promise<CandidateProject> {
-    const rolesArray = project.others
-      ? [...project.professional, ...project.others]
-      : [...project.professional];
-
+    console.log(project, user);
     try {
-      const newProject = await this.prisma.candidateProject.create({
-        data: {
-          name: project.name,
-          responsible: project.responsible,
-          contactResponsible: project.contactResponsible,
-          urlLinkediResponsible: project.urlLinkediResponsible,
-          urlTeamSelection: project.urlTeamSelection,
-          projectScope: project.projectScope,
-          candidateUserId: user.id,
-          findyHelp: project.findyHelp,
-        },
-      });
+      if (project.languages.length || project.professionals.length) {
+        const newProject = await this.prisma.candidateProject.create({
+          data: {
+            projectName: project.projectName,
+            responsible: user.name,
+            responsibleEmail: user.email,
+            commitmentTime: project.commitmentTime,
+            urlTeamSelection: project.urlTeamSelection,
+            shortDescription: project.shortDescription,
+            detailedDescription: project.detailedDescription,
+            projectTheme: project.projectTheme,
+            expectedDuration: project.expectedDuration,
+            startDate: new Date(project.startDate),
+            teamSize: String(project.teamSize),
+            isActive: true,
+            candidateUserId: user.id,
+          },
+        });
 
-      await Promise.all(
-        project.language.map(async (item: any) => {
-          await this.prisma.projectStack.create({
-            data: {
-              projectId: newProject.id,
-              languagesId: item,
-            },
-          });
-        }),
-      );
+        await Promise.all(
+          project.languages.map(async (item: any) => {
+            switch (item.type.toUpperCase()) {
+              case 'LANGUAGES':
+                await this.prisma.programmingLanguages.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'FRAMEWORKS':
+                await this.prisma.frameworksLibraries.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'DATABASE':
+                await this.prisma.dataBases.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'DESIGNER':
+                await this.prisma.designerTools.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'CLOUD':
+                await this.prisma.cloudServices.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'DEVOPS':
+                await this.prisma.devOpsTools.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              case 'TESTING':
+                await this.prisma.testingTools.create({
+                  data: { name: item.name, candidateProjectId: newProject.id },
+                });
+                break;
+              default:
+                break;
+            }
+          }),
+        );
 
-      await Promise.all(
-        rolesArray.map(async (item: any) => {
-          await this.prisma.projectRoles.create({
-            data: {
-              projectId: newProject.id,
-              title: item,
-            },
-          });
-        }),
-      );
+        await Promise.all(
+          project.professionals.map(async (item: any) => {
+            switch (item.type.toUpperCase()) {
+              case 'DEVELOPER':
+                await this.prisma.develperRoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              case 'DESIGNER':
+                await this.prisma.designerRoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              case 'PRODUCT':
+                await this.prisma.productRoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              case 'QAROLE':
+                await this.prisma.qARoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              case 'DATAROLE':
+                await this.prisma.dataRoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              case 'AGILEROLE':
+                await this.prisma.agileRoles.create({
+                  data: {
+                    title: item.title,
+                    quantity: item.quantity,
+                    candidateProjectId: newProject.id,
+                  },
+                });
+                break;
+              default:
+                break;
+            }
+          }),
+        );
 
-      // await Promise.all(
-      //   project.leaders.map(async (item: any) => {
-      //     await this.prisma.leader.create({
-      //       data: {
-      //         projectId: newProject.id,
-      //         userId: item,
-      //       },
-      //     });
-      //   }),
-      // );
-
-      return newProject;
+        return newProject;
+      } else {
+        throw new Error(
+          'É necessário informar pelo menos uma linguagem ou profissional',
+        );
+      }
     } catch (error) {
       console.error(error);
       throw new Error('Internal server error');
@@ -82,20 +164,81 @@ export class CandidateProjectRepositoryMySQL
     return await this.prisma.candidateProject.findMany({
       select: {
         id: true,
-        name: true,
-        projectScope: true,
-        urlTeamSelection: true,
-        responsible: true,
-        contactResponsible: true,
-        urlLinkediResponsible: true,
-        findyHelp: true,
-        candidateUserId: true,
-        contactLeaders: true,
+        projectName: true,
+        shortDescription: true,
+        detailedDescription: true,
+        projectTheme: true,
+        startDate: true,
+        expectedDuration: true,
+        commitmentTime: true,
+        teamSize: true,
         isActive: true,
-        createdAt: true,
-        updatedAt: true,
-        professional: true,
-        tools: true,
+        candidateUserId: true,
+        ProgrammingLanguages: {
+          select: {
+            name: true,
+          },
+        },
+        FrameworksLibraries: {
+          select: {
+            name: true,
+          },
+        },
+        DataBases: {
+          select: {
+            name: true,
+          },
+        },
+        DesignerTools: {
+          select: {
+            name: true,
+          },
+        },
+        CloudServices: {
+          select: {
+            name: true,
+          },
+        },
+        DevOpsTools: {
+          select: {
+            name: true,
+          },
+        },
+        TestingTools: {
+          select: {
+            name: true,
+          },
+        },
+        DeveloperRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        DesignerRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        ProductRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        QARoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        DataRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
       },
     });
   }
@@ -103,9 +246,90 @@ export class CandidateProjectRepositoryMySQL
   async findById(id: number): Promise<any> {
     const project = await this.prisma.candidateProject.findUnique({
       where: { id },
-      include: {
-        tools: true,
-        professional: true,
+      select: {
+        id: true,
+        projectName: true,
+        shortDescription: true,
+        detailedDescription: true,
+        projectTheme: true,
+        startDate: true,
+        expectedDuration: true,
+        commitmentTime: true,
+        teamSize: true,
+        urlTeamSelection: true,
+        isActive: true,
+        candidateUserId: true,
+        CandidateUser: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        ProgrammingLanguages: {
+          select: {
+            name: true,
+          },
+        },
+        FrameworksLibraries: {
+          select: {
+            name: true,
+          },
+        },
+        DataBases: {
+          select: {
+            name: true,
+          },
+        },
+        DesignerTools: {
+          select: {
+            name: true,
+          },
+        },
+        CloudServices: {
+          select: {
+            name: true,
+          },
+        },
+        DevOpsTools: {
+          select: {
+            name: true,
+          },
+        },
+        TestingTools: {
+          select: {
+            name: true,
+          },
+        },
+        DeveloperRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        DesignerRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        ProductRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        QARoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
+        DataRoles: {
+          select: {
+            title: true,
+            quantity: true,
+          },
+        },
       },
     });
     if (!project) {
@@ -115,31 +339,9 @@ export class CandidateProjectRepositoryMySQL
   }
 
   async findByName(name: string): Promise<CandidateProject> {
-    return await this.prisma.candidateProject.findUnique({ where: { name } });
-  }
-
-  async findAllRolesProject(): Promise<Roles[]> {
-    return await this.prisma.roles.findMany();
-  }
-
-  async findByIdRoleProject(id: number): Promise<Roles> {
-    const role = await this.prisma.roles.findUnique({ where: { id } });
-    if (!role) {
-      throw new NotFoundError('Not found Role');
-    }
-    return role;
-  }
-
-  async findAllSkillsProject(): Promise<any[]> {
-    return await this.prisma.skill.findMany();
-  }
-
-  async findByIdSkillProject(id: number): Promise<any> {
-    const skill = await this.prisma.skill.findUnique({ where: { id } });
-    if (!skill) {
-      throw new NotFoundError('Not found Skill');
-    }
-    return skill;
+    return await this.prisma.candidateProject.findUnique({
+      where: { projectName: name },
+    });
   }
 
   async update(id: number, project: UpdateCandidateProjectDto): Promise<void> {
@@ -151,11 +353,9 @@ export class CandidateProjectRepositoryMySQL
       await this.prisma.candidateProject.update({
         where: { id },
         data: {
-          name: project.name,
+          projectName: project.projectName,
           responsible: project.responsible,
           urlTeamSelection: project.urlTeamSelection,
-          findyHelp: project.findyHelp,
-          projectScope: project.projectScope,
         },
       });
     } catch (error) {
