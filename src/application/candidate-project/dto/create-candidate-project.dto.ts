@@ -79,20 +79,10 @@ export class CreateCandidateProjectDto {
   @IsString()
   urlTeamSelection: string;
 
-  @ApiProperty({
-    description:
-      'Campo destinado ao prenchimento com o nome do responsável pelo projeto (dono/usuário que criou)',
-    example: 'John Doe',
-  })
   @IsOptional()
   @IsString()
   responsible?: string;
 
-  @ApiProperty({
-    description:
-      'Campo destinado ao prenchimento com o contado do responsável pelo projeto (dono/usuário que criou)',
-    example: 'email@mail.com',
-  })
   @IsOptional()
   @IsString()
   responsibleEmail?: string;

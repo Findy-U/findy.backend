@@ -20,13 +20,14 @@ export class CandidateProjectRepositoryMySQL
     project: CreateCandidateProjectDto,
     user: CandidateUser,
   ): Promise<CandidateProject> {
+    console.log(project, user);
     try {
       if (project.languages.length || project.professionals.length) {
         const newProject = await this.prisma.candidateProject.create({
           data: {
             projectName: project.projectName,
-            responsible: project.responsible,
-            responsibleEmail: project.responsibleEmail,
+            responsible: user.name,
+            responsibleEmail: user.email,
             commitmentTime: project.commitmentTime,
             urlTeamSelection: project.urlTeamSelection,
             shortDescription: project.shortDescription,
@@ -255,8 +256,15 @@ export class CandidateProjectRepositoryMySQL
         expectedDuration: true,
         commitmentTime: true,
         teamSize: true,
+        urlTeamSelection: true,
         isActive: true,
         candidateUserId: true,
+        CandidateUser: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
         ProgrammingLanguages: {
           select: {
             name: true,

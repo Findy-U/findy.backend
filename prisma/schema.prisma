@@ -48,7 +48,7 @@ model CandidateUser {
 
 model CandidateProfile {
   id              Int              @id @default(autoincrement())
-  description     String
+  description     String           @db.Text
   urlGithub       String?          @map("url_github")
   urlLinkedin     String           @map("url_linkedin")
   phone           String
@@ -85,7 +85,7 @@ model CandidateProject {
   id                  Int       @id @default(autoincrement())
   projectName         String    @unique @map("project_name")
   shortDescription    String    @map("short_description")
-  detailedDescription String    @map("detailed_description")
+  detailedDescription String    @map("detailed_description") @db.Text
   startDate           DateTime  @map("start_date")
   expectedDuration    String    @map("expected_duration")
   commitmentTime      String    @map("commitment_time") // tempo de dedicação ao projeco pelo candidato
@@ -121,7 +121,7 @@ model CandidateProject {
 // as tabelas abaixo são para a linguagens e ferramentas utilizadas no projeto
 model ProgrammingLanguages {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -130,7 +130,7 @@ model ProgrammingLanguages {
 
 model FrameworksLibraries {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -139,7 +139,7 @@ model FrameworksLibraries {
 
 model DataBases {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -148,7 +148,7 @@ model DataBases {
 
 model DesignerTools {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -157,7 +157,7 @@ model DesignerTools {
 
 model CloudServices {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -166,7 +166,7 @@ model CloudServices {
 
 model DevOpsTools {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 
@@ -175,7 +175,7 @@ model DevOpsTools {
 
 model TestingTools {
   id                 Int               @id @default(autoincrement())
-  name               String            @unique
+  name               String
   CandidateProject   CandidateProject? @relation(fields: [candidateProjectId], references: [id])
   candidateProjectId Int?
 

@@ -4,14 +4,25 @@ export class CreatesuccessProjectsResponse {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @ApiProperty({ example: 'Proffy' })
-  name: string;
+  @ApiProperty({ example: 'E-Coleta' })
+  projectName: string;
+
+  @ApiProperty({
+    example: 'Projeto destinado a cadstro de pontos de colet',
+  })
+  shortDescription: string;
 
   @ApiProperty({
     example:
-      'Projeto destinado ao cadastro de professores particulares que oferecem o serviço de aulas de reforço',
+      'Projeto onde comerciantes da dicade podem se cadastrar com ponto de coleta seletiva, para que o cidadão possa entregar alguns tipos de produtos que são reciclaveis ou descartaveis, e não podem ir para o lixo comum.',
   })
-  projectScope: string;
+  detailedDescription: string;
+
+  @ApiProperty({ example: 'Meio ambiente' })
+  projectTheme: string;
+
+  @ApiProperty({ example: '2023-10-03T00:00:00.000Z' })
+  startDate: Date;
 
   @ApiProperty({
     example:
@@ -19,23 +30,29 @@ export class CreatesuccessProjectsResponse {
   })
   urlTeamSelection: string;
 
+  @ApiProperty({ example: '5 meses' })
+  expectedDuration: string;
+
+  @ApiProperty({ example: '6 horas por semana pelo memos' })
+  commitmentTime: string;
+
   @ApiProperty({
     example: 'John Doe',
   })
   responsible: string;
 
-  @ApiProperty({ example: '119985643582' })
-  contactResponsible: string;
+  @ApiProperty({
+    example: 'jhondoe@email.com',
+  })
+  responsibleEmail: string;
+
+  @ApiProperty({ example: '7' })
+  teamSize: string;
 
   @ApiProperty({
-    example: 'https://www.linkedin.com/in/johndoe',
+    example: true,
   })
-  urlLinkediResponsible: string;
-
-  @ApiProperty({
-    example: 'Com orientações de como montar um boa equipe',
-  })
-  findyHelp: string;
+  isActive: boolean;
 
   @ApiProperty({
     example:
@@ -45,9 +62,6 @@ export class CreatesuccessProjectsResponse {
 
   @ApiProperty({ example: 2 })
   candidateUserId: number;
-
-  @ApiProperty({ example: false })
-  isActive: boolean;
 
   @ApiProperty({
     example: '2023-04-06T20:22:34.791Z',
@@ -90,14 +104,34 @@ export class ProjectResponseFind {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @ApiProperty({ example: 'Proffy' })
-  name: string;
+  @ApiProperty({ example: 'E-Coleta' })
+  projectName: string;
+
+  @ApiProperty({
+    example: 'Projeto destinado a cadstro de pontos de coleta',
+  })
+  shortDescription: string;
 
   @ApiProperty({
     example:
-      'Projeto destinado ao cadastro de professores particulares que oferecem o serviço de aulas de reforço',
+      'Projeto onde comerciantes da dicade podem se cadastrar com ponto de coleta seletiva, para que o cidadão possa entregar alguns tipos de produtos que são reciclaveis ou descartaveis, e não podem ir para o lixo comum.',
   })
-  projectScope: string;
+  detailedDescription: string;
+
+  @ApiProperty({ example: 'Meio ambiente' })
+  projectTheme: string;
+
+  @ApiProperty({ example: '2023-10-03T00:00:00.000Z' })
+  startDate: Date;
+
+  @ApiProperty({ example: '5 meses' })
+  expectedDuration: string;
+
+  @ApiProperty({ example: '6 horas por semana pelo memos' })
+  commitmentTime: string;
+
+  @ApiProperty({ example: '7' })
+  teamSize: string;
 
   @ApiProperty({
     example:
@@ -105,57 +139,144 @@ export class ProjectResponseFind {
   })
   urlTeamSelection: string;
 
-  @ApiProperty({ example: 'John Doe' })
-  responsible: string;
-
-  @ApiProperty({ example: '119985643582' })
-  contactResponsible: string;
-
-  @ApiProperty({ example: 'https://www.linkedin.com/in/johndoe' })
-  urlLinkediResponsible: string;
-
-  @ApiProperty({ example: 2 })
-  candidateUserId: number;
-
-  @ApiProperty({ example: 'Com orientações de como montar um boa equipe' })
-  findyHelp: string;
+  @ApiProperty({ example: { name: 'John Doe', email: 'johndoe@email.com' } })
+  CandidateUser: {
+    name: string;
+    email: string;
+  };
 
   @ApiProperty({ example: false })
   isActive: boolean;
 
   @ApiProperty({
-    example:
-      'João Paulo, joaop@email.com, (99)9999-9999, linkedin / Maria Laura, mairaL@email.com, (99)9999-9999, linkedin',
+    example: [
+      {
+        name: 'TypeScript',
+      },
+      {
+        name: 'JavaScript',
+      },
+      {
+        name: 'NodeJs',
+      },
+    ],
   })
-  contactLeaders: string;
+  ProgrammingLanguages: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'React',
+      },
+      {
+        name: 'NextJS',
+      },
+    ],
+  })
+  FrameworksLibraries: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'PostgreSQL',
+      },
+    ],
+  })
+  DataBases: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'Git',
+      },
+    ],
+  })
+  DesignerTools: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'Azure',
+      },
+    ],
+  })
+  CloudServices: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'Docker',
+      },
+    ],
+  })
+  DevOpsTools: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        name: 'Cypress',
+      },
+    ],
+  })
+  TestingTools: [{ name: string }];
+
+  @ApiProperty({
+    example: [
+      {
+        title: 'Front-end',
+        quantity: 2,
+      },
+      {
+        title: 'Back-end',
+        quantity: 2,
+      },
+    ],
+  })
+  DeveloperRoles: [{ title: string; quantity: number }];
+
+  @ApiProperty({
+    example: [
+      {
+        title: 'UX',
+        quantity: 1,
+      },
+      {
+        title: 'UI',
+        quantity: 1,
+      },
+    ],
+  })
+  DesignerRoles: [{ title: string; quantity: number }];
+
+  @ApiProperty({
+    example: {
+      title: 'Product Owner',
+      quantity: 1,
+    },
+  })
+  ProductRoles: [{ title: string; quantity: number }];
+
+  @ApiProperty({
+    example: {
+      title: 'QA',
+      quantity: 1,
+    },
+  })
+  QARoles: [{ title: string; quantity: number }];
+
+  @ApiProperty({
+    example: {
+      title: 'Data Scientist',
+      quantity: 1,
+    },
+  })
+  DataRoles: [{ title: string; quantity: number }];
 
   @ApiProperty({ example: '2023-04 - 06T20: 22: 34.791Z' })
   createdAt: Date;
 
   @ApiProperty({ example: null })
   updatedAt: Date;
-
-  @ApiProperty({
-    example: [
-      {
-        id: 1,
-        projectId: 1,
-        stackId: 1,
-      },
-    ],
-  })
-  language: number[];
-
-  @ApiProperty({
-    example: [
-      {
-        id: 9,
-        projectId: 3,
-        rolesId: 1,
-      },
-    ],
-  })
-  professional: number[];
 }
 
 export class ProjectResponseDelete {
